@@ -20,8 +20,25 @@ import gevent
 from gevent import monkey; monkey.patch_all()
 
 import bottle
+import geventwebsocket
 
 app = bottle.Bottle()
+
+
+@app.route('/ws')
+def handle_websocket():
+    # Get the actual websocket
+    ws = bottle.request.environ.get('wsgi.websocket')
+    if not ws:
+        bottle.abort(400, 'Expected WebSocket request.')
+
+    while True:
+        try:
+            message = ws.receive()
+            # TODO: Dispatch message
+
+        except geventwebsocket.WebSocketError:
+            break
 
 
 def main(port = 16080):

@@ -16,11 +16,24 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import gevent
+from gevent import monkey; monkey.patch_all()
+
 import bottle
 
 app = bottle.Bottle()
 
 
-def main():
-    # TODO: Implement
-    pass
+def main(port = 16080):
+    global app
+
+    import gevent.pywsgi
+    import geventwebsocket
+
+    host = "0.0.0.0"
+
+    server = gevent.pywsgi.WSGIServer(
+        (host, port),
+        app,
+        handler_class = geventwebsocket.WebSocketHandler)
+    server.serve_forever()

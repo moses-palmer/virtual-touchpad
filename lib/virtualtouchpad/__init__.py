@@ -21,8 +21,11 @@ from gevent import monkey; monkey.patch_all()
 
 import bottle
 import geventwebsocket
+import os
 
 app = bottle.Bottle()
+
+STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT')
 
 
 @app.route('/ws')
@@ -39,6 +42,12 @@ def handle_websocket():
 
         except geventwebsocket.WebSocketError:
             break
+
+
+@app.route('/<filepath:path>')
+def static(filepath):
+    global STATIC_ROOT
+    return bottle.static_file(filepath, root = STATIC_ROOT)
 
 
 def main(port = 16080):

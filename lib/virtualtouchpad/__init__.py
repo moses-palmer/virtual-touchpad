@@ -21,7 +21,10 @@ from gevent import monkey; monkey.patch_all()
 
 import bottle
 import geventwebsocket
+import json
 import os
+
+from .dispatch import dispatch
 
 app = bottle.Bottle()
 
@@ -38,7 +41,12 @@ def handle_websocket():
     while True:
         try:
             message = ws.receive()
-            # TODO: Dispatch message
+            try:
+                command = json.loads(message)
+                dispatch(command)
+
+            except (KeyError, ValueError, TypeError):
+                bottle.abort(400, 'Invalid command')
 
         except geventwebsocket.WebSocketError:
             break

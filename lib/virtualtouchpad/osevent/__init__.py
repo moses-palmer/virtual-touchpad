@@ -59,6 +59,16 @@ def mouse_up(button):
     raise NotImplementedError()
 
 
+def mouse_scroll(dx, dy):
+    """
+    Scrolls the mouse wheel.
+
+    @param dx, dy
+        The horisontal and vertical offset to scroll.
+    """
+    raise NotImplementedError()
+
+
 def _import_symbols():
     """
     Loads the platform dependent driver and populates the module globals.

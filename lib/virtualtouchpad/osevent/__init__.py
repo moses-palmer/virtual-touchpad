@@ -16,6 +16,18 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+def key_down(key):
+    """
+    Sends a key down event.
+
+    @param key
+        The name of the key. This value will be handled just like
+        Xlib.XK.string_to_keysym would. Thus, 'A' and 'a' will trigger a press
+        of the 'A' key. 'Space' and 'space' will trigger space.
+    """
+    raise NotImplementedError()
+
+
 def _import_symbols():
     """
     Loads the platform dependent driver and populates the module globals.

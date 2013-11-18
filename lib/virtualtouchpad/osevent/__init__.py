@@ -69,6 +69,16 @@ def mouse_scroll(dx, dy):
     raise NotImplementedError()
 
 
+def mouse_move(dx, dy):
+    """
+    Moves the mouse pointer.
+
+    @param dx, dy
+        The horisontal and vertical offset to move.
+    """
+    raise NotImplementedError()
+
+
 def _import_symbols():
     """
     Loads the platform dependent driver and populates the module globals.

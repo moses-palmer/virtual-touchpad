@@ -52,3 +52,14 @@ def mouse_scroll(dx = 0, dy = 0):
         The horisontal and vertical offset to scroll.
     """
     osevent.mouse_scroll(dx, dy)
+
+
+@dispatcher
+def mouse_move(dx = 0, dy = 0):
+    """
+    Treiggers a mouse move event.
+
+    @param dx, dy
+        The horisontal and vertical offset to move.
+    """
+    osevent.mouse_move(dx, dy)

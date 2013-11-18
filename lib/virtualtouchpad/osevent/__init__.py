@@ -39,6 +39,16 @@ def key_up(key):
     raise NotImplementedError()
 
 
+def mouse_down(button):
+    """
+    Presses a mouse button.
+
+    @param button
+        The button index.
+    """
+    raise NotImplementedError()
+
+
 def _import_symbols():
     """
     Loads the platform dependent driver and populates the module globals.

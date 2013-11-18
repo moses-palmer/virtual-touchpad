@@ -50,6 +50,11 @@ def static(filepath):
     return bottle.static_file(filepath, root = STATIC_ROOT)
 
 
+@app.route('/')
+def index():
+    return static('index.html')
+
+
 def main(port = 16080):
     global app
 

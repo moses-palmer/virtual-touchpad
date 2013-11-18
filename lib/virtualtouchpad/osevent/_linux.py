@@ -78,3 +78,10 @@ def mouse_scroll(dx, dy):
         fake_input(DISPLAY, X.ButtonPress, hbutton)
         fake_input(DISPLAY, X.ButtonRelease, hbutton)
         DISPLAY.sync()
+
+
+def mouse_move(dx, dy):
+    global DISPLAY
+
+    DISPLAY.warp_pointer(dx, dy)
+    DISPLAY.sync()

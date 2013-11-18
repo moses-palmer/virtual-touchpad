@@ -52,3 +52,11 @@ def mouse_down(button):
     # Press the button
     fake_input(DISPLAY, X.ButtonPress, button)
     DISPLAY.sync()
+
+
+def mouse_up(button):
+    global DISPLAY
+
+    # Press the button
+    fake_input(DISPLAY, X.ButtonRelease, button)
+    DISPLAY.sync()

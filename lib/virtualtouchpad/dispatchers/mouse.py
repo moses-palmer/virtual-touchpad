@@ -41,3 +41,14 @@ def mouse_up(button = 1):
         The button index.
     """
     osevent.mouse_up(button)
+
+
+@dispatcher
+def mouse_scroll(dx = 0, dy = 0):
+    """
+    Triggers a mouse scroll event.
+
+    @param dx, dy
+        The horisontal and vertical offset to scroll.
+    """
+    osevent.mouse_scroll(dx, dy)

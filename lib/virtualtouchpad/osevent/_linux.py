@@ -60,3 +60,21 @@ def mouse_up(button):
     # Press the button
     fake_input(DISPLAY, X.ButtonRelease, button)
     DISPLAY.sync()
+
+
+def mouse_scroll(dx, dy):
+    global DISPLAY
+
+    # Vertical scroll
+    vbutton = X.Button5 if dy > 0 else X.Button4
+    for i in range(abs(dy)):
+        fake_input(DISPLAY, X.ButtonPress, vbutton)
+        fake_input(DISPLAY, X.ButtonRelease, vbutton)
+        DISPLAY.sync()
+
+    # Horizontal scroll
+    hbutton = 7 if dx > 0 else 6
+    for i in range(abs(dx)):
+        fake_input(DISPLAY, X.ButtonPress, hbutton)
+        fake_input(DISPLAY, X.ButtonRelease, hbutton)
+        DISPLAY.sync()

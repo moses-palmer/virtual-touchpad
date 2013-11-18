@@ -30,3 +30,14 @@ def mouse_down(button = 1):
         The button index.
     """
     osevent.mouse_down(button)
+
+
+@dispatcher
+def mouse_up(button = 1):
+    """
+    Triggers a a mouse release event.
+
+    @param button
+        The button index.
+    """
+    osevent.mouse_up(button)

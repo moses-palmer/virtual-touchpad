@@ -15,3 +15,21 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+
+from Xlib import X
+from Xlib import XK
+from Xlib.display import Display
+from Xlib.ext.xtest import fake_input
+
+# The global X display
+DISPLAY = Display()
+
+def key_down(key):
+    global DISPLAY
+
+    keycode = DISPLAY.keysym_to_keycode(
+        XK.string_to_keysym(key))
+
+    # Press the key
+    fake_input(DISPLAY, X.KeyPress, keycode)
+    DISPLAY.sync()

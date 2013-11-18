@@ -31,3 +31,15 @@ def key_down(key):
         osevent.key_down.
     """
     osevent.key_down(key)
+
+
+@dispatcher
+def key_up(key):
+    """
+    Triggers a key up event.
+
+    @param key
+        The key that is being release. This value will be passed directly to
+        osevent.key_up.
+    """
+    osevent.key_up(key)

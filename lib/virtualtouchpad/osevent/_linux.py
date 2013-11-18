@@ -44,3 +44,11 @@ def key_up(key):
     # Release the key
     fake_input(DISPLAY, X.KeyRelease, keycode)
     DISPLAY.sync()
+
+
+def mouse_down(button):
+    global DISPLAY
+
+    # Press the button
+    fake_input(DISPLAY, X.ButtonPress, button)
+    DISPLAY.sync()

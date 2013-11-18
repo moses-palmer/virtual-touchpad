@@ -33,3 +33,14 @@ def key_down(key):
     # Press the key
     fake_input(DISPLAY, X.KeyPress, keycode)
     DISPLAY.sync()
+
+
+def key_up(key):
+    global DISPLAY
+
+    keycode = DISPLAY.keysym_to_keycode(
+        XK.string_to_keysym(key))
+
+    # Release the key
+    fake_input(DISPLAY, X.KeyRelease, keycode)
+    DISPLAY.sync()

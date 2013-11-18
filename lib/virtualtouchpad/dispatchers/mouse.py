@@ -15,3 +15,18 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+
+from ..dispatch import dispatcher
+
+from .. import osevent
+
+
+@dispatcher
+def mouse_down(button = 1):
+    """
+    Triggers a a mouse press event.
+
+    @param button
+        The button index.
+    """
+    osevent.mouse_down(button)

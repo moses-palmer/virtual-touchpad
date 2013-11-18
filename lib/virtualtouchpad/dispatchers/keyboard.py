@@ -15,3 +15,19 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+
+from ..dispatch import dispatcher
+
+from .. import osevent
+
+
+@dispatcher
+def key_down(key):
+    """
+    Triggers a key down event.
+
+    @param key
+        The key that is being pressed. This value will be passed directly to
+        osevent.key_down.
+    """
+    osevent.key_down(key)

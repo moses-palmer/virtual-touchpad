@@ -28,6 +28,17 @@ def key_down(key):
     raise NotImplementedError()
 
 
+def key_up(key):
+    """
+    Sends a key up event.
+
+    @param key
+        The name of the key. This value is handled just like in key_down.
+    @see key_down
+    """
+    raise NotImplementedError()
+
+
 def _import_symbols():
     """
     Loads the platform dependent driver and populates the module globals.

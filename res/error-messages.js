@@ -14,8 +14,11 @@
         errorList.appendChild(li);
     }
 
-    // TODO: Add failed tests to errorList
-
+    // We need WebSocket support to even send messages to the server
+    if (checks.failed("WebSocket")) {
+        insertError(
+            "WebSockets are not supported");
+    }
 
     // If any checks failed, add them to the displayed list, otherwise remove
     // the list

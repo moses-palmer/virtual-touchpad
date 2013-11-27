@@ -15,5 +15,10 @@ exports.checks = (function() {
         return module.failures.indexOf(check) != -1;
     }
 
+    // Check for WebSocket
+    if (typeof(WebSocket) !== "function") {
+        module.failures.push("WebSocket");
+    }
+
     return module;
 })();

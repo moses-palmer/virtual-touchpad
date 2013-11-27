@@ -35,5 +35,19 @@ exports.controller = (function() {
                 button: button}}));
     };
 
+    /**
+     * Simulates scrolling.
+     *
+     * @param dx, dy
+     *     The horizontal and vertical scroll.
+     */
+    Touchpad.prototype.scroll = function(dx, dy) {
+        ws.send(JSON.stringify({
+            command: "mouse_scroll",
+            data: {
+                dx: dx,
+                dy: dy}}));
+    };
+
     return module;
 })();

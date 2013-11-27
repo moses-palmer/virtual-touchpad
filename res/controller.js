@@ -49,5 +49,19 @@ exports.controller = (function() {
                 dy: dy}}));
     };
 
+    /**
+     * Simulates moving the mouse.
+     *
+     * @param dx, dy
+     *     The horizontal and vertical movement.
+     */
+    Touchpad.prototype.move = function(dx, dy) {
+        ws.send(JSON.stringify({
+            command: "mouse_move",
+            data: {
+                dx: dx,
+                dy: dy}}));
+    };
+
     return module;
 })();

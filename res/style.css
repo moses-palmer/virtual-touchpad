@@ -11,3 +11,8 @@ html, body {
     font-family: sans;
 }
 
+#touchpad {
+    display: none;
+    background-color: black;
+    min-height: 100%;
+}

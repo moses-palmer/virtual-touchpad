@@ -1,0 +1,13 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#error-messages {
+    background-color: black;
+    min-height: 100%;
+
+    color: white;
+    font-family: sans;
+}
+

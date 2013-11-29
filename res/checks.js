@@ -20,5 +20,10 @@ exports.checks = (function() {
         module.failures.push("WebSocket");
     }
 
+    // Check for touch events
+    if (!("ontouchstart" in window)) {
+        module.failures.push("TouchEvents");
+    }
+
     return module;
 })();

@@ -20,6 +20,12 @@
             "WebSockets are not supported");
     }
 
+    // We need touch events to simulate touchpad
+    if (checks.failed("TouchEvents")) {
+        insertError(
+            "Touch events are not supported");
+    }
+
     // If any checks failed, add them to the displayed list, otherwise remove
     // the list
     if (errorList.childNodes.length > 0) {

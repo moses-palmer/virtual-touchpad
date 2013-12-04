@@ -113,6 +113,19 @@ exports.view = (function() {
         if (event.changedTouches.length == 1) {
             this.touchpad.move(dx, dy);
         }
+        else if (event.changedTouches.length == 2) {
+            this.touchpad.scroll(
+                dx > 0
+                    ? 1
+                    : dx < 0
+                        ? -1
+                        : 0,
+                dy > 0
+                    ? -1
+                    : dy < 0
+                        ? 1
+                        : 0);
+        }
 
         event.preventDefault();
     };

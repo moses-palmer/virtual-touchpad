@@ -70,11 +70,14 @@ exports.view = (function() {
     }
 
     Touchview.prototype.onTouchStart = function(event) {
-        // TODO: Implement
+        this.currentTouches = cloneTouches(event.touches);
+
+        event.preventDefault();
     };
 
     Touchview.prototype.onTouchEnd = function(event) {
         // TODO: Implement
+        delete this.currentTouches;
     };
 
     Touchview.prototype.onTouchCancel = function(event) {

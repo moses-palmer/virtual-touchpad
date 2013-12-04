@@ -49,6 +49,26 @@ exports.view = (function() {
         return result;
     }
 
+    /**
+     * Locates the touch with the specified identifier in a touch list.
+     *
+     * @param touches
+     *     A TouchList in which to find the touch. If this is falsy, undefined
+     *     is returned.
+     * @param identifier
+     *     The identifier of the touch to find.
+     * @return a touch, or undefined if it was not found
+     */
+    function findTouch(touches, identifier) {
+        if (!touches) return undefined;
+
+        for (var i = 0; i < touches.length; i++) {
+            if (touches[i].identifier === identifier) {
+                return touches[i];
+            }
+        }
+    }
+
     Touchview.prototype.onTouchStart = function(event) {
         // TODO: Implement
     };

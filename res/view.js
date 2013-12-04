@@ -72,11 +72,18 @@ exports.view = (function() {
     Touchview.prototype.onTouchStart = function(event) {
         this.currentTouches = cloneTouches(event.touches);
 
+        this.hasMoved = false;
+
         event.preventDefault();
     };
 
     Touchview.prototype.onTouchEnd = function(event) {
-        // TODO: Implement
+        // Click if no move has been made
+        if (!this.hasMoved) {
+            this.touchpad.buttonDown(1);
+            this.touchpad.buttonUp(1);
+        }
+
         delete this.currentTouches;
     };
 
@@ -89,6 +96,8 @@ exports.view = (function() {
     };
 
     Touchview.prototype.onTouchMove = function(event) {
+        this.hasMoved = true;
+
         if (!event.changedTouches) {
             return;
         }

@@ -89,7 +89,32 @@ exports.view = (function() {
     };
 
     Touchview.prototype.onTouchMove = function(event) {
-        // TODO: Implement
+        if (!event.changedTouches) {
+            return;
+        }
+
+        // Require all touches to be present
+        if (event.changedTouches.length != this.currentTouches.length) {
+            return;
+        }
+
+        // Locate touches that are interesting
+        var oldTouch = this.currentTouches[0];
+        var newTouch = findTouch(event.changedTouches, oldTouch.identifier);
+
+        // Replace the current touches
+        this.currentTouches = event.changedTouches;
+
+        // Determine the relative movement
+        // TODO: Apply acceleration
+        var dx = newTouch.screenX - oldTouch.screenX;
+        var dy = newTouch.screenY - oldTouch.screenY;
+
+        if (event.changedTouches.length == 1) {
+            this.touchpad.move(dx, dy);
+        }
+
+        event.preventDefault();
     };
 
     return module;

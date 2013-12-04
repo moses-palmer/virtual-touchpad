@@ -80,8 +80,11 @@ exports.view = (function() {
     Touchview.prototype.onTouchEnd = function(event) {
         // Click if no move has been made
         if (!this.hasMoved) {
-            this.touchpad.buttonDown(1);
-            this.touchpad.buttonUp(1);
+            var button = this.currentTouches.length == 2
+                ? 3
+                : 1;
+            this.touchpad.buttonDown(button);
+            this.touchpad.buttonUp(button);
         }
 
         delete this.currentTouches;

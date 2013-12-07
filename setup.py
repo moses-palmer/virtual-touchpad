@@ -23,6 +23,32 @@ with open(os.path.join(
             pass
 
 
+def platform_requirements():
+    """
+    A list of PyPi packages that are dependencies only for the current platform.
+    """
+    platform = ''.join(c for c in sys.platform if c.isalpha())
+    result = []
+
+    # We only support linux
+    if platform == 'linux':
+        if sys.version_info.major == 3:
+            result.append('python3-xlib')
+        elif sys.version_info.major == 2:
+            result.append('python-xlib')
+        else:
+            raise NotImplementedError(
+                'This python major version (%d) is not supported',
+                sys.version_info.major)
+
+    else:
+        raise NotImplementedError(
+            'This platform (%s) is not supported',
+            sys.platform)
+
+    return result
+
+
 setup(
     name = 'virtual-touchpad',
     version = '.'.join(str(i) for i in info['version']),
@@ -33,7 +59,7 @@ setup(
     install_requires = [
         'bottle >=0.11',
         'gevent >=0.13',
-        'gevent-websocket >=0.9'],
+        'gevent-websocket >=0.9'] + platform_requirements(),
 
     author = info['author'],
     author_email = 'moses.palmer@gmail.com',

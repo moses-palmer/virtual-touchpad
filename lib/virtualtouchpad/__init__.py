@@ -24,6 +24,11 @@ import geventwebsocket
 import json
 import os
 
+try:
+    from geventwebsocket.handler import WebSocketHandler
+except ImportError:
+    from geventwebsocket import WebSocketHandler
+
 from .dispatch import dispatch
 
 app = bottle.Bottle()
@@ -74,5 +79,5 @@ def main(port = 16080):
     server = gevent.pywsgi.WSGIServer(
         (host, port),
         app,
-        handler_class = geventwebsocket.WebSocketHandler)
+        handler_class = WebSocketHandler)
     server.serve_forever()

@@ -33,7 +33,8 @@ from .dispatch import dispatch
 
 app = bottle.Bottle()
 
-STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT')
+STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
+    os.path.join(os.path.dirname(__file__), '_res'))
 
 
 @app.route('/ws')

@@ -74,8 +74,12 @@ def main(port = 16080):
 
     import gevent.pywsgi
     import geventwebsocket
+    import socket
+    import sys
 
     host = "0.0.0.0"
+    sys.stdout.write('Starting server http://%s:%d/...\n' % (
+        socket.gethostname(), port))
 
     server = gevent.pywsgi.WSGIServer(
         (host, port),

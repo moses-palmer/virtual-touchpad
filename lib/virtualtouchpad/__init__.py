@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+from _info import *
+
 import gevent
 from gevent import monkey; monkey.patch_all()
 
@@ -33,7 +35,8 @@ from .dispatch import dispatch
 
 app = bottle.Bottle()
 
-STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT')
+STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
+    os.path.join(os.path.dirname(__file__), '_res'))
 
 
 @app.route('/ws')
@@ -73,8 +76,12 @@ def main(port = 16080):
 
     import gevent.pywsgi
     import geventwebsocket
+    import socket
+    import sys
 
     host = "0.0.0.0"
+    sys.stdout.write('Starting server http://%s:%d/...\n' % (
+        socket.gethostname(), port))
 
     server = gevent.pywsgi.WSGIServer(
         (host, port),

@@ -49,6 +49,9 @@ def handle_websocket():
     while True:
         try:
             message = ws.receive()
+            if message is None:
+                break
+
             try:
                 command = json.loads(message)
                 dispatch(command)

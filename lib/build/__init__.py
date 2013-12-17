@@ -14,3 +14,12 @@ with open(os.path.join(
                 info[name[2:-2]] = eval(value)
         except ValueError:
             pass
+
+
+# Read README
+with open(os.path.join(
+        os.path.dirname(__file__),
+        os.pardir,
+        os.pardir,
+        'README')) as f:
+    README = f.read()

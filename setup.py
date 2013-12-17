@@ -45,6 +45,7 @@ setup(
     description = ''
         'Turns your mobile or tablet into a touchpad and keyboard for your '
         'computer.',
+    long_description = build.README,
 
     install_requires = [
         'bottle >=0.11',

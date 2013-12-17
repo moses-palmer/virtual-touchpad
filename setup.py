@@ -4,23 +4,13 @@
 import os
 import sys
 
+# Make sure we can import build
+sys.path.append(os.path.join(
+    os.path.dirname(__file__),
+    'lib'))
+import build
+
 from setuptools import setup, find_packages
-
-
-# Read globals from virtualtouchpad._info without loading it
-info = {}
-with open(os.path.join(
-        os.path.dirname(__file__),
-        'lib',
-        'virtualtouchpad',
-        '_info.py')) as f:
-    for line in f:
-        try:
-            name, value = (i.strip() for i in line.split('='))
-            if name.startswith('__') and name.endswith('__'):
-                info[name[2:-2]] = eval(value)
-        except ValueError:
-            pass
 
 
 def platform_requirements():
@@ -51,7 +41,7 @@ def platform_requirements():
 
 setup(
     name = 'virtual-touchpad',
-    version = '.'.join(str(i) for i in info['version']),
+    version = '.'.join(str(i) for i in build.info['version']),
     description = ''
         'Turns your mobile or tablet into a touchpad and keyboard for your '
         'computer.',
@@ -61,7 +51,7 @@ setup(
         'gevent >=0.13',
         'gevent-websocket >=0.9'] + platform_requirements(),
 
-    author = info['author'],
+    author = build.info['author'],
     author_email = 'moses.palmer@gmail.com',
 
     url = 'https://github.com/moses-palmer/virtual-touchpad',

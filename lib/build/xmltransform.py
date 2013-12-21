@@ -210,3 +210,28 @@ def minify_html(context):
     _recurse(dom.documentElement, _remove_self_closing,
         dom = dom)
 
+
+def _add_manifest(e, manifest_file):
+    """Adds an AppCache manifest to e if it is a html element"""
+    # Only handle JavaScript elements
+    if e.nodeType != Node.ELEMENT_NODE \
+            or e.tagName != 'html':
+        return
+
+    e.setAttribute('manifest', manifest_file)
+
+def add_manifest(context, manifest_file):
+    """
+    Adds an AppCache manifest file to all html elements.
+
+    @param context
+        The DOM context.
+    @param manifest_file
+        The path, relative to the document, of the AppCache manifest file.
+    """
+    source_path, dom = context
+
+    # Add the manifest
+    _recurse(dom.documentElement, _add_manifest,
+        manifest_file = manifest_file)
+

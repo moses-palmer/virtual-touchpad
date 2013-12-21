@@ -61,6 +61,9 @@ dom_context = build.xmltransform.start(
 # Minify the index file
 build.xmltransform.minify_html(dom_context)
 
+# Add the manifest file
+build.xmltransform.add_manifest(dom_context, 'virtual-touchpad.appcache')
+
 # Write index.min.xhtml
 build.xmltransform.end(dom_context,
     os.path.join(

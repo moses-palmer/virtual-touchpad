@@ -73,3 +73,15 @@ build.xmltransform.end(dom_context,
         '_res',
         'index.min.xhtml'))
 
+
+# Generate the application icons
+for size in (196, 144, 114, 72, 57):
+    build.icons.app_icon(
+        size,
+        os.path.join(
+            os.path.dirname(__file__),
+            'lib',
+            'virtualtouchpad',
+            '_res',
+            'icon%dx%d.png' % (size, size)))
+

@@ -52,5 +52,6 @@ def platform_requirements():
     return result
 
 
+from . import icons
 from . import xmltransform
 

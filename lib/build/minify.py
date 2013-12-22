@@ -69,6 +69,22 @@ def _inline_css(e, source_dir, dom):
     e.tagName = 'style'
 
 
+def _join_elements(e):
+    """Joins consecutive similar script and style elements"""
+    # Only handle script and style tags
+    if e.nodeType != Node.ELEMENT_NODE \
+            or not e.tagName in ('script', 'style'):
+        return
+
+    # Move next sibling's child nodes to this node while next sibling is
+    # same type
+    while e.nextSibling and e.nextSibling.nodeType == Node.ELEMENT_NODE \
+            and e.tagName == e.nextSibling.tagName:
+        for child in e.nextSibling.childNodes:
+            e.firstChild.appendData(child.wholeText)
+        e.parentNode.removeChild(e.nextSibling)
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -106,6 +122,9 @@ def html(source_path, target_path):
     # Normalise the XML
     recurse(dom.documentElement,
         lambda e: e.normalize())
+
+    # Join similar elements
+    recurse(dom.documentElement, _join_elements)
 
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')

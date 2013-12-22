@@ -47,3 +47,19 @@ def setup():
         platforms = ['linux'],
         classifiers = [])
 setup()
+
+
+# Minify the index file
+build.minify.html(
+    os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_res',
+        'index.xhtml'),
+    os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_res',
+        'index.min.xhtml'))

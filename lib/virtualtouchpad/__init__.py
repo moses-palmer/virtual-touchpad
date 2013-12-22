@@ -71,7 +71,7 @@ def static(filepath):
 
 @app.route('/')
 def index():
-    return static('index.html')
+    return static('index.xhtml')
 
 
 def main(port = 16080):

@@ -85,6 +85,24 @@ def _join_elements(e):
         e.parentNode.removeChild(e.nextSibling)
 
 
+def _minify_js(e):
+    """Minifies the JavaScript in a script element"""
+    import slimit
+
+    # Only handle JavaScript elements
+    if e.nodeType != Node.ELEMENT_NODE \
+            or not e.tagName == 'script' \
+            or not e.getAttribute('type') == 'text/javascript':
+        return
+
+    for c in e.childNodes:
+        if c.nodeType != Node.CDATA_SECTION_NODE:
+            continue
+        c.replaceWholeText(slimit.minify(c.wholeText,
+            mangle = True,
+            mangle_toplevel = True))
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -125,6 +143,9 @@ def html(source_path, target_path):
 
     # Join similar elements
     recurse(dom.documentElement, _join_elements)
+
+    # Minify JavaScript
+    recurse(dom.documentElement, _minify_js)
 
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')

@@ -25,6 +25,8 @@ def setup():
             'bottle >=0.11',
             'gevent >=0.13',
             'gevent-websocket >=0.9'] + build.platform_requirements(),
+        setup_requires = [
+            'slimit'],
 
         author = build.info['author'],
         author_email = 'moses.palmer@gmail.com',

@@ -26,6 +26,7 @@ def setup():
             'gevent >=0.13',
             'gevent-websocket >=0.9'] + build.platform_requirements(),
         setup_requires = [
+            'cssmin',
             'slimit'],
 
         author = build.info['author'],

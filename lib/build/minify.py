@@ -103,6 +103,22 @@ def _minify_js(e):
             mangle_toplevel = True))
 
 
+def _minify_css(e):
+    """Minifies the CSS in a style element"""
+    import cssmin
+
+    # Only handle CSS elements
+    if e.nodeType != Node.ELEMENT_NODE \
+            or not e.tagName == 'style' \
+            or not e.getAttribute('type') == 'text/css':
+        return
+
+    for c in e.childNodes:
+        if c.nodeType != Node.CDATA_SECTION_NODE:
+            continue
+        c.replaceWholeText(cssmin.cssmin(c.wholeText))
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -146,6 +162,9 @@ def html(source_path, target_path):
 
     # Minify JavaScript
     recurse(dom.documentElement, _minify_js)
+
+    # Minify CSS
+    recurse(dom.documentElement, _minify_css)
 
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')

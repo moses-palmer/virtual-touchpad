@@ -10,6 +10,12 @@ def _trim(e):
         e.nodeValue = e.nodeValue.strip()
 
 
+def _remove_comments(e):
+    """Removes comment nodes"""
+    if e.nodeType == Node.COMMENT_NODE and e.parentNode:
+        e.parentNode.removeChild(e).unlink()
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -30,6 +36,9 @@ def html(source_path, target_path):
 
     # Trim text nodes
     recurse(dom.documentElement, _trim)
+
+    # Remove comments
+    recurse(dom.documentElement, _remove_comments)
 
     # Normalise the XML
     recurse(dom.documentElement,

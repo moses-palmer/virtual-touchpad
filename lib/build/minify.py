@@ -38,6 +38,37 @@ def _inline_script(e, source_dir, dom):
     e.removeAttribute('src')
 
 
+def _inline_css(e, source_dir, dom):
+    """Inlines CSS"""
+    # Only use CSS stylesheet tags
+    if e.nodeType != Node.ELEMENT_NODE \
+            or e.tagName != 'link' \
+            or e.getAttribute('rel') != 'stylesheet' \
+            or e.getAttribute('type') != 'text/css':
+        return
+
+    # Read the stylesheet and inline it
+    href_path = os.path.join(
+        source_dir,
+        e.getAttribute('href'))
+    with open(href_path) as href:
+        cdata = CDATASection()
+        cdata.replaceWholeText(href.read())
+        e.appendChild(cdata)
+
+    # Remove all attributes except for type
+    for i in range(e.attributes.length):
+        attribute = e.attributes.item(i)
+        if not attribute:
+            continue
+        if attribute.name == 'type':
+            continue
+        e.removeAttribute(attribute.name)
+
+    # Change the tag name
+    e.tagName = 'style'
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -64,6 +95,11 @@ def html(source_path, target_path):
 
     # Inline script tags
     recurse(dom.documentElement, _inline_script,
+        source_dir = os.path.dirname(source_path),
+        dom = dom)
+
+    # Inline CSS tags
+    recurse(dom.documentElement, _inline_css,
         source_dir = os.path.dirname(source_path),
         dom = dom)
 

@@ -17,6 +17,7 @@
         <!-- Required modules -->
         <script type="text/javascript" src="checks.js"></script>
         <script type="text/javascript" src="controller.js"></script>
+        <script type="text/javascript" src="error-messages.js"></script>
         <script type="text/javascript" src="view.js"></script>
 
         <!-- The main application -->
@@ -25,9 +26,7 @@
 
     <body onload="exports.main();">
         <!-- Container for error messages from the feature checker -->
-        <ul id="error-messages">
-            <script type="text/javascript" src="error-messages.js"></script>
-        </ul>
+        <ul id="error-messages"></ul>
 
         <!-- The control that is used as touchpad -->
         <div id="touchpad"></div>

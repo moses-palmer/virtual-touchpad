@@ -119,6 +119,20 @@ def _minify_css(e):
         c.replaceWholeText(cssmin.cssmin(c.wholeText))
 
 
+_VOID_ELEMENTS = tuple(e.strip() for e in
+    'area, base, br, col, embed, hr, img, input, keygen, link, meta, param, '
+    'source, track, wbr'.split(','))
+def _remove_self_closing(e, dom):
+    """Makes sure that only void elements are self closing"""
+    # Only handle non-void elements
+    if e.nodeType != Node.ELEMENT_NODE \
+            or e.tagName in _VOID_ELEMENTS:
+        return
+
+    if len(e.childNodes) == 0:
+        e.appendChild(dom.createTextNode(''))
+
+
 def html(source_path, target_path):
     """
     Minifies an HTML file.
@@ -165,6 +179,10 @@ def html(source_path, target_path):
 
     # Minify CSS
     recurse(dom.documentElement, _minify_css)
+
+    # Make sure only void elements are self-closing
+    recurse(dom.documentElement, _remove_self_closing,
+        dom = dom)
 
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')

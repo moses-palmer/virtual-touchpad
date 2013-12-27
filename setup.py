@@ -49,14 +49,20 @@ def setup():
 setup()
 
 
-# Minify the index file
-build.minify.html(
+# Load index.html
+dom_context = build.xmltransform.start(
     os.path.join(
         os.path.dirname(__file__),
         'lib',
         'virtualtouchpad',
         '_res',
-        'index.xhtml'),
+        'index.xhtml'))
+
+# Minify the index file
+build.xmltransform.minify_html(dom_context)
+
+# Write index.min.xhtml
+build.xmltransform.end(dom_context,
     os.path.join(
         os.path.dirname(__file__),
         'lib',

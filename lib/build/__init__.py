@@ -52,5 +52,5 @@ def platform_requirements():
     return result
 
 
-from . import minify
+from . import xmltransform
 

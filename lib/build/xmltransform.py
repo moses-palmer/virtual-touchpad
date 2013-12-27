@@ -4,6 +4,13 @@ from xml.dom import Node
 from xml.dom.minidom import CDATASection
 
 
+def _recurse(e, callback, **kwargs):
+    """Calls callback for e and its children and kwargs"""
+    callback(e, **kwargs)
+    for s in e.childNodes:
+        _recurse(s, callback, **kwargs)
+
+
 def _trim(e):
     """Trims whitespace from start and end of text nodes; CDATA nodes are not
     modified"""
@@ -133,58 +140,73 @@ def _remove_self_closing(e, dom):
         e.appendChild(dom.createTextNode(''))
 
 
-def html(source_path, target_path):
+def start(source_path):
     """
-    Minifies an HTML file.
+    Begins the XML transformation.
 
     @param source_path
-        The HTML file which to modify
-    @param target_path
-        The output file.
+        The path to the file which to transform.
+    @return a representation of the DOM
     """
     from xml.dom.minidom import parse
 
-    dom = parse(source_path)
+    return (source_path, parse(source_path))
 
-    def recurse(e, callback, **kwargs):
-        callback(e, **kwargs)
-        for s in e.childNodes:
-            recurse(s, callback, **kwargs)
+
+def end(context, target_path):
+    """
+    Ends the XML transformation and writes the result.
+
+    @param context
+        The DOM context.
+    @param target_path
+        The output file.
+    """
+    source_path, dom = context
+    with open(target_path, 'w') as target:
+        target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
+        dom.documentElement.writexml(target)
+
+
+def minify_html(context):
+    """
+    Minifies an HTML file.
+
+    @param context
+        The DOM context.
+    """
+    source_path, dom = context
 
     # Trim text nodes
-    recurse(dom.documentElement, _trim)
+    _recurse(dom.documentElement, _trim)
 
     # Remove comments
-    recurse(dom.documentElement, _remove_comments)
+    _recurse(dom.documentElement, _remove_comments)
 
     # Inline script tags
-    recurse(dom.documentElement, _inline_script,
+    _recurse(dom.documentElement, _inline_script,
         source_dir = os.path.dirname(source_path),
         dom = dom)
 
     # Inline CSS tags
-    recurse(dom.documentElement, _inline_css,
+    _recurse(dom.documentElement, _inline_css,
         source_dir = os.path.dirname(source_path),
         dom = dom)
 
     # Normalise the XML
-    recurse(dom.documentElement,
+    _recurse(dom.documentElement,
         lambda e: e.normalize())
 
     # Join similar elements
-    recurse(dom.documentElement, _join_elements)
+    _recurse(dom.documentElement, _join_elements)
 
     # Minify JavaScript
-    recurse(dom.documentElement, _minify_js)
+    _recurse(dom.documentElement, _minify_js)
 
     # Minify CSS
-    recurse(dom.documentElement, _minify_css)
+    _recurse(dom.documentElement, _minify_css)
 
     # Make sure only void elements are self-closing
-    recurse(dom.documentElement, _remove_self_closing,
+    _recurse(dom.documentElement, _remove_self_closing,
         dom = dom)
-
-    with open(target_path, 'w') as target:
-        target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
-        dom.documentElement.writexml(target)
 

@@ -63,3 +63,4 @@ build.minify.html(
         'virtualtouchpad',
         '_res',
         'index.min.xhtml'))
+

@@ -187,3 +187,4 @@ def html(source_path, target_path):
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
         dom.documentElement.writexml(target)
+

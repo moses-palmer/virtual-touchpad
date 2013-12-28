@@ -53,3 +53,4 @@ def platform_requirements():
 
 
 from . import minify
+

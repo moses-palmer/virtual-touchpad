@@ -74,6 +74,13 @@ def index():
     return static('index.xhtml')
 
 
+MINIFIED_XHTML = 'index.min.xhtml'
+if os.access(os.path.join(STATIC_ROOT, MINIFIED_XHTML), os.R_OK):
+    @app.route('/')
+    def index_minified():
+        return static(MINIFIED_XHTML)
+
+
 def main(port = 16080):
     global app
 

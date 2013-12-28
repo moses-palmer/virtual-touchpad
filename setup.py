@@ -25,6 +25,9 @@ def setup():
             'bottle >=0.11',
             'gevent >=0.13',
             'gevent-websocket >=0.9'] + build.platform_requirements(),
+        setup_requires = [
+            'cssmin',
+            'slimit'],
 
         author = build.info['author'],
         author_email = 'moses.palmer@gmail.com',
@@ -44,3 +47,19 @@ def setup():
         platforms = ['linux'],
         classifiers = [])
 setup()
+
+
+# Minify the index file
+build.minify.html(
+    os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_res',
+        'index.xhtml'),
+    os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_res',
+        'index.min.xhtml'))

@@ -50,3 +50,6 @@ def platform_requirements():
             sys.platform)
 
     return result
+
+
+from . import minify

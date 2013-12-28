@@ -3,7 +3,7 @@ html, body {
     margin: 0;
 }
 
-#error-messages {
+#missing-features {
     background-color: black;
     min-height: 100%;
 

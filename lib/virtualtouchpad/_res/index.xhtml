@@ -1,33 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>
             Virtual Touchpad
         </title>
 
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="style.css" />
 
-        <script type="text/javascript">//<![CDATA[
+        <script type="text/javascript"><![CDATA[
             // Make sure exports work
             exports = window;
-        //]]>
-        </script>
+        ]]></script>
 
         <!-- Required modules -->
         <script type="text/javascript" src="checks.js"></script>
         <script type="text/javascript" src="controller.js"></script>
+        <script type="text/javascript" src="error-messages.js"></script>
         <script type="text/javascript" src="view.js"></script>
 
         <!-- The main application -->
         <script type="text/javascript" src="main.js"></script>
     </head>
 
-    <body onload="main();">
+    <body onload="exports.main();">
         <!-- Container for error messages from the feature checker -->
-        <ul id="error-messages">
-            <script type="text/javascript" src="error-messages.js"></script>
-        </ul>
+        <ul id="error-messages"></ul>
 
         <!-- The control that is used as touchpad -->
         <div id="touchpad"></div>

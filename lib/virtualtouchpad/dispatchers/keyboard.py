@@ -43,3 +43,4 @@ def key_up(key):
         osevent.key_up.
     """
     osevent.key_up(key)
+

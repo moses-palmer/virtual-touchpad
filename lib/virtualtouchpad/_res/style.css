@@ -11,6 +11,20 @@ html, body {
     font-family: sans;
 }
 
+#error-message {
+    display: none;
+}
+
+#error-message.error {
+    z-index: 100;
+    display: block;
+    background-color: red;
+    min-height: 100%;
+
+    color: white;
+    font-family: sans;
+}
+
 #touchpad {
     display: none;
     background-color: black;

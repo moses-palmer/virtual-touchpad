@@ -3,14 +3,6 @@ html, body {
     margin: 0;
 }
 
-#missing-features {
-    background-color: black;
-    min-height: 100%;
-
-    color: white;
-    font-family: sans;
-}
-
 #error-message {
     display: none;
 }

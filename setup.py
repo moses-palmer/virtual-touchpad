@@ -49,18 +49,39 @@ def setup():
 setup()
 
 
-# Minify the index file
-build.minify.html(
+# Load index.html
+dom_context = build.xmltransform.start(
     os.path.join(
         os.path.dirname(__file__),
         'lib',
         'virtualtouchpad',
         '_res',
-        'index.xhtml'),
+        'index.xhtml'))
+
+# Minify the index file
+build.xmltransform.minify_html(dom_context)
+
+# Add the manifest file
+build.xmltransform.add_manifest(dom_context, 'virtual-touchpad.appcache')
+
+# Write index.min.xhtml
+build.xmltransform.end(dom_context,
     os.path.join(
         os.path.dirname(__file__),
         'lib',
         'virtualtouchpad',
         '_res',
         'index.min.xhtml'))
+
+
+# Generate the application icons
+for size in (196, 144, 114, 72, 57):
+    build.icons.app_icon(
+        size,
+        os.path.join(
+            os.path.dirname(__file__),
+            'lib',
+            'virtualtouchpad',
+            '_res',
+            'icon%dx%d.png' % (size, size)))
 

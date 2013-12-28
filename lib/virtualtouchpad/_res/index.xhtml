@@ -2,6 +2,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <meta
+            name="mobile-web-app-capable"
+            content="yes" />
+        <meta
+            name="viewport"
+            content="width=device-width,user-scalable=no" />
+        <link rel="shortcut icon" sizes="196x196" href="icon196x196.png" />
+
+        <meta
+            name="apple-mobile-web-app-capable"
+            content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent" />
+        <link rel="apple-touch-icon" sizes="144x144" href="icon144x144.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="icon114x114.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="icon72x72.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="icon57x57.png" />
+
         <title>
             Virtual Touchpad
         </title>
@@ -16,7 +35,7 @@
         <!-- Required modules -->
         <script type="text/javascript" src="checks.js"></script>
         <script type="text/javascript" src="controller.js"></script>
-        <script type="text/javascript" src="error-messages.js"></script>
+        <script type="text/javascript" src="features.js"></script>
         <script type="text/javascript" src="view.js"></script>
 
         <!-- The main application -->
@@ -25,7 +44,10 @@
 
     <body onload="exports.main();">
         <!-- Container for error messages from the feature checker -->
-        <ul id="error-messages"></ul>
+        <ul id="missing-features"></ul>
+
+        <!-- The modal error message -->
+        <div id="error-message"></div>
 
         <!-- The control that is used as touchpad -->
         <div id="touchpad"></div>

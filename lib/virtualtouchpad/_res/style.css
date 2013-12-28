@@ -3,8 +3,22 @@ html, body {
     margin: 0;
 }
 
-#error-messages {
+#missing-features {
     background-color: black;
+    min-height: 100%;
+
+    color: white;
+    font-family: sans;
+}
+
+#error-message {
+    display: none;
+}
+
+#error-message.error {
+    z-index: 100;
+    display: block;
+    background-color: red;
     min-height: 100%;
 
     color: white;

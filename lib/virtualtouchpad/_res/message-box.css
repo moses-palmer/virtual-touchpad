@@ -1,0 +1,14 @@
+#message-box {
+    z-index: 100;
+    display: none;
+    background-color: black;
+    min-height: 100%;
+
+    color: white;
+    font-family: sans;
+}
+
+#message-box.error {
+    background-color: red;
+}
+

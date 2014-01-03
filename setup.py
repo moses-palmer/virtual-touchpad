@@ -53,7 +53,7 @@ HTML_ROOT = os.path.join(
     os.path.dirname(__file__),
     'lib',
     'virtualtouchpad',
-    '_res')
+    'html')
 
 
 # Load index.html

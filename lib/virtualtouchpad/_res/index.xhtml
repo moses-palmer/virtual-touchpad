@@ -27,6 +27,9 @@
 
         <link rel="stylesheet" type="text/css" href="style.css" />
 
+        <!-- For message-box.js -->
+        <link rel="stylesheet" type="text/css" href="message-box.css" />
+
         <script type="text/javascript"><![CDATA[
             // Make sure exports work
             exports = window;
@@ -36,6 +39,7 @@
         <script type="text/javascript" src="checks.js"></script>
         <script type="text/javascript" src="controller.js"></script>
         <script type="text/javascript" src="features.js"></script>
+        <script type="text/javascript" src="message-box.js"></script>
         <script type="text/javascript" src="view.js"></script>
 
         <!-- The main application -->
@@ -43,11 +47,8 @@
     </head>
 
     <body onload="exports.main();">
-        <!-- Container for error messages from the feature checker -->
-        <ul id="missing-features"></ul>
-
-        <!-- The modal error message -->
-        <div id="error-message"></div>
+        <!-- The modal message box -->
+        <div id="message-box"></div>
 
         <!-- The control that is used as touchpad -->
         <div id="touchpad"></div>

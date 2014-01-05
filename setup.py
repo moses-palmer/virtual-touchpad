@@ -41,7 +41,9 @@ def setup():
         package_dir = {
             'virtualtouchpad': 'lib/virtualtouchpad'},
         package_data = {
-            'virtualtouchpad': ['_res/*']},
+            'virtualtouchpad': [
+                'html/*.*',
+                'html/css/*.*']},
 
         license = 'GPLv3',
         platforms = ['linux'],

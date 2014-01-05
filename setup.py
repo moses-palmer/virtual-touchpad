@@ -41,7 +41,11 @@ def setup():
         package_dir = {
             'virtualtouchpad': 'lib/virtualtouchpad'},
         package_data = {
-            'virtualtouchpad': ['_res/*']},
+            'virtualtouchpad': [
+                'html/*.*',
+                'html/css/*.*',
+                'html/img/*.*',
+                'html/js/*.*']},
 
         license = 'GPLv3',
         platforms = ['linux'],
@@ -49,13 +53,17 @@ def setup():
 setup()
 
 
+HTML_ROOT = os.path.join(
+    os.path.dirname(__file__),
+    'lib',
+    'virtualtouchpad',
+    'html')
+
+
 # Load index.html
 dom_context = build.xmltransform.start(
     os.path.join(
-        os.path.dirname(__file__),
-        'lib',
-        'virtualtouchpad',
-        '_res',
+        HTML_ROOT,
         'index.xhtml'))
 
 # Minify the index file
@@ -67,10 +75,7 @@ build.xmltransform.add_manifest(dom_context, 'virtual-touchpad.appcache')
 # Write index.min.xhtml
 build.xmltransform.end(dom_context,
     os.path.join(
-        os.path.dirname(__file__),
-        'lib',
-        'virtualtouchpad',
-        '_res',
+        HTML_ROOT,
         'index.min.xhtml'))
 
 
@@ -79,9 +84,7 @@ for size in (196, 144, 114, 72, 57):
     build.icons.app_icon(
         size,
         os.path.join(
-            os.path.dirname(__file__),
-            'lib',
-            'virtualtouchpad',
-            '_res',
+            HTML_ROOT,
+            'img',
             'icon%dx%d.png' % (size, size)))
 

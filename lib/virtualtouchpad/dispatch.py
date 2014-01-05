@@ -59,5 +59,5 @@ def dispatch(command):
     return _DISPATCHERS[command_name](**command_data)
 
 
-from dispatchers import *
+from .dispatchers import *
 

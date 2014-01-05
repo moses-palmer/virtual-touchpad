@@ -16,7 +16,7 @@ def create(source_path, target_path, dimensions):
     """
     try:
         import cairo
-        import rsvg
+        from gi.repository import Rsvg as rsvg
     except ImportError as e:
         sys.stdout.write('Import failed: %s; %s will not be generated.' % (
             e.args[1], target_path) + '\n')
@@ -25,10 +25,12 @@ def create(source_path, target_path, dimensions):
     rwidth, rheight = dimensions
 
     # Load the SVG file
-    svg = rsvg.Handle(source_path)
+    handle = rsvg.Handle()
+    svg = handle.new_from_file(source_path)
 
     # Create the surface and context
-    iwidth, iheight = svg.get_dimension_data()[:2]
+    dim = svg.get_dimensions()
+    iwidth, iheight = dim.width, dim.height
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
         rwidth,
         rheight)

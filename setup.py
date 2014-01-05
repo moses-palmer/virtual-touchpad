@@ -43,7 +43,8 @@ def setup():
         package_data = {
             'virtualtouchpad': [
                 'html/*.*',
-                'html/css/*.*']},
+                'html/css/*.*',
+                'html/js/*.*']},
 
         license = 'GPLv3',
         platforms = ['linux'],

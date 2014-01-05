@@ -44,6 +44,7 @@ def setup():
             'virtualtouchpad': [
                 'html/*.*',
                 'html/css/*.*',
+                'html/img/*.*',
                 'html/js/*.*']},
 
         license = 'GPLv3',
@@ -84,5 +85,6 @@ for size in (196, 144, 114, 72, 57):
         size,
         os.path.join(
             HTML_ROOT,
+            'img',
             'icon%dx%d.png' % (size, size)))
 

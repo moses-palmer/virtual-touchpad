@@ -1,0 +1,31 @@
+.toolbar {
+    z-index: 50;
+    position: fixed;
+
+    margin: 0;
+    padding: 4px;
+}
+
+.toolbar.bottom {
+    display: table-cell;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    vertical-align: middle;
+    text-align: right;
+
+    background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
+    background-color: white;
+}
+
+.toolbar > .button {
+    display: table-cell;
+    height: 44px;
+    width: 44px;
+    float: right;
+
+    vertical-align: middle;
+    text-align: center;
+}
+

@@ -76,6 +76,41 @@ def _inline_css(e, source_dir, dom):
     e.tagName = 'style'
 
 
+def _inline_svg(e, source_dir, dom):
+    """Inlines img elements with Scalable Vector Graphics source"""
+    import subprocess
+    from xml.dom.minidom import parseString
+
+    # Only use img tags
+    if e.nodeType != Node.ELEMENT_NODE \
+            or e.tagName != 'img' \
+            or e.getAttribute('src').rsplit('.', 1)[-1] != 'svg':
+        return
+
+    # Load the minified SVG
+    src = os.path.join(source_dir, e.getAttribute('src'));
+    try:
+        svg_min = subprocess.Popen(['python',
+            os.path.join(os.path.dirname(__file__),
+                os.path.pardir, os.path.pardir, 'scour', 'scour', 'scour.py'),
+            '-i', src,
+            '--enable-id-stripping',
+            '--enable-comment-stripping',
+            '--create-groups',
+            '--remove-metadata',
+            '--enable-viewboxing'], stdout = subprocess.PIPE).communicate()[0]
+        svg = parseString(svg_min)
+    except:
+        return
+
+    # Strip space
+    _recurse(svg, _trim)
+
+    # Replace the img tag with inline SVG
+    e.parentNode.insertBefore(svg.documentElement, e)
+    e.parentNode.removeChild(e)
+
+
 def _join_elements(e):
     """Joins consecutive similar script and style elements"""
     # Only handle script and style tags
@@ -208,6 +243,11 @@ def minify_html(context):
 
     # Make sure only void elements are self-closing
     _recurse(dom.documentElement, _remove_self_closing,
+        dom = dom)
+
+    # Inline and minify SVG img elements
+    _recurse(dom.documentElement, _inline_svg,
+        source_dir = os.path.dirname(source_path),
         dom = dom)
 
 

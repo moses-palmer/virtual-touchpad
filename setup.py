@@ -79,6 +79,22 @@ build.xmltransform.end(dom_context,
         'index.min.xhtml'))
 
 
+# Load help.xhtml
+dom_context = build.xmltransform.start(
+    os.path.join(
+        HTML_ROOT,
+        'help.xhtml'))
+
+# Minify the index file
+build.xmltransform.minify_html(dom_context)
+
+# Write help.min.xhtml
+build.xmltransform.end(dom_context,
+    os.path.join(
+        HTML_ROOT,
+        'help.min.xhtml'))
+
+
 # Generate the application icons
 for size in (196, 144, 114, 72, 57):
     build.icons.app_icon(

@@ -29,3 +29,8 @@
     text-align: center;
 }
 
+.toolbar > .button.help {
+    display: table-cell;
+    float: left;
+}
+

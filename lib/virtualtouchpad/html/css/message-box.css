@@ -11,9 +11,11 @@
     padding: 5pt;
     background: radial-gradient(circle at top left,
         white 0%, #E0E0E0 50%, #D0D0D0 100%);
+    background-color: white;
 
     color: black;
     font-family: sans-serif;
+    font-size: 18pt;
 }
 
 #message-box.error {}

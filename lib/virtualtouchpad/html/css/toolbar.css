@@ -20,7 +20,7 @@
 }
 
 .toolbar > .button {
-    display: table-cell;
+    display: none;
     height: 44px;
     width: 44px;
     float: right;

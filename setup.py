@@ -19,7 +19,7 @@ def setup():
         description = ''
             'Turns your mobile or tablet into a touchpad and keyboard for your '
             'computer.',
-        long_description = build.README,
+        long_description = build.README + '\n\n' + build.CHANGES,
 
         install_requires = [
             'bottle >=0.11',

@@ -26,6 +26,15 @@ with open(os.path.join(
     README = f.read()
 
 
+# Read CHANGES
+with open(os.path.join(
+        os.path.dirname(__file__),
+        os.pardir,
+        os.pardir,
+        'CHANGES')) as f:
+    CHANGES = f.read()
+
+
 def platform_requirements():
     """
     A list of PyPi packages that are dependencies only for the current platform.

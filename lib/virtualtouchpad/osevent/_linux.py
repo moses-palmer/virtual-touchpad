@@ -29,6 +29,19 @@ except ImportError:
 # The global X display
 DISPLAY = Display()
 
+# The scroll threshold required to actually perform scrolling
+SCROLL_THRESHOLD = 10
+
+# The accumulated scrolling
+scroll = [0, 0]
+
+def mouse_scroll_cancel():
+    """
+    Cancels any scrolling in progress.
+    """
+    global scroll
+    scroll = [0, 0]
+
 def key_down(key):
     global DISPLAY
 
@@ -54,6 +67,8 @@ def key_up(key):
 def mouse_down(button):
     global DISPLAY
 
+    mouse_scroll_cancel()
+
     # Press the button
     fake_input(DISPLAY, X.ButtonPress, button)
     DISPLAY.sync()
@@ -62,6 +77,8 @@ def mouse_down(button):
 def mouse_up(button):
     global DISPLAY
 
+    mouse_scroll_cancel()
+
     # Press the button
     fake_input(DISPLAY, X.ButtonRelease, button)
     DISPLAY.sync()
@@ -69,34 +86,41 @@ def mouse_up(button):
 
 def mouse_scroll(dx, dy):
     global DISPLAY
+    global SCROLL_THRESHOLD
+    global scroll
+
+    scroll[0] += dx
+    scroll[1] += dy
 
     # Vertical scroll
-    if dy > 0:
+    vscroll = scroll[1] // SCROLL_THRESHOLD
+    if vscroll > 0:
         vbutton = X.Button5
-    elif dy < 0:
+    elif vscroll < 0:
         vbutton = X.Button4
-    else:
-        vbutton = None
-    if not vbutton is None:
+    for i in range(abs(vscroll)):
         fake_input(DISPLAY, X.ButtonPress, vbutton)
         fake_input(DISPLAY, X.ButtonRelease, vbutton)
         DISPLAY.sync()
+    scroll[1] -= vscroll * SCROLL_THRESHOLD
 
     # Horizontal scroll
-    if dx > 0:
+    hscroll = scroll[0] // SCROLL_THRESHOLD
+    if hscroll > 0:
         hbutton = 7
-    elif dx < 0:
+    elif hscroll < 0:
         hbutton = 6
-    else:
-        hbutton = None
-    if not hbutton is None:
+    for i in range(abs(hscroll)):
         fake_input(DISPLAY, X.ButtonPress, hbutton)
         fake_input(DISPLAY, X.ButtonRelease, hbutton)
         DISPLAY.sync()
+    scroll[0] -= hscroll * SCROLL_THRESHOLD
 
 
 def mouse_move(dx, dy):
     global DISPLAY
+
+    mouse_scroll_cancel()
 
     if pyatspi:
         pyatspi.Registry.generateMouseEvent(dx, dy, 'rel')

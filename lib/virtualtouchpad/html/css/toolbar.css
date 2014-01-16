@@ -20,12 +20,17 @@
 }
 
 .toolbar > .button {
-    display: table-cell;
+    display: none;
     height: 44px;
     width: 44px;
     float: right;
 
     vertical-align: middle;
     text-align: center;
+}
+
+.toolbar > .button.help {
+    display: table-cell;
+    float: left;
 }
 

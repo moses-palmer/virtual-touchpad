@@ -71,15 +71,25 @@ def mouse_scroll(dx, dy):
     global DISPLAY
 
     # Vertical scroll
-    vbutton = X.Button5 if dy > 0 else X.Button4
-    for i in range(abs(dy)):
+    if dy > 0:
+        vbutton = X.Button5
+    elif dy < 0:
+        vbutton = X.Button4
+    else:
+        vbutton = None
+    if not vbutton is None:
         fake_input(DISPLAY, X.ButtonPress, vbutton)
         fake_input(DISPLAY, X.ButtonRelease, vbutton)
         DISPLAY.sync()
 
     # Horizontal scroll
-    hbutton = 7 if dx > 0 else 6
-    for i in range(abs(dx)):
+    if dx > 0:
+        hbutton = 7
+    elif dx < 0:
+        hbutton = 6
+    else:
+        hbutton = None
+    if not hbutton is None:
         fake_input(DISPLAY, X.ButtonPress, hbutton)
         fake_input(DISPLAY, X.ButtonRelease, hbutton)
         DISPLAY.sync()

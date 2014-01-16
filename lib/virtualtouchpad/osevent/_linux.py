@@ -21,6 +21,11 @@ from Xlib import XK
 from Xlib.display import Display
 from Xlib.ext.xtest import fake_input
 
+try:
+    import pyatspi
+except ImportError:
+    pyatspi = None
+
 # The global X display
 DISPLAY = Display()
 
@@ -83,6 +88,9 @@ def mouse_scroll(dx, dy):
 def mouse_move(dx, dy):
     global DISPLAY
 
-    DISPLAY.warp_pointer(dx, dy)
-    DISPLAY.sync()
+    if pyatspi:
+        pyatspi.Registry.generateMouseEvent(dx, dy, 'rel')
+    else:
+        DISPLAY.warp_pointer(dx, dy)
+        DISPLAY.sync()
 

@@ -101,7 +101,6 @@ def mouse_scroll(dx, dy):
     for i in range(abs(vscroll)):
         fake_input(DISPLAY, X.ButtonPress, vbutton)
         fake_input(DISPLAY, X.ButtonRelease, vbutton)
-        DISPLAY.sync()
     scroll[1] -= vscroll * SCROLL_THRESHOLD
 
     # Horizontal scroll
@@ -113,8 +112,10 @@ def mouse_scroll(dx, dy):
     for i in range(abs(hscroll)):
         fake_input(DISPLAY, X.ButtonPress, hbutton)
         fake_input(DISPLAY, X.ButtonRelease, hbutton)
-        DISPLAY.sync()
     scroll[0] -= hscroll * SCROLL_THRESHOLD
+
+    if vscroll or hscroll:
+        DISPLAY.sync()
 
 
 def mouse_move(dx, dy):

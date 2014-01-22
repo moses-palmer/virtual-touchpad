@@ -37,7 +37,9 @@ def setup():
         packages = setuptools.find_packages(
             os.path.join(
                 os.path.dirname(__file__),
-                'lib')),
+                'lib'),
+            exclude = [
+                'build']),
         package_dir = {
             'virtualtouchpad': 'lib/virtualtouchpad'},
         package_data = {

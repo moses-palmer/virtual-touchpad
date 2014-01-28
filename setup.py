@@ -9,10 +9,10 @@ sys.path.append(os.path.join(
     'lib'))
 import build
 
+import setuptools
+
 
 def setup():
-    import setuptools
-
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
@@ -53,7 +53,6 @@ def setup():
         license = 'GPLv3',
         platforms = ['linux'],
         classifiers = [])
-setup()
 
 
 HTML_ROOT = os.path.join(
@@ -63,47 +62,72 @@ HTML_ROOT = os.path.join(
     'html')
 
 
-# Load index.html
-dom_context = build.xmltransform.start(
-    os.path.join(
-        HTML_ROOT,
-        'index.xhtml'))
+@build.command
+class minify_index(setuptools.Command):
+    description = 'minify index.xhtml'
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        global HTML_ROOT
 
-# Minify the index file
-build.xmltransform.minify_html(dom_context)
+        # Load index.html
+        dom_context = build.xmltransform.start(
+            os.path.join(
+                HTML_ROOT,
+                'index.xhtml'))
 
-# Add the manifest file
-build.xmltransform.add_manifest(dom_context, 'virtual-touchpad.appcache')
+        # Minify the index file
+        build.xmltransform.minify_html(dom_context)
 
-# Write index.min.xhtml
-build.xmltransform.end(dom_context,
-    os.path.join(
-        HTML_ROOT,
-        'index.min.xhtml'))
+        # Add the manifest file
+        build.xmltransform.add_manifest(dom_context,
+            'virtual-touchpad.appcache')
 
-
-# Load help.xhtml
-dom_context = build.xmltransform.start(
-    os.path.join(
-        HTML_ROOT,
-        'help.xhtml'))
-
-# Minify the index file
-build.xmltransform.minify_html(dom_context)
-
-# Write help.min.xhtml
-build.xmltransform.end(dom_context,
-    os.path.join(
-        HTML_ROOT,
-        'help.min.xhtml'))
+        # Write index.min.xhtml
+        build.xmltransform.end(dom_context,
+            os.path.join(
+                HTML_ROOT,
+                'index.min.xhtml'))
 
 
-# Generate the application icons
-for size in (196, 144, 114, 72, 57):
-    build.icons.app_icon(
-        size,
-        os.path.join(
-            HTML_ROOT,
-            'img',
-            'icon%dx%d.png' % (size, size)))
+@build.command
+class minify_help(setuptools.Command):
+    description = 'minify html.xhtml'
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        global HTML_ROOT
 
+        # Load help.xhtml
+        dom_context = build.xmltransform.start(
+            os.path.join(
+                HTML_ROOT,
+                'help.xhtml'))
+
+        # Minify the index file
+        build.xmltransform.minify_html(dom_context)
+
+        # Write help.min.xhtml
+        build.xmltransform.end(dom_context,
+            os.path.join(
+                HTML_ROOT,
+                'help.min.xhtml'))
+
+
+@build.command
+class generate_icons(setuptools.Command):
+    description = 'generate web application icons from SVG sources'
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        # Generate the application icons
+        for size in (196, 144, 114, 72, 57):
+            build.icons.app_icon(
+                size,
+                os.path.join(
+                    HTML_ROOT,
+                    'img',
+                    'icon%dx%d.png' % (size, size)))
+
+
+setup()

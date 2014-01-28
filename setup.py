@@ -14,6 +14,7 @@ def setup():
     import setuptools
 
     setuptools.setup(
+        cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
         version = '.'.join(str(i) for i in build.info['version']),
         description = ''

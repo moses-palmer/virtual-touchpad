@@ -118,7 +118,7 @@ try:
     # Read CHANGES
     with open(os.path.join(
             os.path.dirname(__file__),
-            'CHANGES')) as f:
+            'CHANGES.rst')) as f:
         CHANGES = f.read()
 except IOError:
     README = ''

@@ -7,7 +7,16 @@ import sys
 sys.path.append(os.path.join(
     os.path.dirname(__file__),
     'lib'))
-import build
+
+try:
+    import build
+except ImportError:
+    class build:
+        cmdclass = {}
+
+        @staticmethod
+        def command(c):
+            return c
 
 import setuptools
 

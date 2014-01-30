@@ -107,18 +107,22 @@ with open(os.path.join(
             pass
 
 
-# Read README
-with open(os.path.join(
-        os.path.dirname(__file__),
-        'README')) as f:
-    README = f.read()
+try:
+    # Read README
+    with open(os.path.join(
+            os.path.dirname(__file__),
+            'README')) as f:
+        README = f.read()
 
 
-# Read CHANGES
-with open(os.path.join(
-        os.path.dirname(__file__),
-        'CHANGES')) as f:
-    CHANGES = f.read()
+    # Read CHANGES
+    with open(os.path.join(
+            os.path.dirname(__file__),
+            'CHANGES')) as f:
+        CHANGES = f.read()
+except IOError:
+    README = ''
+    CHANGES = ''
 
 
 HTML_ROOT = os.path.join(

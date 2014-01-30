@@ -111,7 +111,7 @@ try:
     # Read README
     with open(os.path.join(
             os.path.dirname(__file__),
-            'README')) as f:
+            'README.rst')) as f:
         README = f.read()
 
 

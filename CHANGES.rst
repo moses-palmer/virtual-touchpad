@@ -2,6 +2,13 @@ Release Notes
 =============
 
 
+v0.5 - Installation possible
+----------------------------
+  * Corrected snapping of bottom tool bar
+  * Corrected bugs in setup script that prevented virtual-touchpad from being
+    installed
+
+
 v0.4 - Basic help
 -----------------
   * Made scrolling a lot smoother

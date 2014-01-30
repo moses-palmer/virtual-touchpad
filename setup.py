@@ -21,25 +21,52 @@ except ImportError:
 import setuptools
 
 
+def platform_requirements():
+    """
+    A list of PyPi packages that are dependencies only for the current platform.
+    """
+    platform = ''.join(c for c in sys.platform if c.isalpha())
+    result = []
+
+    # We only support linux
+    if platform == 'linux':
+        if sys.version_info.major == 3:
+            result.append('python3-xlib')
+        elif sys.version_info.major == 2:
+            result.append('python-xlib')
+        else:
+            raise NotImplementedError(
+                'This python major version (%d) is not supported',
+                sys.version_info.major)
+
+    else:
+        raise NotImplementedError(
+            'This platform (%s) is not supported',
+            sys.platform)
+
+    return result
+
+
 def setup():
+    global INFO, README, CHANGES
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
-        version = '.'.join(str(i) for i in build.info['version']),
+        version = '.'.join(str(i) for i in INFO['version']),
         description = ''
             'Turns your mobile or tablet into a touchpad and keyboard for your '
             'computer.',
-        long_description = build.README + '\n\n' + build.CHANGES,
+        long_description = README + '\n\n' + CHANGES,
 
         install_requires = [
             'bottle >=0.11',
             'gevent >=0.13',
-            'gevent-websocket >=0.9'] + build.platform_requirements(),
+            'gevent-websocket >=0.9'] + platform_requirements(),
         setup_requires = [
             'cssmin',
             'slimit'],
 
-        author = build.info['author'],
+        author = INFO['author'],
         author_email = 'moses.palmer@gmail.com',
 
         url = 'https://github.com/moses-palmer/virtual-touchpad',
@@ -62,6 +89,36 @@ def setup():
         license = 'GPLv3',
         platforms = ['linux'],
         classifiers = [])
+
+
+# Read globals from virtualtouchpad._info without loading it
+INFO = {}
+with open(os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_info.py')) as f:
+    for line in f:
+        try:
+            name, value = (i.strip() for i in line.split('='))
+            if name.startswith('__') and name.endswith('__'):
+                INFO[name[2:-2]] = eval(value)
+        except ValueError:
+            pass
+
+
+# Read README
+with open(os.path.join(
+        os.path.dirname(__file__),
+        'README')) as f:
+    README = f.read()
+
+
+# Read CHANGES
+with open(os.path.join(
+        os.path.dirname(__file__),
+        'CHANGES')) as f:
+    CHANGES = f.read()
 
 
 HTML_ROOT = os.path.join(

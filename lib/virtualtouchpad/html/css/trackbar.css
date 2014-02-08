@@ -1,0 +1,21 @@
+trackbar {
+    display: block;
+
+    height: 32px;
+    width: 100%;
+
+    border-radius: 16px;
+    background: linear-gradient(#B0B0B0 0%, #C0C0C0 50%, #D0D0D0 100%);
+    background-color: #C0C0C0;
+}
+
+.trackbar-mark {
+    position: relative;
+    left: 0;
+    width: 32px;
+    height: 32px;
+
+    border-radius: 16px;
+    background-color: #808080;
+}
+

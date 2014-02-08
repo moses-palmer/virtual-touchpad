@@ -1,4 +1,4 @@
-#message-box {
+message-box {
     z-index: 100;
     display: none;
     position: fixed;
@@ -18,5 +18,5 @@
     font-size: 18pt;
 }
 
-#message-box.error {}
+message-box.error {}
 

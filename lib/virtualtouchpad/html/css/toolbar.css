@@ -1,13 +1,14 @@
-.toolbar {
+toolbar {
     z-index: 50;
     position: fixed;
+
+    display: table-cell;
 
     margin: 0;
     padding: 4px;
 }
 
-.toolbar.bottom {
-    display: table-cell;
+toolbar.bottom {
     left: 0;
     right: 0;
     bottom: 0;
@@ -19,7 +20,7 @@
     background-color: white;
 }
 
-.toolbar > .button {
+toolbar > .button {
     display: none;
     height: 44px;
     width: 44px;
@@ -29,7 +30,7 @@
     text-align: center;
 }
 
-.toolbar > .button.help {
+toolbar > .button.help {
     display: table-cell;
     float: left;
 }

@@ -4,9 +4,3 @@ html, body {
     margin: 0;
 }
 
-#touchpad {
-    background: radial-gradient(circle at bottom center,
-        #282828 0%, #181818 50%, black 100%);
-    min-height: 100%;
-}
-

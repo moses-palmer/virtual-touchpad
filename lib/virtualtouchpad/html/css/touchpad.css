@@ -1,0 +1,13 @@
+touchpad {
+    display: block;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 100%;
+
+    background: radial-gradient(circle at bottom center,
+        #282828 0%, #181818 50%, black 100%);
+}
+

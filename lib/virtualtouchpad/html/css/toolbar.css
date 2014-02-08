@@ -8,18 +8,6 @@ toolbar {
     padding: 4px;
 }
 
-toolbar.bottom {
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    vertical-align: middle;
-    text-align: right;
-
-    background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
-    background-color: white;
-}
-
 toolbar > button {
     display: none;
     height: 44px;
@@ -34,10 +22,5 @@ toolbar > button {
     text-align: center;
 
     background-color: transparent;
-}
-
-toolbar > button.help {
-    display: table-cell;
-    float: left;
 }
 

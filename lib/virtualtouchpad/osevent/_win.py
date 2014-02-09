@@ -62,3 +62,32 @@ class INPUT(ctypes.Structure):
         ('value', ANYINPUT)]
 
 
+def key_down(key):
+    global _SendInput
+    raise NotImplementedError();
+
+
+def key_up(key):
+    global _SendInput
+    raise NotImplementedError();
+
+
+def mouse_down(button):
+    global _SendInput
+    raise NotImplementedError();
+
+
+def mouse_up(button):
+    global _SendInput
+    raise NotImplementedError();
+
+
+def mouse_scroll(dx, dy):
+    global _SendInput
+    raise NotImplementedError();
+
+
+def mouse_move(dx, dy):
+    global _SendInput
+    raise NotImplementedError();
+

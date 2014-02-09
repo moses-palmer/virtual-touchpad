@@ -117,5 +117,13 @@ def mouse_scroll(dx, dy):
 
 def mouse_move(dx, dy):
     global _SendInput
-    raise NotImplementedError();
 
+    _SendInput(1,
+        ctypes.byref(INPUT(
+            type = INPUT.MOUSE,
+            value = ANYINPUT(
+                mouse = MOUSEINPUT(
+                    dx = int(dx),
+                    dy = int(dy),
+                    dwFlags = MOUSEINPUT.MOVE)))),
+        ctypes.sizeof(INPUT))

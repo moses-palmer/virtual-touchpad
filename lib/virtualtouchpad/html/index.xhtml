@@ -31,10 +31,12 @@
         </title>
 
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/toolbar-bottom.css" />
 
         <!-- For modules -->
         <link rel="stylesheet" type="text/css" href="css/message-box.css" />
         <link rel="stylesheet" type="text/css" href="css/toolbar.css" />
+        <link rel="stylesheet" type="text/css" href="css/touchpad.css" />
 
         <!-- Setup script -->
         <script type="text/javascript" src="js/init.js"></script>
@@ -54,26 +56,26 @@
 
     <body>
         <!-- The modal message box -->
-        <div id="message-box"></div>
+        <message-box id="message-box"></message-box>
 
         <!-- The control that is used as touchpad -->
-        <div id="touchpad"></div>
+        <touchpad id="touchpad"></touchpad>
 
         <!-- The bottom toolbar -->
-        <div id="toolbar-bottom" class="toolbar bottom">
-            <div class="button help"
+        <toolbar id="toolbar-bottom" class="bottom">
+            <button class="help"
                     onclick="javascript:toolbar.bottom.onHelp();">
                 <img src="img/help.svg" />
-            </div>
-            <div class="button fullscreen-on"
+            </button>
+            <button class="fullscreen-on"
                     onclick="javascript:toolbar.bottom.onFullscreenOn();">
                 <img src="img/fullscreen-on.svg" />
-            </div>
-            <div class="button fullscreen-off"
+            </button>
+            <button class="fullscreen-off"
                     onclick="javascript:toolbar.bottom.onFullscreenOff();">
                 <img src="img/fullscreen-off.svg" />
-            </div>
-        </div>
+            </button>
+        </toolbar>
     </body>
 </html>
 

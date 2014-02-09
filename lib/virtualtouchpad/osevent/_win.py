@@ -31,6 +31,11 @@ class MOUSEINPUT(ctypes.Structure):
     MIDDLEUP = 0x0040
     WHEEL = 0x0800
 
+    BUTTON_MAPPING = {
+        1: (LEFTDOWN, LEFTUP),
+        2: (MIDDLEDOWN, MIDDLEUP),
+        3: (RIGHTDOWN, RIGHTUP)}
+
     _fields_ = [
         ('dx', ctypes.c_int32),
         ('dy', ctypes.c_int32),
@@ -74,7 +79,14 @@ def key_up(key):
 
 def mouse_down(button):
     global _SendInput
-    raise NotImplementedError();
+
+    _SendInput(1,
+        ctypes.byref(INPUT(
+            type = INPUT.MOUSE,
+            value = ANYINPUT(
+                mouse = MOUSEINPUT(
+                    dwFlags = MOUSEINPUT.BUTTON_MAPPING[button][0])))),
+        ctypes.sizeof(INPUT))
 
 
 def mouse_up(button):

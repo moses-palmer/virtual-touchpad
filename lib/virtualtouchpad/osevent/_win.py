@@ -103,7 +103,16 @@ def mouse_up(button):
 
 def mouse_scroll(dx, dy):
     global _SendInput
-    raise NotImplementedError();
+
+    # TODO: Support horisontal scroll
+    _SendInput(1,
+        ctypes.byref(INPUT(
+            type = INPUT.MOUSE,
+            value = ANYINPUT(
+                mouse = MOUSEINPUT(
+                    dwFlags = MOUSEINPUT.WHEEL,
+                    mouseData = dy)))),
+        ctypes.sizeof(INPUT))
 
 
 def mouse_move(dx, dy):

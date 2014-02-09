@@ -19,7 +19,7 @@ def create(source_path, target_path, dimensions):
         from gi.repository import Rsvg as rsvg
     except ImportError as e:
         sys.stdout.write('Import failed: %s; %s will not be generated.' % (
-            e.args[1], target_path) + '\n')
+            e.args[0], target_path) + '\n')
         return
 
     rwidth, rheight = dimensions

@@ -36,10 +36,8 @@
         <link rel="stylesheet" type="text/css" href="css/message-box.css" />
         <link rel="stylesheet" type="text/css" href="css/toolbar.css" />
 
-        <script type="text/javascript"><![CDATA[
-            // Make sure exports work
-            exports = window;
-        ]]></script>
+        <!-- Setup script -->
+        <script type="text/javascript" src="js/init.js"></script>
 
         <!-- Required modules -->
         <script type="text/javascript" src="js/checks.js"></script>
@@ -48,13 +46,13 @@
         <script type="text/javascript" src="js/message-box.js"></script>
         <script type="text/javascript" src="js/view.js"></script>
         <script type="text/javascript" src="js/toolbar.js"></script>
-        <script type="text/javascript" src="js/toolbar-bottom.js"></script>
 
         <!-- The main application -->
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/toolbar-bottom.js"></script>
     </head>
 
-    <body onload="exports.main();">
+    <body>
         <!-- The modal message box -->
         <div id="message-box"></div>
 

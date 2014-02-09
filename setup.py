@@ -28,7 +28,6 @@ def platform_requirements():
     platform = ''.join(c for c in sys.platform if c.isalpha())
     result = []
 
-    # We only support linux
     if platform == 'linux':
         if sys.version_info.major == 3:
             result.append('python3-xlib')
@@ -38,6 +37,9 @@ def platform_requirements():
             raise NotImplementedError(
                 'This python major version (%d) is not supported',
                 sys.version_info.major)
+
+    elif platform == 'win' or platform == 'cygwin':
+        pass
 
     else:
         raise NotImplementedError(

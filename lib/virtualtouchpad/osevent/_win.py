@@ -91,7 +91,14 @@ def mouse_down(button):
 
 def mouse_up(button):
     global _SendInput
-    raise NotImplementedError();
+
+    _SendInput(1,
+        ctypes.byref(INPUT(
+            type = INPUT.MOUSE,
+            value = ANYINPUT(
+                mouse = MOUSEINPUT(
+                    dwFlags = MOUSEINPUT.BUTTON_MAPPING[button][1])))),
+        ctypes.sizeof(INPUT))
 
 
 def mouse_scroll(dx, dy):

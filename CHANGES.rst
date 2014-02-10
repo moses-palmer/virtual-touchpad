@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.6 - Windows support
+---------------------
+  * It is now possible to run virtual-touchpad on Windows
+
+
 v0.5 - Installation possible
 ----------------------------
   * Corrected snapping of bottom tool bar

@@ -89,7 +89,7 @@ def setup():
                 'html/js/*.*']},
 
         license = 'GPLv3',
-        platforms = ['linux'],
+        platforms = ['linux', 'windows'],
         classifiers = [])
 
 

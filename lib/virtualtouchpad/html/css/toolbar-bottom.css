@@ -15,3 +15,7 @@ toolbar.bottom > button.help {
     float: left;
 }
 
+toolbar.bottom > button.settings {
+    display: table-cell;
+}
+

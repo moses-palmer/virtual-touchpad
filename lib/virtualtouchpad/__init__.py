@@ -184,9 +184,7 @@ def main(port = 16080):
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         socket.gethostname(), port))
 
-    server = gevent.pywsgi.WSGIServer(
+    return gevent.pywsgi.WSGIServer(
         (host, port),
         app,
         handler_class = WebSocketHandler)
-    server.serve_forever()
-

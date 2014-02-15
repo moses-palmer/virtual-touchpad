@@ -20,6 +20,11 @@ except ImportError:
 
 import setuptools
 
+try:
+    import py2exe
+except ImportError:
+    py2exe = None
+
 
 def platform_requirements():
     """

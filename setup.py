@@ -54,7 +54,7 @@ def platform_requirements():
     return result
 
 
-def setup():
+def setup(**kwargs):
     global INFO, README, CHANGES
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
@@ -96,7 +96,9 @@ def setup():
 
         license = 'GPLv3',
         platforms = ['linux', 'windows'],
-        classifiers = [])
+        classifiers = [],
+
+        **kwargs)
 
 
 # Read globals from virtualtouchpad._info without loading it
@@ -138,6 +140,10 @@ HTML_ROOT = os.path.join(
     'lib',
     'virtualtouchpad',
     'html')
+
+
+# Arguments passed to setup
+setup_arguments = {}
 
 
 @build.command
@@ -208,4 +214,4 @@ class generate_icons(setuptools.Command):
                     'icon%dx%d.png' % (size, size)))
 
 
-setup()
+setup(**setup_arguments)

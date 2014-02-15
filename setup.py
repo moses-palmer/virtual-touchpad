@@ -39,7 +39,7 @@ def platform_requirements():
                 sys.version_info.major)
 
     elif platform == 'win' or platform == 'cygwin':
-        pass
+        result.append('pywin32')
 
     else:
         raise NotImplementedError(

@@ -261,7 +261,16 @@ if py2exe:
     setup_arguments['zipfile'] = None
     setup_arguments['options'] = {
         'py2exe': {
-            'bundle_files': 1}}
+            'bundle_files': 1,
+            'includes': [
+                'greenlet',
+                'gevent.select',
+                'virtualtouchpad.osevent._win'] + [
+                    'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
+                        for m in os.listdir(
+                            os.path.join(
+                                'lib', 'virtualtouchpad', 'dispatchers'))
+                        if not m.startswith('_') and m.endswith('.py')]}}
 
 
 setup(**setup_arguments)

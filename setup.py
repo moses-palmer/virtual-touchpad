@@ -55,7 +55,7 @@ def platform_requirements():
 
 
 def setup(**kwargs):
-    global INFO, README, CHANGES
+    global INFO, README, CHANGES, PACKAGE_DATA
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
@@ -86,12 +86,7 @@ def setup(**kwargs):
                 'build']),
         package_dir = {
             'virtualtouchpad': 'lib/virtualtouchpad'},
-        package_data = {
-            'virtualtouchpad': [
-                'html/*.*',
-                'html/css/*.*',
-                'html/img/*.*',
-                'html/js/*.*']},
+        package_data = PACKAGE_DATA,
         zip_safe = True,
 
         license = 'GPLv3',
@@ -133,6 +128,16 @@ try:
 except IOError:
     README = ''
     CHANGES = ''
+
+
+# Data for the package; this will not be evaluated until the build steps have
+# completed
+PACKAGE_DATA = {
+    'virtualtouchpad': [
+        'html/*.*',
+        'html/css/*.*',
+        'html/img/*.*',
+        'html/js/*.*']}
 
 
 HTML_ROOT = os.path.join(

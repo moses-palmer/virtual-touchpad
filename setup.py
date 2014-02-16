@@ -222,4 +222,40 @@ class generate_icons(setuptools.Command):
                     'icon%dx%d.png' % (size, size)))
 
 
+if py2exe:
+    # Construct the data_files argument to setup from the package_data argument
+    # value; py2exe does not support data files
+    class py2exe_with_resources(py2exe.build_exe.py2exe):
+        def copy_extensions(self, extensions):
+            py2exe.build_exe.py2exe.copy_extensions(self, extensions)
+
+            from glob import glob
+
+            # Collect all package data files
+            files = []
+            for package, package_dir in PACKAGE_DIR.items():
+                for pattern in PACKAGE_DATA.get(package, []):
+                    files.extend((
+                            f,
+                            os.path.join(
+                                package,
+                                os.path.relpath(f, package_dir)))
+                        for f in glob(os.path.join(package_dir, pattern)))
+
+            # Copy the data files to the collection directory, and add the
+            # copied files to the list of compiled files to ensure that they
+            # will be included in the zip file
+            for source, target in files:
+                full_target = os.path.join(self.collect_dir, target)
+                try:
+                    os.makedirs(os.path.dirname(full_target))
+                except OSError:
+                    pass
+                name = os.path.basename(target)
+                self.copy_file(source, full_target)
+                self.compiled_files.append(target)
+
+    build.cmdclass['py2exe'] = py2exe_with_resources
+
+
 setup(**setup_arguments)

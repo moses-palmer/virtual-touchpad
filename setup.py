@@ -258,4 +258,7 @@ if py2exe:
     build.cmdclass['py2exe'] = py2exe_with_resources
 
 
+    setup_arguments['zipfile'] = None
+
+
 setup(**setup_arguments)

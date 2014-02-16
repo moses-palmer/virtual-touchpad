@@ -259,6 +259,9 @@ if py2exe:
 
 
     setup_arguments['zipfile'] = None
+    setup_arguments['options'] = {
+        'py2exe': {
+            'bundle_files': 1}}
 
 
 setup(**setup_arguments)

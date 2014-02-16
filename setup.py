@@ -55,7 +55,7 @@ def platform_requirements():
 
 
 def setup(**kwargs):
-    global INFO, README, CHANGES, PACKAGE_DATA
+    global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
@@ -84,8 +84,7 @@ def setup(**kwargs):
                 'lib'),
             exclude = [
                 'build']),
-        package_dir = {
-            'virtualtouchpad': 'lib/virtualtouchpad'},
+        package_dir = PACKAGE_DIR,
         package_data = PACKAGE_DATA,
         zip_safe = True,
 
@@ -138,6 +137,10 @@ PACKAGE_DATA = {
         'html/css/*.*',
         'html/img/*.*',
         'html/js/*.*']}
+
+# The directories in which the packages can be found
+PACKAGE_DIR = {
+    'virtualtouchpad': 'lib/virtualtouchpad'}
 
 
 HTML_ROOT = os.path.join(

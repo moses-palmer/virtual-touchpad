@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.7
+----
+  * Virtual Touchpad can now be run from a zipped egg
+
+
 v0.6 - Windows support
 ---------------------
   * It is now possible to run virtual-touchpad on Windows

@@ -25,6 +25,7 @@ import bottle
 import geventwebsocket
 import json
 import os
+import pkg_resources
 
 try:
     from geventwebsocket.handler import WebSocketHandler
@@ -35,8 +36,12 @@ from .dispatch import dispatch
 
 app = bottle.Bottle()
 
+
+# Set a default value for STATIC_ROOT only if it is accessible
 STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
-    os.path.join(os.path.dirname(__file__), 'html'))
+    os.path.join(os.path.dirname(__file__), 'html')
+    if os.access(os.path.join(os.path.dirname(__file__), 'html'), os.R_OK)
+    else None)
 
 
 @app.route('/ws')
@@ -63,10 +68,45 @@ def handle_websocket():
             break
 
 
+def static_file_exists(path):
+    """
+    Returns whether a static file exists.
+    """
+    if not STATIC_ROOT is None:
+        # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
+        # read the file
+        return os.access(os.path.join(STATIC_ROOT, path), os.R_OK)
+    else:
+        # Otherwise, check with pkg_resource
+        return pkg_resources.resource_exists(
+                    __name__, os.path.join('html', path))
+
+
+def static_file(path):
+    """
+    Returns a bottle.HTTPResponse or bottle.HTTPError containing either the
+    file requested or an error message.
+    """
+    if not STATIC_ROOT is None:
+        # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle
+        return bottle.static_file(path, root = STATIC_ROOT)
+    else:
+        # Otherwise, try to serve a resource from the egg
+        try:
+            path = pkg_resources.resource_filename(
+                    __name__, os.path.join('html', path))
+            return bottle.static_file(
+                os.path.basename(path), root = os.path.dirname(path))
+        except KeyError:
+            # The file does not exist; we try to serve a file that we are
+            # certain does not exist to trigger a 404
+            return bottle.static_file(
+                path, root = os.path.join(os.path.dirname(__file__), 'html'))
+
+
 @app.route('/<filepath:path>')
 def static(filepath):
-    global STATIC_ROOT
-    return bottle.static_file(filepath, root = STATIC_ROOT)
+    return static_file(filepath)
 
 
 @app.route('/')
@@ -75,7 +115,7 @@ def index():
 
 
 MINIFIED_XHTML = 'index.min.xhtml'
-if os.access(os.path.join(STATIC_ROOT, MINIFIED_XHTML), os.R_OK):
+if static_file_exists(MINIFIED_XHTML):
     @app.route('/')
     def index_minified():
         return static(MINIFIED_XHTML)

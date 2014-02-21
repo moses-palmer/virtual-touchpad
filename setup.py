@@ -87,6 +87,7 @@ def setup():
                 'html/css/*.*',
                 'html/img/*.*',
                 'html/js/*.*']},
+        zip_safe = True,
 
         license = 'GPLv3',
         platforms = ['linux', 'windows'],

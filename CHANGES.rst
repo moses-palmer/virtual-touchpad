@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.8
+----
+  * The sensitivity and acceleration of the trackpad is now configurable
+
+
 v0.7 - Run from single file
 ---------------------------
   * Virtual Touchpad can now be run from a zipped egg

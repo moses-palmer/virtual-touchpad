@@ -1,5 +1,5 @@
+*.sublime-*
 *.pyc
-.pypirc
 *.egg-info/
 *.egg/
 build/*

@@ -22,4 +22,3 @@ This will start a HTTP server. It will print the line
     Starting server http://<computer name>:<port>/...
 
 Open this URL on your device to start controlling your computer.
-

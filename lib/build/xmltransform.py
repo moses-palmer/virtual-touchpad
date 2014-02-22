@@ -274,4 +274,3 @@ def add_manifest(context, manifest_file):
     # Add the manifest
     _recurse(dom.documentElement, _add_manifest,
         manifest_file = manifest_file)
-

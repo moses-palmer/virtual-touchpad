@@ -29,6 +29,7 @@ except ImportError:
 # The global X display
 DISPLAY = Display()
 
+
 # The scroll threshold required to actually perform scrolling
 SCROLL_THRESHOLD = 10
 
@@ -41,6 +42,7 @@ def mouse_scroll_cancel():
     """
     global scroll
     scroll = [0, 0]
+
 
 def key_down(key):
     global DISPLAY
@@ -128,4 +130,3 @@ def mouse_move(dx, dy):
     else:
         DISPLAY.warp_pointer(dx, dy)
         DISPLAY.sync()
-

@@ -48,4 +48,3 @@ _register_commands()
 
 from . import icons
 from . import xmltransform
-

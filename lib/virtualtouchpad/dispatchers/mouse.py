@@ -63,4 +63,3 @@ def mouse_move(dx = 0, dy = 0):
         The horisontal and vertical offset to move.
     """
     osevent.mouse_move(dx, dy)
-

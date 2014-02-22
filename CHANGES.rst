@@ -15,7 +15,7 @@ v0.7 - Run from single file
 
 
 v0.6 - Windows support
----------------------
+----------------------
   * It is now possible to run virtual-touchpad on Windows
 
 

@@ -31,6 +31,7 @@
         </title>
 
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/settings.css" />
         <link rel="stylesheet" type="text/css" href="css/toolbar-bottom.css" />
 
         <!-- For modules -->
@@ -55,6 +56,7 @@
 
         <!-- The main application -->
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/settings.js"></script>
         <script type="text/javascript" src="js/toolbar-bottom.js"></script>
     </head>
 
@@ -65,11 +67,19 @@
         <!-- The control that is used as touchpad -->
         <touchpad id="touchpad"></touchpad>
 
+        <!-- The settings container -->
+        <div id="settings-overlay">
+        </div>
+
         <!-- The bottom toolbar -->
         <toolbar id="toolbar-bottom" class="bottom">
             <button class="help"
                     onclick="javascript:toolbar.bottom.onHelp();">
                 <img src="img/help.svg" />
+            </button>
+            <button class="settings"
+                    onclick="javascript:toolbar.bottom.onSettings();">
+                <img src="img/settings.svg" />
             </button>
             <button class="fullscreen-on"
                     onclick="javascript:toolbar.bottom.onFullscreenOn();">

@@ -69,6 +69,27 @@
 
         <!-- The settings container -->
         <div id="settings-overlay">
+            <div id="settings-view">
+                <div>
+                    <span>Sensitivity</span>
+                    <trackbar
+                        property="view.sensitivity"
+                        min-value="0.3"
+                        max-value="1.0"
+                        default-value="0.5">
+                    </trackbar>
+                </div>
+
+                <div>
+                    <span>Acceleration</span>
+                    <trackbar
+                        property="view.acceleration"
+                        min-value="0.2"
+                        max-value="1.0"
+                        default-value="0.5">
+                    </trackbar>
+                </div>
+            </div>
         </div>
 
         <!-- The bottom toolbar -->

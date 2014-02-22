@@ -12,4 +12,3 @@ There are a few simple steps to make a release.
   6. Tag the commit on the format ``git tag -a -m "Release X.Y" vX.Y``.
   7. Push to origin.
   8. Run ``python ./setup.py sdist upload`` to update the package on PyPi.
-

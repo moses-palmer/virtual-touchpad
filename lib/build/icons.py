@@ -61,4 +61,3 @@ def app_icon(size, target_path):
             'icon.svg'),
         target_path,
         (size, size))
-

@@ -128,4 +128,3 @@ def mouse_move(dx, dy):
     else:
         DISPLAY.warp_pointer(dx, dy)
         DISPLAY.sync()
-

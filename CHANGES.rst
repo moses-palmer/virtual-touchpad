@@ -43,4 +43,3 @@ v0.2 - Initial release
 ----------------------
   * Basic touchpad support, with hard-coded sensitivity and acceleration
   * Basic offline support using AppCache
-

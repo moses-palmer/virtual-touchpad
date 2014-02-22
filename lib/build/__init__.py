@@ -33,7 +33,7 @@ def _register_commands():
         def run(self):
             global cmdclass
             for name, c in cmdclass.items():
-                if c.__build_ignore:
+                if getattr(c, '__build_ignore', True):
                     continue
                 self.run_command(name)
             super(self.__class__, self).run()

@@ -20,6 +20,11 @@ except ImportError:
 
 import setuptools
 
+try:
+    import py2exe
+except ImportError:
+    py2exe = None
+
 
 def platform_requirements():
     """
@@ -39,7 +44,7 @@ def platform_requirements():
                 sys.version_info.major)
 
     elif platform == 'win' or platform == 'cygwin':
-        pass
+        result.append('pywin32')
 
     else:
         raise NotImplementedError(
@@ -49,8 +54,8 @@ def platform_requirements():
     return result
 
 
-def setup():
-    global INFO, README, CHANGES
+def setup(**kwargs):
+    global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
     setuptools.setup(
         cmdclass = dict(build.cmdclass),
         name = 'virtual-touchpad',
@@ -79,19 +84,15 @@ def setup():
                 'lib'),
             exclude = [
                 'build']),
-        package_dir = {
-            'virtualtouchpad': 'lib/virtualtouchpad'},
-        package_data = {
-            'virtualtouchpad': [
-                'html/*.*',
-                'html/css/*.*',
-                'html/img/*.*',
-                'html/js/*.*']},
+        package_dir = PACKAGE_DIR,
+        package_data = PACKAGE_DATA,
         zip_safe = True,
 
         license = 'GPLv3',
         platforms = ['linux', 'windows'],
-        classifiers = [])
+        classifiers = [],
+
+        **kwargs)
 
 
 # Read globals from virtualtouchpad._info without loading it
@@ -128,11 +129,29 @@ except IOError:
     CHANGES = ''
 
 
+# Data for the package; this will not be evaluated until the build steps have
+# completed
+PACKAGE_DATA = {
+    'virtualtouchpad': [
+        'html/*.*',
+        'html/css/*.*',
+        'html/img/*.*',
+        'html/js/*.*']}
+
+# The directories in which the packages can be found
+PACKAGE_DIR = {
+    'virtualtouchpad': 'lib/virtualtouchpad'}
+
+
 HTML_ROOT = os.path.join(
     os.path.dirname(__file__),
     'lib',
     'virtualtouchpad',
     'html')
+
+
+# Arguments passed to setup
+setup_arguments = {}
 
 
 @build.command
@@ -203,4 +222,57 @@ class generate_icons(setuptools.Command):
                     'icon%dx%d.png' % (size, size)))
 
 
-setup()
+if py2exe:
+    # Construct the data_files argument to setup from the package_data argument
+    # value; py2exe does not support data files
+    class py2exe_with_resources(py2exe.build_exe.py2exe):
+        def copy_extensions(self, extensions):
+            py2exe.build_exe.py2exe.copy_extensions(self, extensions)
+
+            from glob import glob
+
+            # Collect all package data files
+            files = []
+            for package, package_dir in PACKAGE_DIR.items():
+                for pattern in PACKAGE_DATA.get(package, []):
+                    files.extend((
+                            f,
+                            os.path.join(
+                                package,
+                                os.path.relpath(f, package_dir)))
+                        for f in glob(os.path.join(package_dir, pattern)))
+
+            # Copy the data files to the collection directory, and add the
+            # copied files to the list of compiled files to ensure that they
+            # will be included in the zip file
+            for source, target in files:
+                full_target = os.path.join(self.collect_dir, target)
+                try:
+                    os.makedirs(os.path.dirname(full_target))
+                except OSError:
+                    pass
+                name = os.path.basename(target)
+                self.copy_file(source, full_target)
+                self.compiled_files.append(target)
+
+    build.cmdclass['py2exe'] = py2exe_with_resources
+
+
+    setup_arguments['zipfile'] = None
+    setup_arguments['options'] = {
+        'py2exe': {
+            'bundle_files': 1,
+            'includes': [
+                'greenlet',
+                'gevent.select',
+                'virtualtouchpad.osevent._win'] + [
+                    'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
+                        for m in os.listdir(
+                            os.path.join(
+                                'lib', 'virtualtouchpad', 'dispatchers'))
+                        if not m.startswith('_') and m.endswith('.py')]}}
+    setup_arguments['console'] = [
+        'scripts/virtualtouchpad-console-py']
+
+
+setup(**setup_arguments)

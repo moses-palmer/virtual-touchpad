@@ -24,8 +24,11 @@ from gevent import monkey; monkey.patch_all()
 import bottle
 import geventwebsocket
 import json
+import mimetypes
 import os
 import pkg_resources
+import sys
+import time
 
 try:
     from geventwebsocket.handler import WebSocketHandler
@@ -102,6 +105,54 @@ def static_file(path):
             # certain does not exist to trigger a 404
             return bottle.static_file(
                 path, root = os.path.join(os.path.dirname(__file__), 'html'))
+        except NotImplementedError:
+            # pkg_resources does not support resource_filename when running from
+            # a zip file
+            if hasattr(sys, 'frozen'):
+                pass
+            else:
+                raise
+
+    # Open the file and get its size
+    try:
+        stream = pkg_resources.resource_stream(__name__,
+                os.path.join('html', path))
+        stream.seek(0, os.SEEK_END)
+        size = stream.tell()
+        stream.seek(0, os.SEEK_SET)
+        if bottle.request.method == 'HEAD':
+            body = ''
+        else:
+            body = stream.read()
+    except IOError:
+        return bottle.HTTPError(404, 'File does not exist.')
+
+    headers = dict()
+    headers['Content-Length'] = size
+
+    # Guess the content type and encoding
+    mimetype, encoding = mimetypes.guess_type(path)
+    if mimetype:
+        headers['Content-Type'] = mimetype
+    if encoding:
+        headers['Content-Encoding'] = encoding
+
+    # Check the file mtime; we use the egg file
+    st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
+    last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
+        time.gmtime(st.st_mtime))
+    headers['Last-Modified'] = last_modified
+
+    if bottle.request.environ.get('HTTP_IF_MODIFIED_SINCE'):
+        if_modified_since = bottle.parse_date(bottle.request.environ.get(
+            'HTTP_IF_MODIFIED_SINCE').split(";")[0].strip())
+        if not if_modified_since is None \
+                and if_modified_since >= int(st.st_mtime):
+            headers['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S GMT",
+                time.gmtime())
+        return bottle.HTTPResponse(status = 304, **headers)
+
+    return bottle.HTTPResponse(body, **headers)
 
 
 @app.route('/<filepath:path>')
@@ -133,9 +184,7 @@ def main(port = 16080):
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         socket.gethostname(), port))
 
-    server = gevent.pywsgi.WSGIServer(
+    return gevent.pywsgi.WSGIServer(
         (host, port),
         app,
         handler_class = WebSocketHandler)
-    server.serve_forever()
-

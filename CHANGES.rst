@@ -2,8 +2,8 @@ Release Notes
 =============
 
 
-v0.7
-----
+v0.7 - Run from single file
+---------------------------
   * Virtual Touchpad can now be run from a zipped egg
   * Py2exe is now supported to pack Virtual Topuchpad into a single exe file on
     WIndows

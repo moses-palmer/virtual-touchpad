@@ -46,5 +46,13 @@ def _register_commands():
 _register_commands()
 
 
+with open(os.path.join(
+        os.path.dirname(__file__),
+        os.pardir,
+        os.pardir,
+        'LICENSE')) as f:
+    LICENSE = f.read()
+
+
 from . import icons
 from . import xmltransform

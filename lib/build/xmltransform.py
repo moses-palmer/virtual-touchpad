@@ -3,6 +3,8 @@ import os
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
 
+from . import LICENSE
+
 
 def _recurse(e, callback, **kwargs):
     """Calls callback for e and its children and kwargs"""
@@ -197,9 +199,11 @@ def end(context, target_path):
     @param target_path
         The output file.
     """
+    global LICENSE
     source_path, dom = context
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
+        target.write('<!--\n' + LICENSE.strip() + '\n-->')
         dom.documentElement.writexml(target)
 
 

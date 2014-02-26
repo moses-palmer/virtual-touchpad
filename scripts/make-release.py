@@ -26,8 +26,22 @@ def git(*args):
         return stdout
 
 
+def get_version():
+    """
+    Returns the version to set, read from the command line.
+
+    @return the tuple (v1, v2,...)
+    """
+    try:
+        return tuple(int(p) for p in sys.argv[1].split('.'))
+    except IndexError:
+        raise RuntimeError('You must pass the version as the first argument')
+    except:
+        raise RuntimeError('Invalid version: %s', sys.argv[1])
+
+
 def main():
-    pass
+    version = get_version()
 
 
 if __name__ == '__main__':

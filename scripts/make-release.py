@@ -40,6 +40,33 @@ def get_version():
         raise RuntimeError('Invalid version: %s', sys.argv[1])
 
 
+def gsub(path, regex, group, replacement):
+    """
+    Runs a regular expression on the contents of a file and replaces a group.
+
+    @param path
+        The path to the file.
+    @param regex
+        The regular expression to use.
+    @param group
+        The group of the regular expression to replace.
+    @param replacement
+        The replacement string.
+    """
+    with open(path) as f:
+        data = f.read()
+
+    def sub(match):
+        full = match.group(0)
+        o = match.start(0)
+        return full[:match.start(group) - o] \
+            + replacement \
+            + full[match.end(group) - o:]
+
+    with open(path, 'w') as f:
+        f.write(regex.sub(sub, data))
+
+
 def main():
     version = get_version()
 

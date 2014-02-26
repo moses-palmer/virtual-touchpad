@@ -67,8 +67,26 @@ def gsub(path, regex, group, replacement):
         f.write(regex.sub(sub, data))
 
 
+def assert_current_branch_is_master_and_clean():
+    """
+    Asserts that the current branch is 'master' and contains no local changes.
+
+    @raise AssertionError is the current branch is not master
+    @raise RuntimeError if the repository contains local changes
+    """
+    assert git('rev-parse', '--abbrev-ref', 'HEAD').strip() == 'master', \
+        'The current branch is not master'
+    try:
+        git('diff-index', '--quiet', 'HEAD', '--')
+    except RuntimeError as e:
+        print e.args[0] % e.args[1:]
+        raise RuntimeError('Your repository contains local changes')
+
+
 def main():
     version = get_version()
+
+    assert_current_branch_is_master_and_clean()
 
 
 if __name__ == '__main__':

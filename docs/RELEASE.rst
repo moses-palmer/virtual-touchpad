@@ -2,7 +2,7 @@ How to make a release
 =====================
 
 There are a few simple steps to make a release.
-  1. Make sure that you have checked out the master branch.
+  1. Run ``python scripts/make-release.py <version>``.
   2. Update ``./lib/virtualtouchpad/_info.py`` to reflect the new version.
   4. Update ``./lib/virtualtouchpad/html/virtual-touchpad.appcache`` to reflect
      the new version. The comment should contain the new version, but it must at

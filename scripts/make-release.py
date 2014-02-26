@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+import re
 import subprocess
 import sys
 
@@ -83,10 +85,28 @@ def assert_current_branch_is_master_and_clean():
         raise RuntimeError('Your repository contains local changes')
 
 
+def update_info(version):
+    """
+    Updates the version information in virtualtouchpad._init.
+
+    @param version
+        The version to set.
+    """
+    gsub(
+        os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            'lib', 'virtualtouchpad', '_info.py'),
+        re.compile(r'__version__\s*=\s*(\([0-9]+(\s*,\s*[0-9]+)*\))'),
+        1,
+        repr(version))
+
+
 def main():
     version = get_version()
 
     assert_current_branch_is_master_and_clean()
+    update_info(version)
 
 
 if __name__ == '__main__':

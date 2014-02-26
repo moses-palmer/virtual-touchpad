@@ -119,12 +119,59 @@ def update_appcache(version):
         '.'.join(str(v) for v in version))
 
 
+def check_release_notes(version):
+    """
+    Displays the release notes and allows the user to cancel the release
+    process.
+
+    @param version
+        The version that is being released.
+    """
+    CHANGES = os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            'CHANGES.rst')
+    header = 'v%s' % '.'.join(str(v) for v in version)
+
+    # Read the release notes
+    found = False
+    release_notes = []
+    with open(CHANGES) as f:
+        for line in (l.strip() for l in f):
+            if found:
+                if not line:
+                    # Break on the first empty line after release notes
+                    break
+                elif set(line) == {'-'}:
+                    # Ignore underline lines
+                    continue
+                release_notes.append(line)
+
+            elif line.startswith(header):
+                # The release notes begin after the header
+                found = True
+
+    while True:
+        # Display the release notes
+        sys.stdout.write('Release notes for %s:\n' % header)
+        sys.stdout.write('\n'.join('  %s' % release_note
+            for release_note in release_notes) + '\n')
+        sys.stdout.write('Is this correct [yes/no]? ')
+        response = sys.stdin.readline().strip()
+        if response in ('yes', 'y'):
+            break
+        elif response in ('no', 'n'):
+            raise RuntimeError('Release notes are not up to date')
+
+
+
 def main():
     version = get_version()
 
     assert_current_branch_is_master_and_clean()
     update_info(version)
     update_appcache(version)
+    check_release_notes(version)
 
 
 if __name__ == '__main__':

@@ -102,11 +102,29 @@ def update_info(version):
         repr(version))
 
 
+def update_appcache(version):
+    """
+    Updates the version information in the appcache file.
+
+    @param version
+        The version to set.
+    """
+    gsub(
+        os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            'lib', 'virtualtouchpad', 'html', 'virtual-touchpad.appcache'),
+        re.compile(r'\#\s*Version\s*([0-9]+(\.[0-9]+)*)'),
+        1,
+        '.'.join(str(v) for v in version))
+
+
 def main():
     version = get_version()
 
     assert_current_branch_is_master_and_clean()
     update_info(version)
+    update_appcache(version)
 
 
 if __name__ == '__main__':

@@ -79,49 +79,5 @@ def mouse_move(dx, dy):
     raise NotImplementedError()
 
 
-def _import_symbols():
-    """
-    Loads the platform dependent driver and populates the module globals.
-    """
-    import importlib
-    import inspect
-    import sys
-
-    # Get the name of the platform and load the driver module
-    platform = ''.join(c for c in sys.platform if c.isalpha())
-    driver = importlib.import_module(
-        '._%s' % platform,
-        __package__)
-
-    # Get symbols exported from the driver
-    symbols = {}
-    for name in dir(driver):
-        value = getattr(driver, name)
-
-        # We ignore all private symbols
-        if name[0] == '_':
-            continue
-
-        # The symbol must exist as a global callable in this module
-        old_value = globals().get(name, None)
-        if old_value is None:
-            continue
-        if not callable(old_value):
-            raise ImportError(
-                'error in %s: symbol <%s> must not be global',
-                driver.__name__, name)
-
-        # If the symbol is callable, the function signatures must match
-        if callable(value):
-            argspec = inspect.getargspec(value)
-            old_argspec = inspect.getargspec(old_value)
-            if argspec != old_argspec:
-                raise ImportError(
-                    'error in %s: invalid method signature for <%s>',
-                    driver.__name__, name)
-
-        # Replace the global
-        value.__doc__ = old_value.__doc__
-        globals()[name] = value
-
-_import_symbols()
+from .. import _import_symbols
+_import_symbols(globals())

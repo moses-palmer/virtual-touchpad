@@ -176,6 +176,19 @@ def commit_changes(version):
         '-m', 'Release %s' % '.'.join(str(v) for v in version))
 
 
+def tag_release(version):
+    """
+    Tags the current commit as a release.
+
+    @param version
+        The version that is being released.
+    """
+    git('tag',
+        '-a',
+        '-m', 'Release v%s' % '.'.join(str(v) for v in version),
+        'v' + '.'.join(str(v) for v in version))
+
+
 
 def main():
     version = get_version()
@@ -185,6 +198,7 @@ def main():
     update_appcache(version)
     check_release_notes(version)
     commit_changes(version)
+    tag_release(version)
 
 
 if __name__ == '__main__':

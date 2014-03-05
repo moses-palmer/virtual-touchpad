@@ -164,6 +164,18 @@ def check_release_notes(version):
             raise RuntimeError('Release notes are not up to date')
 
 
+def commit_changes(version):
+    """
+    Commits all local changes.
+
+    @param version
+        The version that is being released.
+    """
+    git('commit',
+        '-a',
+        '-m', 'Release %s' % '.'.join(str(v) for v in version))
+
+
 
 def main():
     version = get_version()
@@ -172,6 +184,7 @@ def main():
     update_info(version)
     update_appcache(version)
     check_release_notes(version)
+    commit_changes(version)
 
 
 if __name__ == '__main__':

@@ -189,6 +189,15 @@ def tag_release(version):
         'v' + '.'.join(str(v) for v in version))
 
 
+def push_to_origin():
+    """
+    Pushes master to origin.
+    """
+    print('Pushing to origin...')
+
+    git('push', 'origin', 'HEAD:master')
+
+
 
 def main():
     version = get_version()
@@ -199,6 +208,7 @@ def main():
     check_release_notes(version)
     commit_changes(version)
     tag_release(version)
+    push_to_origin()
 
 
 if __name__ == '__main__':

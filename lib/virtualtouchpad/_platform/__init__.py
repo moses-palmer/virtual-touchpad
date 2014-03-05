@@ -16,30 +16,9 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from ..dispatch import dispatcher
+import os
 
-from .. import event
-
-
-@dispatcher
-def key_down(key):
-    """
-    Triggers a key down event.
-
-    @param key
-        The key that is being pressed. This value will be passed directly to
-        osevent.key_down.
-    """
-    event.key_down(key)
-
-
-@dispatcher
-def key_up(key):
-    """
-    Triggers a key up event.
-
-    @param key
-        The key that is being release. This value will be passed directly to
-        osevent.key_up.
-    """
-    event.key_up(key)
+_root = os.path.dirname(__file__)
+__all__ = [directory
+    for directory in os.listdir(_root)
+    if os.path.isdir(os.path.join(_root, directory)) and directory[0] != '_']

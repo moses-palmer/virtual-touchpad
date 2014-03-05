@@ -18,7 +18,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 from ..dispatch import dispatcher
 
-from .. import osevent
+from .. import event
 
 
 @dispatcher
@@ -29,7 +29,7 @@ def mouse_down(button = 1):
     @param button
         The button index.
     """
-    osevent.mouse_down(button)
+    event.mouse_down(button)
 
 
 @dispatcher
@@ -40,7 +40,7 @@ def mouse_up(button = 1):
     @param button
         The button index.
     """
-    osevent.mouse_up(button)
+    event.mouse_up(button)
 
 
 @dispatcher
@@ -51,7 +51,7 @@ def mouse_scroll(dx = 0, dy = 0):
     @param dx, dy
         The horisontal and vertical offset to scroll.
     """
-    osevent.mouse_scroll(dx, dy)
+    event.mouse_scroll(dx, dy)
 
 
 @dispatcher
@@ -62,4 +62,4 @@ def mouse_move(dx = 0, dy = 0):
     @param dx, dy
         The horisontal and vertical offset to move.
     """
-    osevent.mouse_move(dx, dy)
+    event.mouse_move(dx, dy)

@@ -175,6 +175,12 @@ def commit_changes(version):
         '-a',
         '-m', 'Release %s' % '.'.join(str(v) for v in version))
 
+def _commit_changes_undo():
+    git('reset',
+        '--hard',
+        'HEAD^')
+commit_changes.undo = _commit_changes_undo
+
 
 def tag_release(version):
     """
@@ -225,9 +231,14 @@ def main():
     update_appcache(version)
     check_release_notes(version)
     commit_changes(version)
-    tag_release(version)
+    try:
+        tag_release(version)
+    except:
+        commit_changes.undo()
+        raise
     push_to_origin()
     upload_to_pypi()
+
 
 
 if __name__ == '__main__':

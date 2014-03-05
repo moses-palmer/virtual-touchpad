@@ -198,6 +198,24 @@ def push_to_origin():
     git('push', 'origin', 'HEAD:master')
 
 
+def upload_to_pypi():
+    """
+    Uploads this project to PyPi.
+    """
+    print('Uploading to PyPi...')
+
+    g = subprocess.Popen(['python',
+            os.path.join(os.path.dirname(__file__), os.pardir, 'setup.py'),
+            'sdist',
+            'upload'],
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE)
+
+    stdout, stderr = g.communicate()
+    if g.returncode != 0:
+        raise RuntimeError('Failed to upload to PyPi (%d): %s',
+            g.returncode, stderr)
+
 
 def main():
     version = get_version()
@@ -209,6 +227,7 @@ def main():
     commit_changes(version)
     tag_release(version)
     push_to_origin()
+    upload_to_pypi()
 
 
 if __name__ == '__main__':

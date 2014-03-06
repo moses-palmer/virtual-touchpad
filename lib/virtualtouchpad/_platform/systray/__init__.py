@@ -16,20 +16,28 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from argparse import ArgumentParser
 
-from . import main, systray
+def create(description):
+    """
+    Creates a systray icon with a text.
 
-if __name__ == '__main__':
-    parser = ArgumentParser(
-        description = ''
-            'Turns your mobile or tablet into a touchpad and keyboard for your '
-            'computer.')
+    @param description
+        The text used to describe the systray icon.
+    @return a context
+    """
+    raise NotImplementedError()
 
-    parser.add_argument('--port',
-        type = int,
-        help = ''
-            'The port on which to listen',
-        default = 16080)
 
-    main(**vars(parser.parse_args())).serve_forever()
+def destroy(context):
+    """
+    Deletes a systray icon
+
+    @param context
+        The context returned by systray_create
+    @see create
+    """
+    raise NotImplementedError()
+
+
+from .. import _import_symbols
+_import_symbols(globals())

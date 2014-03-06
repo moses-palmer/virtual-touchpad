@@ -265,7 +265,7 @@ if py2exe:
             'includes': [
                 'greenlet',
                 'gevent.select',
-                'virtualtouchpad.osevent._win'] + [
+                'virtualtouchpad._platform.event._win'] + [
                     'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
                         for m in os.listdir(
                             os.path.join(

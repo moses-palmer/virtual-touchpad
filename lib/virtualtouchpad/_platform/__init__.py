@@ -16,82 +16,48 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-def key_down(key):
+import os
+
+_root = os.path.dirname(__file__)
+__all__ = [directory
+    for directory in os.listdir(_root)
+    if os.path.isdir(os.path.join(_root, directory)) and directory[0] != '_']
+
+
+def _import_symbols(globals_dict, *candidates):
     """
-    Sends a key down event.
+    Loads the platform dependent implementation and populates a dict.
 
-    @param key
-        The name of the key. This value will be handled just like
-        Xlib.XK.string_to_keysym would. Thus, 'A' and 'a' will trigger a press
-        of the 'A' key. 'Space' and 'space' will trigger space.
-    """
-    raise NotImplementedError()
-
-
-def key_up(key):
-    """
-    Sends a key up event.
-
-    @param key
-        The name of the key. This value is handled just like in key_down.
-    @see key_down
-    """
-    raise NotImplementedError()
-
-
-def mouse_down(button):
-    """
-    Presses a mouse button.
-
-    @param button
-        The button index.
-    """
-    raise NotImplementedError()
-
-
-def mouse_up(button):
-    """
-    Releases a mouse button.
-
-    @param button
-        The button index.
-    """
-    raise NotImplementedError()
-
-
-def mouse_scroll(dx, dy):
-    """
-    Scrolls the mouse wheel.
-
-    @param dx, dy
-        The horisontal and vertical offset to scroll.
-    """
-    raise NotImplementedError()
-
-
-def mouse_move(dx, dy):
-    """
-    Moves the mouse pointer.
-
-    @param dx, dy
-        The horisontal and vertical offset to move.
-    """
-    raise NotImplementedError()
-
-
-def _import_symbols():
-    """
-    Loads the platform dependent driver and populates the module globals.
+    @param globals_dict
+        The globals dict. Use globals() when calling this function from another
+        module. Only callable symbols not beginning with '_' in this dictionary
+        will be imported from the driver module.
+    @param candidates
+        The names of candidate modules to try before trying the default platform
+        driver. The default name is '_' + sys.platform, with everything but
+        letters dripped from sys.platform.
+    @raise ImportError if no platform driver was found, or a global callable in
+        the driver was not present in globals_dict, or the function signature of
+        a global callable in the driver did not match in globals_dict
     """
     import importlib
     import inspect
     import sys
 
     # Get the name of the platform and load the driver module
-    platform = ''.join(c for c in sys.platform if c.isalpha())
-    driver = importlib.import_module(
-        '._%s' % platform,
-        __package__)
+    platform_driver = '_' + ''.join(c for c in sys.platform if c.isalpha())
+    driver = None
+    for candidate in list(candidates) + [platform_driver]:
+        try:
+            driver = importlib.import_module(
+                '.%s' % candidate,
+                globals_dict['__package__'])
+            break
+        except ImportError:
+            pass
+    if driver is None:
+        raise ImportError('Failed to locate platform driver for package %s',
+            globals_dict['__package__'])
 
     # Get symbols exported from the driver
     symbols = {}
@@ -103,7 +69,7 @@ def _import_symbols():
             continue
 
         # The symbol must exist as a global callable in this module
-        old_value = globals().get(name, None)
+        old_value = globals_dict.get(name, None)
         if old_value is None:
             continue
         if not callable(old_value):
@@ -122,6 +88,4 @@ def _import_symbols():
 
         # Replace the global
         value.__doc__ = old_value.__doc__
-        globals()[name] = value
-
-_import_symbols()
+        globals_dict[name] = value

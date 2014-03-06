@@ -30,6 +30,8 @@ import pkg_resources
 import sys
 import time
 
+from _platform import *
+
 try:
     from geventwebsocket.handler import WebSocketHandler
 except ImportError:

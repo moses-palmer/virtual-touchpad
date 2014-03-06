@@ -18,7 +18,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 from ..dispatch import dispatcher
 
-from .. import osevent
+from .. import event
 
 
 @dispatcher
@@ -30,7 +30,7 @@ def key_down(key):
         The key that is being pressed. This value will be passed directly to
         osevent.key_down.
     """
-    osevent.key_down(key)
+    event.key_down(key)
 
 
 @dispatcher
@@ -42,4 +42,4 @@ def key_up(key):
         The key that is being release. This value will be passed directly to
         osevent.key_up.
     """
-    osevent.key_up(key)
+    event.key_up(key)

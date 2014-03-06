@@ -16,50 +16,68 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from ..dispatch import dispatcher
-
-from .. import event
-
-
-@dispatcher
-def mouse_down(button = 1):
+def key_down(key):
     """
-    Triggers a a mouse press event.
+    Sends a key down event.
+
+    @param key
+        The name of the key. This value will be handled just like
+        Xlib.XK.string_to_keysym would. Thus, 'A' and 'a' will trigger a press
+        of the 'A' key. 'Space' and 'space' will trigger space.
+    """
+    raise NotImplementedError()
+
+
+def key_up(key):
+    """
+    Sends a key up event.
+
+    @param key
+        The name of the key. This value is handled just like in key_down.
+    @see key_down
+    """
+    raise NotImplementedError()
+
+
+def mouse_down(button):
+    """
+    Presses a mouse button.
 
     @param button
         The button index.
     """
-    event.mouse_down(button)
+    raise NotImplementedError()
 
 
-@dispatcher
-def mouse_up(button = 1):
+def mouse_up(button):
     """
-    Triggers a a mouse release event.
+    Releases a mouse button.
 
     @param button
         The button index.
     """
-    event.mouse_up(button)
+    raise NotImplementedError()
 
 
-@dispatcher
-def mouse_scroll(dx = 0, dy = 0):
+def mouse_scroll(dx, dy):
     """
-    Triggers a mouse scroll event.
+    Scrolls the mouse wheel.
 
     @param dx, dy
         The horisontal and vertical offset to scroll.
     """
-    event.mouse_scroll(dx, dy)
+    raise NotImplementedError()
 
 
-@dispatcher
-def mouse_move(dx = 0, dy = 0):
+def mouse_move(dx, dy):
     """
-    Treiggers a mouse move event.
+    Moves the mouse pointer.
 
     @param dx, dy
         The horisontal and vertical offset to move.
     """
-    event.mouse_move(dx, dy)
+    raise NotImplementedError()
+
+
+from .. import _import_symbols
+_import_symbols(globals())

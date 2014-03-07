@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import socket
+
 from argparse import ArgumentParser
 
 from . import main, systray
@@ -32,4 +34,8 @@ if __name__ == '__main__':
             'The port on which to listen',
         default = 16080)
 
-    main(**vars(parser.parse_args())).serve_forever()
+    args = parser.parse_args()
+    icon = systray.create('Virtual Touchpad - http://%s:%d' % (
+        socket.gethostname(), args.port))
+    main(**vars(args)).serve_forever()
+    systray.destroy(icon)

@@ -16,26 +16,28 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import socket
 
-from argparse import ArgumentParser
+def create(description):
+    """
+    Creates a systray icon with a text.
 
-from . import main, systray
+    @param description
+        The text used to describe the systray icon.
+    @return a context
+    """
+    raise NotImplementedError()
 
-if __name__ == '__main__':
-    parser = ArgumentParser(
-        description = ''
-            'Turns your mobile or tablet into a touchpad and keyboard for your '
-            'computer.')
 
-    parser.add_argument('--port',
-        type = int,
-        help = ''
-            'The port on which to listen',
-        default = 16080)
+def destroy(context):
+    """
+    Deletes a systray icon
 
-    args = parser.parse_args()
-    icon = systray.create('Virtual Touchpad - http://%s:%d' % (
-        socket.gethostname(), args.port))
-    main(**vars(args)).serve_forever()
-    systray.destroy(icon)
+    @param context
+        The context returned by systray_create
+    @see create
+    """
+    raise NotImplementedError()
+
+
+from .. import _import_symbols
+_import_symbols(globals())

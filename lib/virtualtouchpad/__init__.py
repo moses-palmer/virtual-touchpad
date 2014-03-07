@@ -19,7 +19,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 from ._info import *
 
 import gevent
-from gevent import monkey; monkey.patch_all()
+from gevent import monkey; monkey.patch_all(thread = False)
 
 import bottle
 import geventwebsocket

@@ -16,12 +16,23 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import xsystray
+from virtualtouchpad._platform._linux import *
 
 
-def create(description):
-    return xsystray.XSystemTrayIcon(description)
+class XSystemTrayIcon(object):
+    def __init__(self, description):
+        """
+        Creates a systray tray icon.
 
+        @param description
+            A descriptive text to apply to the icon.
+        """
+        self._description = description
+        # TODO: Implement
 
-def destroy(context):
-    context.destroy()
+    def destroy(self):
+        """
+        Destroys the system tray icon.
+        """
+        # TODO: Implement
+        pass

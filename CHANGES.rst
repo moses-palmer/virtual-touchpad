@@ -5,6 +5,8 @@ Release Notes
 v0.8
 ----
   * The sensitivity and acceleration of the trackpad is now configurable
+  * Clicking is now easier and allows the finger to move slightly across the
+    screen
 
 
 v0.7 - Run from single file

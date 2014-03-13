@@ -2,8 +2,8 @@ Release Notes
 =============
 
 
-v0.8
-----
+v0.8 - Configure sensitivity
+----------------------------
   * The sensitivity and acceleration of the trackpad is now configurable
   * Clicking is now easier and allows the finger to move slightly across the
     screen
@@ -13,7 +13,7 @@ v0.7 - Run from single file
 ---------------------------
   * Virtual Touchpad can now be run from a zipped egg
   * Py2exe is now supported to pack Virtual Topuchpad into a single exe file on
-    WIndows
+    Windows
 
 
 v0.6 - Windows support

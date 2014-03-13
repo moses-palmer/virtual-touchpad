@@ -16,6 +16,12 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+from . import _freeze_modules
+
+# Make sure select is usable in Xlib
+import Xlib.protocol.display
+_freeze_modules(Xlib.protocol.display, 'select')
+
 from Xlib import X
 from Xlib import XK
 from Xlib import display

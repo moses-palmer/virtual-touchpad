@@ -89,3 +89,26 @@ def _import_symbols(globals_dict, *candidates):
         # Replace the global
         value.__doc__ = old_value.__doc__
         globals_dict[name] = value
+
+
+def _freeze_modules(target, *names):
+    """
+    Freezes imported modules for a target module.
+
+    This function must be called before monkey-patching with gevent.
+
+    This replaces every named imported module in the target module with an
+    object that has all attributes that the module has, and the values at the
+    time this function is called.
+
+    @param target
+        The target module.
+    @param names
+        The names of the modules to freeze.
+    """
+    for name in names:
+        class container(object):
+            def __init__(self, source):
+                for key in dir(source):
+                    setattr(self, key, getattr(source, key))
+        setattr(target, name, container(getattr(target, name)))

@@ -16,10 +16,16 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import threading
+
 from virtualtouchpad._platform._linux import *
 
 
 class XSystemTrayIcon(object):
+    _XEMBED_INFO = '_XEMBED_INFO'
+    XEMBED_VERSION = 0
+    XEMBED_MAPPED = 1
+
     def __init__(self, description):
         """
         Creates a systray tray icon.
@@ -29,6 +35,7 @@ class XSystemTrayIcon(object):
         """
         self._description = description
         self._display = None
+        self._window = None
 
     @property
     def display(self):
@@ -52,9 +59,36 @@ class XSystemTrayIcon(object):
 
         return manager()
 
+    @property
+    def window(self):
+        """The X window to use as systray icon; the window will be created when
+        read unless already created"""
+        if self._window:
+            return self._window
+
+        with self.display as display:
+            # Create the window
+            screen = display.screen()
+            self._window = screen.root.create_window(
+                -1, -1, 1, 1, 0, screen.root_depth,
+                event_mask = X.ExposureMask,
+                window_class = X.InputOutput)
+            self._window.set_wm_class(
+                'VirtualTouchpadSystemTrayIcon',
+                'VirtualTouchpad')
+            self._window.set_wm_name(
+                self._description)
+
+            # Enable XEMBED for the window
+            atom = display.intern_atom(self._XEMBED_INFO)
+            self._window.change_property(atom, atom, 32, [
+                self.XEMBED_VERSION,
+                self.XEMBED_MAPPED])
+
+        return self._window
+
     def destroy(self):
         """
         Destroys the system tray icon.
         """
-        # TODO: Implement
-        pass
+        self._window.destroy()

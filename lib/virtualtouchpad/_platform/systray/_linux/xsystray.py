@@ -108,6 +108,29 @@ class XSystemTrayIcon(object):
                 # TODO: Wait for a systray manager to appear
                 break
 
+    def events(self):
+        """
+        Generates X events until the X connection is terminated.
+
+        If the X connection is killed, the last event yielded will be None.
+
+        @raise RuntimeError if the display has not been initiated
+        """
+        if self._display is None:
+            raise RuntimeError('display not initiated')
+
+        while True:
+            # Read the next event or silently exit
+            try:
+                e  = self._display.next_event()
+            except:
+                e = None
+
+            yield e
+
+            if e is None:
+                break
+
     def destroy(self):
         """
         Destroys the system tray icon.

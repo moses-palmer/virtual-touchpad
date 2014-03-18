@@ -18,6 +18,8 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 from ._info import *
 
+from _platform import *
+
 import gevent
 from gevent import monkey; monkey.patch_all(thread = False)
 
@@ -29,8 +31,6 @@ import os
 import pkg_resources
 import sys
 import time
-
-from _platform import *
 
 try:
     from geventwebsocket.handler import WebSocketHandler

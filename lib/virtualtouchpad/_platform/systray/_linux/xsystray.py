@@ -66,6 +66,56 @@ class XSystemTrayIcon(object):
                 self.SYSTEM_TRAY_REQUEST_DOCK,
                 self.window.id)
 
+    def _on_event(self, e):
+        """
+        The default event handler.
+
+        @param e
+            The current X event.
+        @raise StopIteration if e is an X.DestroyNotify event
+        """
+        if e.type == X.DestroyNotify:
+            raise StopIteration()
+
+    def _mainloop(self, handlers = {}):
+        """
+        The main X event loop.
+
+        This is blocking, so it should be run in a separate thread.
+
+        This method will break when an event handler raises StopIteration.
+
+        @param handlers
+            Event handler overrides. The keys are on the format
+            'on_' + <lower case Xevent name>. If a key for an event is missing,
+            the corresponding method in self is called. If that does not exist,
+            the value for the key 'on_event' is used, and if that does not exist
+            a default event handler is called.
+        """
+        self._display = display.Display()
+
+        with self.display:
+            self.window.map()
+            self._dock_window()
+
+        # Find the default handler for events
+        default_handler = handlers.get('on_event', self._on_event)
+
+        for e in self.events():
+            # The name of the handler function
+            handler_name = 'on_' + e.__class__.__name__.lower()
+
+            # Execute the handler; prefer a handler from handlers, then fall
+            # back on instance methods, and then fall back on no action
+            try:
+                handlers.get(
+                    handler_name,
+                    getattr(self,
+                        handler_name,
+                        default_handler))(e)
+            except StopIteration:
+                break
+
     def __init__(self, description):
         """
         Creates a systray tray icon.

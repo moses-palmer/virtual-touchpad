@@ -26,6 +26,33 @@ class XSystemTrayIcon(object):
     XEMBED_VERSION = 0
     XEMBED_MAPPED = 1
 
+    _NET_SYSTEM_TRAY_OPCODE = '_NET_SYSTEM_TRAY_OPCODE'
+
+    def _send_message(self, window, message, d1 = 0, d2 = 0, d3 = 0):
+        """
+        Sends a generic systray message.
+
+        This method does not trap X errors; that is up to the caller.
+
+        @param window
+            An X window.
+        @param message
+            The message to send.
+        @param d1, d2, d3
+            Message specific data.
+        """
+        self._display.send_event(self.systray_manager,
+            display.event.ClientMessage(
+                type = X.ClientMessage,
+                client_type = self._display.intern_atom(
+                    self._NET_SYSTEM_TRAY_OPCODE),
+                window = window.id,
+                data = (32, (
+                    X.CurrentTime,
+                    message,
+                    d1, d2, d3))),
+            event_mask = X.NoEventMask)
+
     def __init__(self, description):
         """
         Creates a systray tray icon.

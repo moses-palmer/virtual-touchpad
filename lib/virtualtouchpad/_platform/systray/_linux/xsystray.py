@@ -87,6 +87,27 @@ class XSystemTrayIcon(object):
 
         return self._window
 
+    @property
+    def systray_manager(self):
+        """The X window that owns the systray selection, or None if no window
+        does"""
+        while True:
+            with self.display as display:
+                display.grab_server()
+                systray_manager = display.get_selection_owner(
+                    display.intern_atom(
+                        '_NET_SYSTEM_TRAY_S%d' % display.get_default_screen()))
+                display.ungrab_server()
+                display.flush()
+
+                if systray_manager != X.NONE:
+                    return display.create_resource_object(
+                        'window',
+                        systray_manager.id)
+
+                # TODO: Wait for a systray manager to appear
+                break
+
     def destroy(self):
         """
         Destroys the system tray icon.

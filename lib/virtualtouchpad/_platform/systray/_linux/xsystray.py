@@ -27,6 +27,7 @@ class XSystemTrayIcon(object):
     XEMBED_MAPPED = 1
 
     _NET_SYSTEM_TRAY_OPCODE = '_NET_SYSTEM_TRAY_OPCODE'
+    SYSTEM_TRAY_REQUEST_DOCK = 0
 
     def _send_message(self, window, message, d1 = 0, d2 = 0, d3 = 0):
         """
@@ -52,6 +53,18 @@ class XSystemTrayIcon(object):
                     message,
                     d1, d2, d3))),
             event_mask = X.NoEventMask)
+
+    def _dock_window(self):
+        """
+        Docks the window in the systray.
+
+        This method traps X errors.
+        """
+        with self.display:
+            self._send_message(
+                self.systray_manager,
+                self.SYSTEM_TRAY_REQUEST_DOCK,
+                self.window.id)
 
     def __init__(self, description):
         """

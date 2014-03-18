@@ -127,6 +127,10 @@ class XSystemTrayIcon(object):
         self._display = None
         self._window = None
 
+        self._thread = threading.Thread(target = self._mainloop)
+        self._thread.daemon  = True
+        self._thread.start()
+
     @property
     def display(self):
         """The X display as a context manager that will collect X errors on exit
@@ -226,3 +230,4 @@ class XSystemTrayIcon(object):
         Destroys the system tray icon.
         """
         self._window.destroy()
+        self._thread.join()

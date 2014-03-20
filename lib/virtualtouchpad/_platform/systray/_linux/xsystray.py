@@ -99,6 +99,11 @@ class XSystemTrayIcon(object):
         if e.type == X.DestroyNotify:
             raise StopIteration()
 
+    def on_expose(self, e):
+        geometry = e.window.get_geometry()
+        self.window.put_pil_image(self._gc, 0, 0,
+            self._get_icon_data(geometry.width, geometry.height))
+
     def _mainloop(self, handlers = {}):
         """
         The main X event loop.
@@ -209,6 +214,8 @@ class XSystemTrayIcon(object):
             self._window.change_property(atom, atom, 32, [
                 self.XEMBED_VERSION,
                 self.XEMBED_MAPPED])
+
+            self._gc = self._window.create_gc()
 
         return self._window
 

@@ -16,18 +16,7 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from Xlib import X
-from Xlib import XK
-from Xlib.display import Display
-from Xlib.ext.xtest import fake_input
-
-try:
-    import pyatspi
-except ImportError:
-    pyatspi = None
-
-# The global X display
-DISPLAY = Display()
+from virtualtouchpad._platform._linux import *
 
 
 # The scroll threshold required to actually perform scrolling

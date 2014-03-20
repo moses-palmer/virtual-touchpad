@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.9
+----------------------------
+  * Added systray icon for Linux
+
+
 v0.8 - Configure sensitivity
 ----------------------------
   * The sensitivity and acceleration of the trackpad is now configurable

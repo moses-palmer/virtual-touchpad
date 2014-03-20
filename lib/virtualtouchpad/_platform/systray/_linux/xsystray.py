@@ -16,7 +16,11 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import os
+import pkg_resources
 import threading
+
+import PIL.Image
 
 from virtualtouchpad._platform._linux import *
 
@@ -126,6 +130,14 @@ class XSystemTrayIcon(object):
         self._description = description
         self._display = None
         self._window = None
+
+        # Load the icon from ../../../html/img/
+        self._icon = PIL.Image.open(
+            pkg_resources.resource_stream(__name__, os.path.join(
+                os.pardir,
+                os.pardir,
+                os.pardir,
+                'html', 'img', 'icon196x196.png')))
 
         self._thread = threading.Thread(target = self._mainloop)
         self._thread.daemon  = True

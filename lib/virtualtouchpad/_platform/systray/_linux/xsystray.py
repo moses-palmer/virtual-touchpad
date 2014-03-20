@@ -70,6 +70,24 @@ class XSystemTrayIcon(object):
                 self.SYSTEM_TRAY_REQUEST_DOCK,
                 self.window.id)
 
+    def _get_icon_data(self, width, height):
+        """
+        Returns the tuple (width, height, data) for the icon image.
+
+        @param width, height
+            The requested width and height.
+        @return icon data, which may already be cached
+        """
+        if self._icon_data is None \
+                or self._icon_data.size != (width, height):
+            self._icon_data = PIL.Image.new(
+                'RGB',
+                (width, height))
+            self._icon_data.paste(self._icon.resize((width, height),
+                PIL.Image.ANTIALIAS))
+
+        return self._icon_data
+
     def _on_event(self, e):
         """
         The default event handler.
@@ -138,6 +156,7 @@ class XSystemTrayIcon(object):
                 os.pardir,
                 os.pardir,
                 'html', 'img', 'icon196x196.png')))
+        self._icon_data = None
 
         self._thread = threading.Thread(target = self._mainloop)
         self._thread.daemon  = True

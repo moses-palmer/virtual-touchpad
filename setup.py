@@ -273,7 +273,7 @@ if py2exe:
                                 'lib', 'virtualtouchpad', 'dispatchers'))
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
-        'scripts/virtualtouchpad-console-py']
+        'scripts/virtualtouchpad-console.py']
 
 
 setup(**setup_arguments)

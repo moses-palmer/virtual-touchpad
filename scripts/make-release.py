@@ -202,6 +202,7 @@ def push_to_origin():
     print('Pushing to origin...')
 
     git('push', 'origin', 'HEAD:master')
+    git('push', '--tags')
 
 
 def upload_to_pypi():

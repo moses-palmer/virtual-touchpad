@@ -62,8 +62,7 @@ def setup(**kwargs):
         name = 'virtual-touchpad',
         version = '.'.join(str(i) for i in INFO['version']),
         description = ''
-            'Turns your mobile or tablet into a touchpad and keyboard for your '
-            'computer.',
+            'Turns your mobile or tablet into a touchpad for your computer.',
         long_description = README + '\n\n' + CHANGES,
 
         install_requires = [

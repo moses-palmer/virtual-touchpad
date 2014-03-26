@@ -1,47 +1,42 @@
 import os
+import subprocess
 import sys
 
 
-def create(source_path, target_path, dimensions):
-    """
-    Creates a PNG image from an SVG image and scales it.
+try:
+    has_imagemagick = 'ImageMagick' in subprocess.check_output([
+        'convert', '--version'])
+except OSError:
+    has_imagemagick = False
 
-    @param source_path
-        The SVG source.
-    @param target_path
-        The output target.
-    @param scale
-        The scale at which to render the target. Specify 1 to keep the size of
-        the original.
-    """
-    try:
-        import cairo
-        from gi.repository import Rsvg as rsvg
-    except ImportError as e:
-        sys.stdout.write('Import failed: %s; %s will not be generated.' % (
-            e.args[0], target_path) + '\n')
-        return
+if has_imagemagick:
+    def convert(source, target, dimensions):
+        """
+        Converts and resizes an image.
 
-    rwidth, rheight = dimensions
+        @param source, target
+            The source and target files.
+        @param dimensions
+            The dimensions for the target image.
+        @raise RuntimeError if the conversion fails
+        """
+        p = subprocess.Popen(['convert',
+            '-background', 'none',
+            source,
+            '-resize', 'x'.join(str(dimension) for dimension in dimensions),
+            target],
+            stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        if p.returncode != 0:
+            raise RuntimeError('Failed to call convert: %s', stderr)
 
-    # Load the SVG file
-    handle = rsvg.Handle()
-    svg = handle.new_from_file(source_path)
-
-    # Create the surface and context
-    dim = svg.get_dimensions()
-    iwidth, iheight = dim.width, dim.height
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
-        rwidth,
-        rheight)
-    context = cairo.Context(surface)
-
-    # Render the icon at the correct scale
-    context.scale(1.0 * rwidth / iwidth, 1.0 * rheight / iheight)
-    svg.render_cairo(context)
-
-    # Save the file
-    surface.write_to_png(target_path)
+else:
+    def convert(source, target, dimensions):
+        """
+        A no-op placeholder function.
+        """
+        sys.stdout.write('Not converting %s to %s: ImageMagick is not installed'
+            % (source, target) + '\n')
 
 
 def app_icon(size, target_path):
@@ -54,7 +49,7 @@ def app_icon(size, target_path):
         The output target.
     """
     # Create a PNG image from ./res/icon; its size is 16 px
-    create(
+    convert(
         os.path.join(
             os.path.dirname(__file__),
             'res',

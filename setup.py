@@ -142,7 +142,7 @@ PACKAGE_DATA = {
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-
+# The directory in which HTML resources are located
 HTML_ROOT = os.path.join(
     os.path.dirname(__file__),
     'lib',

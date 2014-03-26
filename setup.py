@@ -187,6 +187,7 @@ class minify_index(setuptools.Command):
 @build.command
 class minify_help(setuptools.Command):
     description = 'minify html.xhtml'
+    user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
     def run(self):

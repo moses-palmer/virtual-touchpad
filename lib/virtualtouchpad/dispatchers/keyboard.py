@@ -28,7 +28,7 @@ def key_down(key):
 
     @param key
         The key that is being pressed. This value will be passed directly to
-        osevent.key_down.
+        event.key_down.
     """
     event.key_down(key)
 
@@ -40,6 +40,6 @@ def key_up(key):
 
     @param key
         The key that is being release. This value will be passed directly to
-        osevent.key_up.
+        event.key_up.
     """
     event.key_up(key)

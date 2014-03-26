@@ -2,8 +2,8 @@ Release Notes
 =============
 
 
-v0.9
-----------------------------
+v0.9 - Systray on Linux
+-----------------------
   * Added systray icon for Linux
 
 
@@ -17,7 +17,7 @@ v0.8 - Configure sensitivity
 v0.7 - Run from single file
 ---------------------------
   * Virtual Touchpad can now be run from a zipped egg
-  * Py2exe is now supported to pack Virtual Topuchpad into a single exe file on
+  * Py2exe is now supported to pack Virtual Touchpad into a single exe file on
     Windows
 
 

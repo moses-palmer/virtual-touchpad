@@ -212,6 +212,7 @@ class minify_help(setuptools.Command):
 @build.command
 class generate_icons(setuptools.Command):
     description = 'generate web application icons from SVG sources'
+    user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
     def run(self):

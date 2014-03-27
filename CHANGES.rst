@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.9.1 - Fixed systray window on Linux
+--------------------------------------
+  * The systray window is no longer mapped on Linux
+
+
 v0.9 - Systray on Linux
 -----------------------
   * Added systray icon for Linux

@@ -122,7 +122,6 @@ class XSystemTrayIcon(object):
         self._display = display.Display()
 
         with self.display:
-            self.window.map()
             self._dock_window()
 
         # Find the default handler for events

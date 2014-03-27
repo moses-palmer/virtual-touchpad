@@ -22,7 +22,7 @@ from argparse import ArgumentParser
 
 from . import main, systray
 
-if __name__ == '__main__':
+def start():
     parser = ArgumentParser(
         description = ''
             'Turns your mobile or tablet into a touchpad for your computer.')
@@ -38,3 +38,6 @@ if __name__ == '__main__':
         socket.gethostname(), args.port))
     main(**vars(args)).serve_forever()
     systray.destroy(icon)
+
+if __name__ == '__main__':
+    start()

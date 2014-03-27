@@ -258,6 +258,8 @@ class generate_windows_icons(setuptools.Command):
 
 
 if py2exe:
+    import virtualtouchpad._platform._win as _win
+
     # Construct the data_files argument to setup from the package_data argument
     # value; py2exe does not support data files
     class py2exe_with_resources(py2exe.build_exe.py2exe):
@@ -300,6 +302,7 @@ if py2exe:
             'includes': [
                 'greenlet',
                 'gevent.select',
+                'virtualtouchpad._platform._win',
                 'virtualtouchpad._platform.event._win'] + [
                     'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
                         for m in os.listdir(
@@ -308,6 +311,10 @@ if py2exe:
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
         'scripts/virtualtouchpad-console.py']
+    setup_arguments['windows'] = [
+        {
+            'script': 'scripts/virtualtouchpad-gui.py',
+            'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
 try:

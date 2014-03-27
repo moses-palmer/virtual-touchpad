@@ -91,19 +91,21 @@ def _inline_svg(e, source_dir, dom):
 
     # Load the minified SVG
     src = os.path.join(source_dir, e.getAttribute('src'));
-    try:
-        svg_min = subprocess.Popen(['python',
-            os.path.join(os.path.dirname(__file__),
-                os.path.pardir, os.path.pardir, 'scour', 'scour', 'scour.py'),
-            '-i', src,
-            '--enable-id-stripping',
-            '--enable-comment-stripping',
-            '--create-groups',
-            '--remove-metadata',
-            '--enable-viewboxing'], stdout = subprocess.PIPE).communicate()[0]
-        svg = parseString(svg_min)
-    except:
-        return
+    p = subprocess.Popen(['python',
+        os.path.join(os.path.dirname(__file__),
+            os.path.pardir, os.path.pardir, 'scour', 'scour', 'scour.py'),
+        '-i', src,
+        '--enable-id-stripping',
+        '--enable-comment-stripping',
+        '--create-groups',
+        '--remove-metadata',
+        '--enable-viewboxing'],
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE)
+    svg_min, stderr = p.communicate()
+    if p.returncode != 0:
+        raise RuntimeError('Failed to minify SVG %s: %s', src, stderr)
+    svg = parseString(svg_min)
 
     # Strip space
     _recurse(svg, _trim)

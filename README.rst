@@ -17,7 +17,7 @@ To manually start the HTTP server, run the following command:
 
     python -m virtualtouchpad
 
-This will start a HTTP server. It will print the line
+This will start an HTTP server. It will print the line
 
     Starting server http://<computer name>:<port>/...
 

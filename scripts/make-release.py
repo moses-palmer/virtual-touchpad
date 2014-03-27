@@ -191,7 +191,7 @@ def tag_release(version):
     """
     git('tag',
         '-a',
-        '-m', 'Release v%s' % '.'.join(str(v) for v in version),
+        '-m', 'Release %s' % '.'.join(str(v) for v in version),
         'v' + '.'.join(str(v) for v in version))
 
 
@@ -202,6 +202,7 @@ def push_to_origin():
     print('Pushing to origin...')
 
     git('push', 'origin', 'HEAD:master')
+    git('push', '--tags')
 
 
 def upload_to_pypi():

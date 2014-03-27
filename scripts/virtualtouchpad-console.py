@@ -5,8 +5,7 @@ from virtualtouchpad import main
 if __name__ == '__main__':
     parser = ArgumentParser(
         description = ''
-            'Turns your mobile or tablet into a touchpad and keyboard for your '
-            'computer.')
+            'Turns your mobile or tablet into a touchpad for your computer.')
 
     parser.add_argument('--port',
         type = int,

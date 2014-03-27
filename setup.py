@@ -1,6 +1,46 @@
 #!/usr/bin/env python
 # coding: utf8
 
+def setup(**kwargs):
+    global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
+    setuptools.setup(
+        cmdclass = dict(build.cmdclass),
+        name = 'virtual-touchpad',
+        version = '.'.join(str(i) for i in INFO['version']),
+        description = ''
+            'Turns your mobile or tablet into a touchpad for your computer.',
+        long_description = README + '\n\n' + CHANGES,
+
+        install_requires = [
+            'bottle >=0.11',
+            'gevent >=0.13',
+            'gevent-websocket >=0.9'] + platform_requirements(),
+        setup_requires = [
+            'cssmin',
+            'slimit'],
+
+        author = INFO['author'],
+        author_email = 'moses.palmer@gmail.com',
+
+        url = 'https://github.com/moses-palmer/virtual-touchpad',
+
+        packages = setuptools.find_packages(
+            os.path.join(
+                os.path.dirname(__file__),
+                'lib'),
+            exclude = [
+                'build']),
+        package_dir = PACKAGE_DIR,
+        package_data = PACKAGE_DATA,
+        zip_safe = True,
+
+        license = 'GPLv3',
+        platforms = ['linux', 'windows'],
+        classifiers = [],
+
+        **kwargs)
+
+
 # Make sure we can import build
 import os
 import sys
@@ -55,47 +95,6 @@ def platform_requirements():
     return result
 
 
-def setup(**kwargs):
-    global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
-    setuptools.setup(
-        cmdclass = dict(build.cmdclass),
-        name = 'virtual-touchpad',
-        version = '.'.join(str(i) for i in INFO['version']),
-        description = ''
-            'Turns your mobile or tablet into a touchpad and keyboard for your '
-            'computer.',
-        long_description = README + '\n\n' + CHANGES,
-
-        install_requires = [
-            'bottle >=0.11',
-            'gevent >=0.13',
-            'gevent-websocket >=0.9'] + platform_requirements(),
-        setup_requires = [
-            'cssmin',
-            'slimit'],
-
-        author = INFO['author'],
-        author_email = 'moses.palmer@gmail.com',
-
-        url = 'https://github.com/moses-palmer/virtual-touchpad',
-
-        packages = setuptools.find_packages(
-            os.path.join(
-                os.path.dirname(__file__),
-                'lib'),
-            exclude = [
-                'build']),
-        package_dir = PACKAGE_DIR,
-        package_data = PACKAGE_DATA,
-        zip_safe = True,
-
-        license = 'GPLv3',
-        platforms = ['linux', 'windows'],
-        classifiers = [],
-
-        **kwargs)
-
-
 # Read globals from virtualtouchpad._info without loading it
 INFO = {}
 with open(os.path.join(
@@ -143,7 +142,7 @@ PACKAGE_DATA = {
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-
+# The directory in which HTML resources are located
 HTML_ROOT = os.path.join(
     os.path.dirname(__file__),
     'lib',
@@ -158,6 +157,7 @@ setup_arguments = {}
 @build.command
 class minify_index(setuptools.Command):
     description = 'minify index.xhtml'
+    user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
     def run(self):
@@ -185,7 +185,8 @@ class minify_index(setuptools.Command):
 
 @build.command
 class minify_help(setuptools.Command):
-    description = 'minify html.xhtml'
+    description = 'minify help.xhtml'
+    user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
     def run(self):
@@ -210,6 +211,7 @@ class minify_help(setuptools.Command):
 @build.command
 class generate_icons(setuptools.Command):
     description = 'generate web application icons from SVG sources'
+    user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
     def run(self):
@@ -273,7 +275,7 @@ if py2exe:
                                 'lib', 'virtualtouchpad', 'dispatchers'))
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
-        'scripts/virtualtouchpad-console-py']
+        'scripts/virtualtouchpad-console.py']
 
 
 setup(**setup_arguments)

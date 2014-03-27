@@ -96,7 +96,7 @@ class XSystemTrayIcon(object):
             The current X event.
         @raise StopIteration if e is an X.DestroyNotify event
         """
-        if e.type == X.DestroyNotify:
+        if e and e.type == X.DestroyNotify:
             raise StopIteration()
 
     def on_expose(self, e):

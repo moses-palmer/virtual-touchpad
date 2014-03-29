@@ -304,7 +304,8 @@ if py2exe:
                 'gevent.select',
                 'virtualtouchpad._platform._win',
                 'virtualtouchpad._platform.event._win',
-                'virtualtouchpad._platform.systray._win'] + [
+                'virtualtouchpad._platform.systray._win',
+                'virtualtouchpad._platform.systray._win.win32systray'] + [
                     'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
                         for m in os.listdir(
                             os.path.join(

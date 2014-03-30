@@ -17,11 +17,14 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
+import pkg_resources
 
-_root = os.path.dirname(__file__)
+_package, _subpackage = __package__.split('.', 1)
+_path = _subpackage.replace('.', os.path.sep)
 __all__ = [directory
-    for directory in os.listdir(_root)
-    if os.path.isdir(os.path.join(_root, directory)) and directory[0] != '_']
+    for directory in pkg_resources.resource_listdir(_package, _path)
+    if pkg_resources.resource_isdir(_package, os.path.join(_path, directory))
+        and directory[0] != '_']
 
 
 def _import_symbols(globals_dict, *candidates):

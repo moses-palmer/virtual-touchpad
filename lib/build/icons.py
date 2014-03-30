@@ -42,6 +42,22 @@ if CONVERT_COMMAND:
             raise RuntimeError('Failed to call convert: %s', stderr)
 
 
+    def combine(target, *icons):
+        """
+        Creates a combined ICO file.
+
+        @param target
+            The target icon.
+        @param icons
+            The icons to combine into one.
+        """
+        p = subprocess.Popen([CONVERT_COMMAND] + list(icons) + [target],
+            stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        if p.returncode != 0:
+            raise RuntimeError('Failed to call convert: %s', stderr)
+
+
 else:
     def convert(source, target, dimensions):
         """
@@ -49,6 +65,14 @@ else:
         """
         sys.stdout.write('Not converting %s to %s: ImageMagick is not installed'
             % (source, target) + '\n')
+
+
+    def combine(target, *icons):
+        """
+        A no-op placeholder function.
+        """
+        sys.stdout.write('Not combining %s to %s: ImageMagick is not installed'
+            % (', '.join(icons), target) + '\n')
 
 
 def app_icon(size, target_path):

@@ -16,28 +16,4 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import socket
-
-from argparse import ArgumentParser
-
-from . import main, systray
-
-def start():
-    parser = ArgumentParser(
-        description = ''
-            'Turns your mobile or tablet into a touchpad for your computer.')
-
-    parser.add_argument('--port',
-        type = int,
-        help = ''
-            'The port on which to listen',
-        default = 16080)
-
-    args = parser.parse_args()
-    icon = systray.create('Virtual Touchpad - http://%s:%d' % (
-        socket.gethostname(), args.port))
-    main(**vars(args)).serve_forever()
-    systray.destroy(icon)
-
-if __name__ == '__main__':
-    start()
+IDI_MAINICON = 1001

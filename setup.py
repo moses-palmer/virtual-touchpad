@@ -209,7 +209,7 @@ class minify_help(setuptools.Command):
 
 
 @build.command
-class generate_icons(setuptools.Command):
+class generate_webapp_icons(setuptools.Command):
     description = 'generate web application icons from SVG sources'
     user_options = []
     def initialize_options(self): pass
@@ -225,7 +225,41 @@ class generate_icons(setuptools.Command):
                     'icon%dx%d.png' % (size, size)))
 
 
+@build.command
+class generate_windows_icons(setuptools.Command):
+        description = 'generate Windows icons from SVG sources'
+        user_options = []
+        DIMENSIONS = (128, 64, 32, 16)
+        def initialize_options(self): pass
+        def finalize_options(self): pass
+        def run(self):
+            target_dir = os.path.join(
+                os.path.dirname(__file__),
+                'build',
+                'icos')
+            if not os.path.isdir(target_dir):
+                os.makedirs(target_dir)
+
+            # Generate the application icons
+            for size in self.DIMENSIONS:
+                build.icons.app_icon(
+                    size,
+                    os.path.join(
+                        target_dir,
+                        'icon%dx%d.ico' % (size, size)))
+            build.icons.combine(
+                os.path.join(
+                        target_dir,
+                        'icon-all.ico'),
+                *(os.path.join(
+                        target_dir,
+                        'icon%dx%d.ico' % (size, size))
+                    for size in self.DIMENSIONS))
+
+
 if py2exe:
+    import virtualtouchpad._platform._win as _win
+
     # Construct the data_files argument to setup from the package_data argument
     # value; py2exe does not support data files
     class py2exe_with_resources(py2exe.build_exe.py2exe):
@@ -268,6 +302,7 @@ if py2exe:
             'includes': [
                 'greenlet',
                 'gevent.select',
+                'virtualtouchpad._platform._win',
                 'virtualtouchpad._platform.event._win'] + [
                     'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
                         for m in os.listdir(
@@ -276,6 +311,10 @@ if py2exe:
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
         'scripts/virtualtouchpad-console.py']
+    setup_arguments['windows'] = [
+        {
+            'script': 'scripts/virtualtouchpad-gui.py',
+            'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
 try:

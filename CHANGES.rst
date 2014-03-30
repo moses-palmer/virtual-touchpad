@@ -5,6 +5,8 @@ Release Notes
 v0.9.2 - Fixed building on Windows
 ----------------------------------
   * Virtual Touchpad now supports zip-safe again
+  * The build script does not fail if ImageMagick convert is not the first
+    convert on the path
 
 
 v0.9.1 - Fixed systray window on Linux

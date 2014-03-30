@@ -3,13 +3,24 @@ import subprocess
 import sys
 
 
-try:
-    has_imagemagick = 'ImageMagick' in subprocess.check_output([
-        'convert', '--version'])
-except OSError:
-    has_imagemagick = False
+def _locate_convert():
+    """
+    Locates convert from ImageMagick.
 
-if has_imagemagick:
+    @return the path to convert, or None
+    """
+    for path in os.getenv('PATH').split(os.pathsep):
+        try:
+            full = os.path.join(path, 'convert')
+            if 'ImageMagick' in subprocess.check_output([full, '--version']):
+                return full
+        except:
+            pass
+
+
+CONVERT_COMMAND = _locate_convert()
+
+if CONVERT_COMMAND:
     def convert(source, target, dimensions):
         """
         Converts and resizes an image.
@@ -20,7 +31,7 @@ if has_imagemagick:
             The dimensions for the target image.
         @raise RuntimeError if the conversion fails
         """
-        p = subprocess.Popen(['convert',
+        p = subprocess.Popen([CONVERT_COMMAND,
             '-background', 'none',
             source,
             '-resize', 'x'.join(str(dimension) for dimension in dimensions),
@@ -29,6 +40,7 @@ if has_imagemagick:
         stdout, stderr = p.communicate()
         if p.returncode != 0:
             raise RuntimeError('Failed to call convert: %s', stderr)
+
 
 else:
     def convert(source, target, dimensions):

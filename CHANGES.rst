@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.9.2 - Fixed building on Windows
+----------------------------------
+  * Virtual Touchpad now supports zip-safe again
+
+
 v0.9.1 - Fixed systray window on Linux
 --------------------------------------
   * The systray window is no longer mapped on Linux

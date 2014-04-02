@@ -18,6 +18,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import sys
+import threading
 import win32api
 import win32con
 import win32gui_struct
@@ -86,6 +87,10 @@ class Win32SystemTrayIcon(object):
         self._icon = None
         self._window = None
         self._notify_id = None
+
+        self._thread = threading.Thread(target = self._mainloop)
+        self._thread.daemon  = True
+        self._thread.start()
 
     @property
     def icon(self):

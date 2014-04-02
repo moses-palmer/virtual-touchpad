@@ -64,6 +64,16 @@ class Win32SystemTrayIcon(object):
         win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, self.notify_id)
         self._notify_id = None
 
+    def _mainloop(self):
+        """
+        The main win32 event loop.
+
+        This is blocking, so it should be run in a separate thread.
+        """
+        self._add_icon()
+        win32gui.PumpMessages()
+        self._delete_icon()
+
     def __init__(self, description):
         """
         Creates a systray tray icon.

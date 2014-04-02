@@ -26,6 +26,8 @@ try:
 except ImportError:
     import win32gui
 
+import  virtualtouchpad._platform._win as _win
+
 
 class Win32SystemTrayIcon(object):
     def __init__(self, description):
@@ -37,4 +39,42 @@ class Win32SystemTrayIcon(object):
         """
         self._description = description
 
-        # TODO: Implement
+        self._icon = None
+
+    @property
+    def icon(self):
+        """The Win32 icon handle for the systray icon; the icon will be loaded
+        if has not yet been created"""
+        if self._icon:
+            return self._icon
+
+        # First try to load from the current EXE file, and then fall back on the
+        # build directory
+        instance = win32gui.GetModuleHandle(None)
+        try:
+            self._icon = win32gui.LoadImage(
+                instance,
+                _win.IDI_MAINICON,
+                win32con.IMAGE_ICON,
+                0,
+                0,
+                win32con.LR_DEFAULTSIZE)
+        except:
+            icon_path = os.path.join(
+                os.path.dirname(__file__),
+                os.path.pardir,
+                os.path.pardir,
+                os.path.pardir,
+                os.path.pardir,
+                os.path.pardir,
+                'build',
+                'icos',
+                'icon-all.ico')
+            self._icon = win32gui.LoadImage(
+                instance,
+                icon_path,
+                win32con.IMAGE_ICON,
+                0,
+                0,
+                win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
+        return self._icon

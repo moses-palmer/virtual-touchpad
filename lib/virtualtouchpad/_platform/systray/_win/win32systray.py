@@ -30,6 +30,8 @@ import  virtualtouchpad._platform._win as _win
 
 
 class Win32SystemTrayIcon(object):
+    WINDOW_CLASS_NAME = 'VirtualTouchpadWindow'
+
     def __init__(self, description):
         """
         Creates a systray tray icon.
@@ -40,6 +42,7 @@ class Win32SystemTrayIcon(object):
         self._description = description
 
         self._icon = None
+        self._window = None
 
     @property
     def icon(self):
@@ -78,3 +81,32 @@ class Win32SystemTrayIcon(object):
                 0,
                 win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
         return self._icon
+
+    @property
+    def window(self):
+        """The Win32 window to use as systray icon; the window will be created
+        when read unless already created"""
+        if self._window:
+            return self._window
+
+        # Register the window class
+        window_class = win32gui.WNDCLASS()
+        window_class.hInstance = win32gui.GetModuleHandle(None)
+        window_class.hIcon = self.icon
+        window_class.lpszClassName = self.WINDOW_CLASS_NAME
+        window_class.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW;
+        window_class.hCursor = win32gui.LoadCursor(0, win32con.IDC_ARROW)
+        window_class.hbrBackground = win32con.COLOR_WINDOW
+
+        # TODO: Create mapping from message to method
+        window_class.lpfnWndProc = {}
+        class_atom = win32gui.RegisterClass(window_class)
+
+        # Create the window
+        self._window = win32gui.CreateWindow(class_atom,
+            self.WINDOW_CLASS_NAME,
+            win32con.WS_OVERLAPPED | win32con.WS_SYSMENU, 0, 0,
+            win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT, 0, 0,
+            window_class.hInstance, None)
+
+        return self._window

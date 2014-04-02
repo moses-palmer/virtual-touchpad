@@ -52,6 +52,18 @@ class Win32SystemTrayIcon(object):
             self._description)
         win32gui.Shell_NotifyIcon(message, self._notify_id)
 
+    def _delete_icon(self):
+        """
+        Deletes a systray icon.
+
+        If the icon has not been added, this method has no effect.
+        """
+        if not self._notify_id:
+            return
+
+        win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, self.notify_id)
+        self._notify_id = None
+
     def __init__(self, description):
         """
         Creates a systray tray icon.
@@ -131,3 +143,9 @@ class Win32SystemTrayIcon(object):
             window_class.hInstance, None)
 
         return self._window
+
+    def destroy():
+        """
+        Removes the systray icon.
+        """
+        self._delete_icon()

@@ -32,6 +32,26 @@ import  virtualtouchpad._platform._win as _win
 class Win32SystemTrayIcon(object):
     WINDOW_CLASS_NAME = 'VirtualTouchpadWindow'
 
+    WM_NOTIFY = win32con.WM_USER + 20
+
+    def _add_icon(self):
+        """
+        Adds a systray icon.
+        """
+        if self._notify_id:
+            message = win32gui.NIM_MODIFY
+        else:
+            message = win32gui.NIM_ADD
+
+        self._notify_id = (
+            self.window,
+            0,
+            win32gui.NIF_ICON | win32gui.NIF_MESSAGE | win32gui.NIF_TIP,
+            self.WM_NOTIFY,
+            self.icon,
+            self._description)
+        win32gui.Shell_NotifyIcon(message, self._notify_id)
+
     def __init__(self, description):
         """
         Creates a systray tray icon.
@@ -43,6 +63,7 @@ class Win32SystemTrayIcon(object):
 
         self._icon = None
         self._window = None
+        self._notify_id = None
 
     @property
     def icon(self):

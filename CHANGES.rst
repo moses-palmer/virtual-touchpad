@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.10 - Systray on Windows
+--------------------------
+  * Added systray icon for Windows
+
+
 v0.9.2 - Fixed building on Windows
 ----------------------------------
   * Virtual Touchpad now supports zip-safe again

@@ -49,6 +49,25 @@ STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
     else None)
 
 
+@app.route('/translations/<domain>')
+def translations(domain):
+    accept_language = bottle.request.headers.get('Accept-Language') or 'default'
+    languages = sorted((
+        (
+            language.split(';')[0].strip(),
+            float(language.split(';q=')[1]) if ';q=' in language else 1.0)
+        for language in accept_language.split(',')),
+        key = lambda (l, q): q,
+        reverse = True) + [('default', 0.0)]
+
+    for language, q in languages:
+        path = os.path.join('translations', domain, language + '.js')
+        if static_file_exists(path):
+            return static_file(path)
+
+    return bottle.HTTPResponse(status = 404)
+
+
 @app.route('/ws')
 def handle_websocket():
     # Get the actual websocket

@@ -31,7 +31,8 @@ def _inline_script(e, source_dir, dom):
     # Only use script tags with src attribute
     if e.nodeType != Node.ELEMENT_NODE \
             or e.tagName != 'script' \
-            or not e.hasAttribute('src'):
+            or not e.hasAttribute('src') \
+            or e.getAttribute('x-no-inline') == 'true':
         return
 
     # Read the script source and inline it

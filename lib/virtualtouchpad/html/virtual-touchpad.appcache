@@ -3,4 +3,5 @@ CACHE MANIFEST
 CACHE:
     help.min.xhtml
     translations/index
+    translations/help
 

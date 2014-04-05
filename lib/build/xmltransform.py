@@ -25,6 +25,11 @@ def _remove_comments(e):
     if e.nodeType == Node.COMMENT_NODE and e.parentNode:
         e.parentNode.removeChild(e).unlink()
 
+def _clear_x_tr_values(e):
+    """Clears the values of x-tr attributes"""
+    if e.nodeType == Node.ELEMENT_NODE and e.hasAttribute('x-tr'):
+        e.setAttribute('x-tr', '')
+
 
 def _inline_script(e, source_dir, dom):
     """Inlines script tags"""
@@ -224,6 +229,9 @@ def minify_html(context):
 
     # Remove comments
     _recurse(dom.documentElement, _remove_comments)
+
+    # Clear x-tr attribute values
+    _recurse(dom.documentElement, _clear_x_tr_values)
 
     # Inline script tags
     _recurse(dom.documentElement, _inline_script,

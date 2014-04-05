@@ -267,7 +267,7 @@ def minify_html(context):
 
 
 def _add_manifest(e, manifest_file):
-    """Adds an AppCache manifest to e if it is a html element"""
+    """Adds an AppCache manifest to e if it is an html element"""
     # Only handle JavaScript elements
     if e.nodeType != Node.ELEMENT_NODE \
             or e.tagName != 'html':

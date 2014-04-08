@@ -2,4 +2,5 @@ CACHE MANIFEST
 # Version 0.10
 CACHE:
     help.min.xhtml
+    translations/index
 

@@ -10,6 +10,8 @@ def read_translatable_strings(path):
         The path to the file.
     @return a polib.POFile instance
     """
+    import polib
+
     def set_content_handler(dom_handler):
         def start_element_ns(name, tagName , attrs):
             orig_start_cb(name, tagName, attrs)
@@ -29,4 +31,10 @@ def read_translatable_strings(path):
 
     dom = parse(path, parser)
 
-    # TODO: Implement
+    pofile = polib.POFile(check_for_duplicates = True)
+    pofile.metadata['Content-Type'] = 'text/plain; charset=utf-8'
+    pofile.metadata['Content-Transfer-Encoding'] = '8bit'
+
+    # TODO: Extract translatable strings
+
+    return pofile

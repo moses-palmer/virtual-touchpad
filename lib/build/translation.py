@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 from xml.dom import Node
 from xml.dom.minidom import parse
 from xml.sax import make_parser
@@ -45,6 +48,34 @@ def _extract_x_tr(e, pofile, path):
             occurrences = [(path, e.parse_position[0])]))
 
 
+def _extract_javascript(e, pofile, path):
+    """Extracts translatable strings from JavaScript files"""
+    import polib
+
+    # Only use script tags with src attribute
+    if e.nodeType != Node.ELEMENT_NODE \
+            or e.tagName != 'script' \
+            or not e.hasAttribute('src') \
+            or e.getAttribute('x-no-inline') == 'true':
+        return
+
+    # Extract and merge messages; use the C# parser to support _('string '
+    # + 'concatenation')
+    podata = subprocess.check_output(['xgettext',
+        os.path.join(
+            os.path.dirname(path),
+            e.getAttribute('src')),
+        '--add-comments',
+        '--from-code=utf-8',
+        '--language=C#',
+        '--keyword=_',
+        '--keyword=_N:1,2',
+        '--output=-'])
+    if podata:
+        for entry in polib.pofile(podata):
+            _add_entry(pofile, entry)
+
+
 def read_translatable_strings(path):
     """
     Reads all translatable strings from an XHTML file.
@@ -86,6 +117,8 @@ def read_translatable_strings(path):
     _recurse(dom, _extract_x_tr,
         pofile = pofile, path = path)
 
-    # TODO: Extract messages from JavaScript
+    # Extract messages from JavaScript
+    _recurse(dom, _extract_javascript,
+        pofile = pofile, path = path)
 
     return pofile

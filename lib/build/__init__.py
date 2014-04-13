@@ -19,6 +19,19 @@ def command(c):
 
     return c
 
+def utility(c):
+    """
+    Registers a Command class as a build subcommand.
+
+    @param c
+        The class to use as a build sub command.
+    """
+    global cmdclass
+    cmdclass[c.__name__] = c
+    c.__build_ignore = True
+
+    return c
+
 def _register_commands():
     """
     Registers overrides for built in build commands.

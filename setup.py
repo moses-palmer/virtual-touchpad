@@ -154,6 +154,53 @@ HTML_ROOT = os.path.join(
 # Arguments passed to setup
 setup_arguments = {}
 
+@build.utility
+class xgettext(setuptools.Command):
+    description = 'update the POT files'
+    user_options = []
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        import subprocess
+
+        source_dir = HTML_ROOT
+        target_dir = os.path.join(
+            os.path.dirname(__file__),
+            'po')
+
+        for path in os.listdir(source_dir):
+            # Only handle XHTML files
+            if not path.endswith('.xhtml'):
+                continue
+
+            # Extract the text domain, and ignore minified files
+            domain = path.rsplit('.', 1)[0]
+            if domain.endswith('.min'):
+                continue
+            domain_path = os.path.join(target_dir, domain)
+
+            potfile = os.path.join(target_dir, domain + '.pot')
+
+            # Extract the messages and save the POT file
+            full_path = os.path.join(source_dir, path)
+            messages = build.translation.read_translatable_strings(full_path)
+            messages.save(potfile)
+
+            # Make sure that the translation directory exists
+            try:
+                os.makedirs(domain_path)
+            except OSError:
+                pass
+
+            # Update the old translations
+            for f in os.listdir(domain_path):
+                if not f.endswith('.po'):
+                    continue
+
+                pofile = os.path.join(target_dir, domain, f)
+
+                build.translation.merge_catalogs(potfile, pofile)
+
 
 @build.command
 class minify_index(setuptools.Command):

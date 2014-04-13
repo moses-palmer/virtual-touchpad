@@ -1,5 +1,48 @@
+from xml.dom import Node
 from xml.dom.minidom import parse
 from xml.sax import make_parser
+
+from .xmltransform import _recurse
+
+def _add_entry(pofile, entry):
+    """
+    Adds a new PO entry to a PO file.
+
+    If the message is already present in the pofile, it is updated by extending
+    the comment and adding a new location.
+
+    @param pofile
+        The PO file to modify.
+    @param entry
+        The entry.
+    """
+    try:
+        pofile.append(entry)
+    except ValueError:
+        # This is caused by duplicate strings; try to merge them
+        other = pofile.find(entry.msgid)
+        other.comment += '\n' + entry.comment
+        other.occurrences += entry.occurrences
+
+
+def _extract_x_tr(e, pofile, path):
+    """Extracts all text nodes whose parent element has the x-tr attribute"""
+    import polib
+
+    if e.nodeType != Node.ELEMENT_NODE or not e.hasAttribute('x-tr'):
+        return
+
+    # Make sure that the elements has exactly one child node, and that it is a
+    # text node
+    if e.childNodes.length != 1 or e.firstChild.nodeType != Node.TEXT_NODE:
+        raise RuntimeError('Invalid use of x-tr attribute: %s', e.toxml())
+
+    _add_entry(
+        pofile,
+        polib.POEntry(
+            comment = e.getAttribute('x-tr'),
+            msgid = ' '.join(e.firstChild.nodeValue.split()),
+            occurrences = [(path, e.parse_position[0])]))
 
 
 def read_translatable_strings(path):
@@ -35,6 +78,14 @@ def read_translatable_strings(path):
     pofile.metadata['Content-Type'] = 'text/plain; charset=utf-8'
     pofile.metadata['Content-Transfer-Encoding'] = '8bit'
 
-    # TODO: Extract translatable strings
+    # Normalise the XML
+    _recurse(dom,
+        lambda e: e.normalize())
+
+    # Extract all inlined translatable strings
+    _recurse(dom, _extract_x_tr,
+        pofile = pofile, path = path)
+
+    # TODO: Extract messages from JavaScript
 
     return pofile

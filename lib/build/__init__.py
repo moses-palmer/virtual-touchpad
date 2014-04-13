@@ -68,4 +68,5 @@ with open(os.path.join(
 
 
 from . import icons
+from . import translation
 from . import xmltransform

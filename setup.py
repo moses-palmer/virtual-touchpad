@@ -258,6 +258,79 @@ class generate_windows_icons(setuptools.Command):
                     for size in self.DIMENSIONS))
 
 
+@build.command
+class generate_translations(setuptools.Command):
+    description = 'generate translation catalogues from PO files'
+    user_options = []
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        import json
+        import polib
+
+        source_dir = os.path.join(
+            os.path.dirname(__file__),
+            'po')
+        target_dir = os.path.join(
+            os.path.dirname(__file__),
+            'lib',
+            'virtualtouchpad',
+            'html',
+            'translations')
+
+        for domain in os.listdir(source_dir):
+            # Only handle directories under the source directory
+            domain_path = os.path.join(source_dir, domain)
+            if not os.path.isdir(domain_path):
+                continue
+
+            for language in os.listdir(domain_path):
+                # Load the PO file
+                language_path = os.path.join(domain_path, language)
+                if not language_path.endswith('.po'):
+                    continue;
+                pofile = polib.pofile(language_path)
+
+                # Extract interesting meta data
+                code = pofile.metadata['Language']
+                plurals = {key.strip(): value.strip()
+                    for (key, value) in (
+                        keyvalue.split('=', 1)
+                        for keyvalue in pofile.metadata[
+                            'Plural-Forms'].split(';')
+                        if keyvalue)
+                    }
+
+                # Create the catalogue skeleton
+                texts = {}
+                catalog = {}
+                catalog['code'] = code
+                catalog['plural'] = plurals['plural']
+                catalog['texts'] = texts
+
+                # Populate the catalogue from the PO file
+                for entry in pofile:
+                    if entry.msgid_plural:
+                        # If this is a plural string, we first create a list of
+                        # empty strings and then populate it
+                        texts[entry.msgid] = [''] * int(
+                            plurals['nplurals'])
+                        for n, msgstr in entry.msgstr_plural.items():
+                            texts[entry.msgid][int(n)] = msgstr
+
+                    else:
+                        # If this is non-plural string, we simply copy it
+                        texts[entry.msgid] = entry.msgstr
+
+                # Write the catalogue as JavaScript code
+                with open(os.path.join(
+                        target_dir,
+                        domain,
+                        code + '.js'), 'w') as f:
+                    f.write('exports.translation.catalog=')
+                    json.dump(catalog, f)
+
+
 if py2exe:
     import virtualtouchpad._platform._win as _win
 

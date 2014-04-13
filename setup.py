@@ -275,34 +275,34 @@ class generate_webapp_icons(setuptools.Command):
 
 @build.command
 class generate_windows_icons(setuptools.Command):
-        description = 'generate Windows icons from SVG sources'
-        user_options = []
-        DIMENSIONS = (128, 64, 32, 16)
-        def initialize_options(self): pass
-        def finalize_options(self): pass
-        def run(self):
-            target_dir = os.path.join(
-                os.path.dirname(__file__),
-                'build',
-                'icos')
-            if not os.path.isdir(target_dir):
-                os.makedirs(target_dir)
+    description = 'generate Windows icons from SVG sources'
+    user_options = []
+    DIMENSIONS = (128, 64, 32, 16)
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        target_dir = os.path.join(
+            os.path.dirname(__file__),
+            'build',
+            'icos')
+        if not os.path.isdir(target_dir):
+            os.makedirs(target_dir)
 
-            # Generate the application icons
-            for size in self.DIMENSIONS:
-                build.icons.app_icon(
-                    size,
-                    os.path.join(
-                        target_dir,
-                        'icon%dx%d.ico' % (size, size)))
-            build.icons.combine(
+        # Generate the application icons
+        for size in self.DIMENSIONS:
+            build.icons.app_icon(
+                size,
                 os.path.join(
-                        target_dir,
-                        'icon-all.ico'),
-                *(os.path.join(
-                        target_dir,
-                        'icon%dx%d.ico' % (size, size))
-                    for size in self.DIMENSIONS))
+                    target_dir,
+                    'icon%dx%d.ico' % (size, size)))
+        build.icons.combine(
+            os.path.join(
+                    target_dir,
+                    'icon-all.ico'),
+            *(os.path.join(
+                    target_dir,
+                    'icon%dx%d.ico' % (size, size))
+                for size in self.DIMENSIONS))
 
 
 @build.command

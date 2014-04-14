@@ -5,6 +5,7 @@ Release Notes
 v0.11 - Translations
 --------------------
   * VirtualTouchpad can now be translated into other languages
+  * Added Swedish translation
 
 
 v0.10 - Systray on Windows

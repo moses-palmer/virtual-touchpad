@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.11 - Translations
+--------------------
+  * VirtualTouchpad can now be translated into other languages
+
+
 v0.10 - Systray on Windows
 --------------------------
   * Added systray icon for Windows

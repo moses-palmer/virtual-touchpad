@@ -25,13 +25,19 @@ def _remove_comments(e):
     if e.nodeType == Node.COMMENT_NODE and e.parentNode:
         e.parentNode.removeChild(e).unlink()
 
+def _clear_x_tr_values(e):
+    """Clears the values of x-tr attributes"""
+    if e.nodeType == Node.ELEMENT_NODE and e.hasAttribute('x-tr'):
+        e.setAttribute('x-tr', '')
+
 
 def _inline_script(e, source_dir, dom):
     """Inlines script tags"""
     # Only use script tags with src attribute
     if e.nodeType != Node.ELEMENT_NODE \
             or e.tagName != 'script' \
-            or not e.hasAttribute('src'):
+            or not e.hasAttribute('src') \
+            or e.getAttribute('x-no-inline') == 'true':
         return
 
     # Read the script source and inline it
@@ -223,6 +229,9 @@ def minify_html(context):
 
     # Remove comments
     _recurse(dom.documentElement, _remove_comments)
+
+    # Clear x-tr attribute values
+    _recurse(dom.documentElement, _clear_x_tr_values)
 
     # Inline script tags
     _recurse(dom.documentElement, _inline_script,

@@ -1,6 +1,30 @@
 #!/usr/bin/env python
 # coding: utf8
 
+import os
+
+
+# Data for the package; this will not be evaluated until the build steps have
+# completed
+PACKAGE_DATA = {
+    'virtualtouchpad': [
+        'html/*.*',
+        'html/css/*.*',
+        'html/img/*.*',
+        'html/js/*.*']}
+
+# The directories in which the packages can be found
+PACKAGE_DIR = {
+    'virtualtouchpad': 'lib/virtualtouchpad'}
+
+# The directory in which HTML resources are located
+HTML_ROOT = os.path.join(
+    os.path.dirname(__file__),
+    'lib',
+    'virtualtouchpad',
+    'html')
+
+
 def setup(**kwargs):
     global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
     setuptools.setup(
@@ -43,7 +67,6 @@ def setup(**kwargs):
 
 
 # Make sure we can import build
-import os
 import sys
 sys.path.append(os.path.join(
     os.path.dirname(__file__),
@@ -128,27 +151,6 @@ try:
 except IOError:
     README = ''
     CHANGES = ''
-
-
-# Data for the package; this will not be evaluated until the build steps have
-# completed
-PACKAGE_DATA = {
-    'virtualtouchpad': [
-        'html/*.*',
-        'html/css/*.*',
-        'html/img/*.*',
-        'html/js/*.*']}
-
-# The directories in which the packages can be found
-PACKAGE_DIR = {
-    'virtualtouchpad': 'lib/virtualtouchpad'}
-
-# The directory in which HTML resources are located
-HTML_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    'lib',
-    'virtualtouchpad',
-    'html')
 
 
 # Arguments passed to setup
@@ -275,34 +277,34 @@ class generate_webapp_icons(setuptools.Command):
 
 @build.command
 class generate_windows_icons(setuptools.Command):
-        description = 'generate Windows icons from SVG sources'
-        user_options = []
-        DIMENSIONS = (128, 64, 32, 16)
-        def initialize_options(self): pass
-        def finalize_options(self): pass
-        def run(self):
-            target_dir = os.path.join(
-                os.path.dirname(__file__),
-                'build',
-                'icos')
-            if not os.path.isdir(target_dir):
-                os.makedirs(target_dir)
+    description = 'generate Windows icons from SVG sources'
+    user_options = []
+    DIMENSIONS = (128, 64, 32, 16)
+    def initialize_options(self): pass
+    def finalize_options(self): pass
+    def run(self):
+        target_dir = os.path.join(
+            os.path.dirname(__file__),
+            'build',
+            'icos')
+        if not os.path.isdir(target_dir):
+            os.makedirs(target_dir)
 
-            # Generate the application icons
-            for size in self.DIMENSIONS:
-                build.icons.app_icon(
-                    size,
-                    os.path.join(
-                        target_dir,
-                        'icon%dx%d.ico' % (size, size)))
-            build.icons.combine(
+        # Generate the application icons
+        for size in self.DIMENSIONS:
+            build.icons.app_icon(
+                size,
                 os.path.join(
-                        target_dir,
-                        'icon-all.ico'),
-                *(os.path.join(
-                        target_dir,
-                        'icon%dx%d.ico' % (size, size))
-                    for size in self.DIMENSIONS))
+                    target_dir,
+                    'icon%dx%d.ico' % (size, size)))
+        build.icons.combine(
+            os.path.join(
+                    target_dir,
+                    'icon-all.ico'),
+            *(os.path.join(
+                    target_dir,
+                    'icon%dx%d.ico' % (size, size))
+                for size in self.DIMENSIONS))
 
 
 @build.command

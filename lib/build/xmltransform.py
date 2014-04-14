@@ -14,16 +14,16 @@ def _recurse(e, callback, **kwargs):
 
 
 def _trim(e):
-    """Trims whitespace from start and end of text nodes; CDATA nodes are not
-    modified"""
+    """Trims extra whitespace of text nodes; CDATA nodes are not modified"""
     if e.nodeType == Node.TEXT_NODE:
-        e.nodeValue = e.nodeValue.strip()
+        e.nodeValue = ' '.join(e.nodeValue.split())
 
 
 def _remove_comments(e):
     """Removes comment nodes"""
     if e.nodeType == Node.COMMENT_NODE and e.parentNode:
         e.parentNode.removeChild(e).unlink()
+
 
 def _clear_x_tr_values(e):
     """Clears the values of x-tr attributes"""
@@ -267,7 +267,7 @@ def minify_html(context):
 
 
 def _add_manifest(e, manifest_file):
-    """Adds an AppCache manifest to e if it is a html element"""
+    """Adds an AppCache manifest to e if it is an html element"""
     # Only handle JavaScript elements
     if e.nodeType != Node.ELEMENT_NODE \
             or e.tagName != 'html':

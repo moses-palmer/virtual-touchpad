@@ -14,10 +14,9 @@ def _recurse(e, callback, **kwargs):
 
 
 def _trim(e):
-    """Trims whitespace from start and end of text nodes; CDATA nodes are not
-    modified"""
+    """Trims extra whitespace of text nodes; CDATA nodes are not modified"""
     if e.nodeType == Node.TEXT_NODE:
-        e.nodeValue = e.nodeValue.strip()
+        e.nodeValue = ' '.join(e.nodeValue.split())
 
 
 def _remove_comments(e):

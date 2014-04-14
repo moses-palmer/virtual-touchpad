@@ -122,3 +122,19 @@ def read_translatable_strings(path):
         pofile = pofile, path = path)
 
     return pofile
+
+
+def merge_catalogs(template, catalog):
+    """
+    Merges all new messages from a template with a translation catalogue.
+
+    @param template
+        The POT file path.
+    @param catalog
+        The PO file path.
+    """
+    subprocess.call(['msgmerge',
+        '--update',
+        '--sort-by-file',
+        catalog,
+        template])

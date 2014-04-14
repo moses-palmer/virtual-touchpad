@@ -17,6 +17,7 @@ def setup(**kwargs):
             'gevent-websocket >=0.9'] + platform_requirements(),
         setup_requires = [
             'cssmin',
+            'polib >=1.0.4',
             'slimit'],
 
         author = INFO['author'],

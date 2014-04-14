@@ -1,0 +1,89 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2014-04-14 22:45+0100\n"
+"Last-Translator: Moses Palmér <moses.palmer@gmail.com>\n"
+"Language-Team: Language sv\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"POT-Creation-Date: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 36
+#. Header
+#: lib/virtualtouchpad/html/help.xhtml:36
+msgid "How do I click?"
+msgstr "Hur klickar jag?"
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 37
+#. Answer to 'How do I click?'
+#: lib/virtualtouchpad/html/help.xhtml:37
+msgid "Simply tap on the virtual touchpad on your device."
+msgstr "Knacka på skärmen på din enhet."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 41
+#. Header
+#: lib/virtualtouchpad/html/help.xhtml:41
+msgid "How do I drag-and-drop?"
+msgstr "Hur drar-och-släpper jag?"
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 42
+#. Answer to 'How do I drag-and-drop?'
+#: lib/virtualtouchpad/html/help.xhtml:42
+msgid ""
+"Start the drag-and-drop operation by tapping once, and then immediately "
+"tapping again, quickly followed by dragging."
+msgstr ""
+"Börja att dra-och-släppa genom att knacka en gång och sedan direkt knacka "
+"och dra igen."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 46
+#. Answer to 'How do I drag-and-drop?'
+#: lib/virtualtouchpad/html/help.xhtml:46
+msgid "Stop the drag-and-drop operation by tapping once."
+msgstr "Sluta dra-och-släppa genom att knacka en gång till."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 50
+#. Header
+#: lib/virtualtouchpad/html/help.xhtml:50
+msgid "How do I hide the address bar?"
+msgstr "Hur gömmer jag webbläsarens adressfält?"
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 52
+#. Answer to 'How do I hide the address bar?'
+#: lib/virtualtouchpad/html/help.xhtml:52
+msgid ""
+"The address bar is hidden when in fullscreen mode. Tap the fullscreen button "
+"to activate it."
+msgstr ""
+"Adressfältet döljs i fullskärmsläge. Knacka på fullskärmsknappen för att "
+"aktivera det."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 56
+#. Answer to 'How do I hide the address bar?'
+#: lib/virtualtouchpad/html/help.xhtml:56
+msgid "Tap it again to return."
+msgstr "Knacka igen för att återgå."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 59
+#. Answer to 'How do I hide the address bar?'
+#: lib/virtualtouchpad/html/help.xhtml:59
+msgid ""
+"On iOS, the address bar will also be hidden if you install Virtual Touchpad "
+"to your home screen."
+msgstr ""
+"På IOS försvinner adressfältet dessutom om du installerar Virtual Touchpad "
+"på hemskärmen."

@@ -16,12 +16,4 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import win32systray
-
-
-def create(description):
-    return win32systray.Win32SystemTrayIcon(description)
-
-
-def destroy(context):
-    context.destroy()
+from win32systray import *

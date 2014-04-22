@@ -80,17 +80,37 @@ def _import_symbols(globals_dict, *candidates):
                 'error in %s: symbol <%s> must not be global',
                 driver.__name__, name)
 
+        # If the symbol is callable, we need a reference from which to retrieve
+        # an argument specification
+        if inspect.isclass(value):
+            callable_value = value.__init__
+            old_callable_value = old_value.__init__
+        elif inspect.isfunction:
+            callable_value = value
+            old_callable_value = old_value
+        else:
+            callable_value = None
+            old_callable_value = None
+
         # If the symbol is callable, the function signatures must match
-        if callable(value):
-            argspec = inspect.getargspec(value)
-            old_argspec = inspect.getargspec(old_value)
+        if callable(callable_value):
+            argspec = inspect.getargspec(callable_value)
+            old_argspec = inspect.getargspec(old_callable_value)
             if argspec != old_argspec:
                 raise ImportError(
                     'error in %s: invalid method signature for <%s>',
                     driver.__name__, name)
 
+        # Try to expand the documentation
+        try:
+            if value.__doc__:
+                value.__doc__ +=  '\n\n' + old_value.__doc__
+            else:
+                value.__doc__ =  old_value.__doc__
+        except AttributeError:
+            pass
+
         # Replace the global
-        value.__doc__ = old_value.__doc__
         globals_dict[name] = value
 
 

@@ -34,10 +34,9 @@ def start():
         default = 16080)
 
     args = parser.parse_args()
-    icon = systray.create('Virtual Touchpad - http://%s:%d' % (
+    icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         socket.gethostname(), args.port))
     main(**vars(args)).serve_forever()
-    systray.destroy(icon)
 
 if __name__ == '__main__':
     start()

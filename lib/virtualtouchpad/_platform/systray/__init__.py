@@ -17,26 +17,24 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 
-def create(description):
+class SystemTrayIcon(object):
     """
-    Creates a systray icon with a text.
-
-    @param description
-        The text used to describe the systray icon.
-    @return a context
+    An object representing a system tray icon.
     """
-    raise NotImplementedError()
 
+    def __init__(self, description):
+        """
+        Creates a new system tray icon.
 
-def destroy(context):
-    """
-    Deletes a systray icon
+        @param description
+            The short description of this system tray icon.
+        """
+        self._description = description
 
-    @param context
-        The context returned by systray_create
-    @see create
-    """
-    raise NotImplementedError()
+    @property
+    def description(self):
+        """The short description of this system tray icon"""
+        return self._description
 
 
 from .. import _import_symbols

@@ -16,12 +16,4 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import xsystray
-
-
-def create(description):
-    return xsystray.XSystemTrayIcon(description)
-
-
-def destroy(context):
-    context.destroy()
+from xsystray import *

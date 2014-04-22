@@ -27,10 +27,11 @@ try:
 except ImportError:
     import win32gui
 
-import  virtualtouchpad._platform._win as _win
+from .. import SystemTrayIcon
+import virtualtouchpad._platform._win as _win
 
 
-class Win32SystemTrayIcon(object):
+class SystemTrayIcon(SystemTrayIcon):
     WINDOW_CLASS_NAME = 'VirtualTouchpadWindow'
 
     WM_NOTIFY = win32con.WM_USER + 20
@@ -82,7 +83,7 @@ class Win32SystemTrayIcon(object):
         @param description
             A descriptive text to apply to the icon.
         """
-        self._description = description
+        super(SystemTrayIcon, self).__init__(description)
 
         self._icon = None
         self._window = None
@@ -91,6 +92,9 @@ class Win32SystemTrayIcon(object):
         self._thread = threading.Thread(target = self._mainloop)
         self._thread.daemon  = True
         self._thread.start()
+
+    def __del__(self):
+        self.destroy()
 
     @property
     def icon(self):

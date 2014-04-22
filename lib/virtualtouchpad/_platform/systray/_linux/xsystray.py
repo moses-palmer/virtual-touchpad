@@ -168,6 +168,9 @@ class SystemTrayIcon(SystemTrayIcon):
         self._thread.daemon  = True
         self._thread.start()
 
+    def __del__(self):
+        self.destroy()
+
     @property
     def display(self):
         """The X display as a context manager that will collect X errors on exit

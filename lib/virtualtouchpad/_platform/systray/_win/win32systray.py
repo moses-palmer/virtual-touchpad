@@ -31,7 +31,7 @@ from .. import SystemTrayIcon
 import virtualtouchpad._platform._win as _win
 
 
-class Win32SystemTrayIcon(SystemTrayIcon):
+class SystemTrayIcon(SystemTrayIcon):
     WINDOW_CLASS_NAME = 'VirtualTouchpadWindow'
 
     WM_NOTIFY = win32con.WM_USER + 20

@@ -20,7 +20,7 @@ import xsystray
 
 
 def create(description):
-    return xsystray.XSystemTrayIcon(description)
+    return xsystray.SystemTrayIcon(description)
 
 
 def destroy(context):

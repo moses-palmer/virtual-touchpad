@@ -26,7 +26,7 @@ from .. import SystemTrayIcon
 from virtualtouchpad._platform._linux import *
 
 
-class XSystemTrayIcon(SystemTrayIcon):
+class SystemTrayIcon(SystemTrayIcon):
     _XEMBED_INFO = '_XEMBED_INFO'
     XEMBED_VERSION = 0
     XEMBED_MAPPED = 1

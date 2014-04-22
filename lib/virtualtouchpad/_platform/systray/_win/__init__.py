@@ -20,7 +20,7 @@ import win32systray
 
 
 def create(description):
-    return win32systray.Win32SystemTrayIcon(description)
+    return win32systray.SystemTrayIcon(description)
 
 
 def destroy(context):

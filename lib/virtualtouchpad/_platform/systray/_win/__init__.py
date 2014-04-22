@@ -17,11 +17,3 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from win32systray import *
-
-
-def create(description):
-    return win32systray.SystemTrayIcon(description)
-
-
-def destroy(context):
-    context.destroy()

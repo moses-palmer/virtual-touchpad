@@ -37,27 +37,5 @@ class SystemTrayIcon(object):
         return self._description
 
 
-def create(description):
-    """
-    Creates a systray icon with a text.
-
-    @param description
-        The text used to describe the systray icon.
-    @return a context
-    """
-    raise NotImplementedError()
-
-
-def destroy(context):
-    """
-    Deletes a systray icon
-
-    @param context
-        The context returned by systray_create
-    @see create
-    """
-    raise NotImplementedError()
-
-
 from .. import _import_symbols
 _import_symbols(globals())

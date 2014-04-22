@@ -17,11 +17,3 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from xsystray import *
-
-
-def create(description):
-    return xsystray.SystemTrayIcon(description)
-
-
-def destroy(context):
-    context.destroy()

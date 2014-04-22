@@ -17,6 +17,26 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 
+class SystemTrayIcon(object):
+    """
+    An object representing a system tray icon.
+    """
+
+    def __init__(self, description):
+        """
+        Creates a new system tray icon.
+
+        @param description
+            The short description of this system tray icon.
+        """
+        self._description = description
+
+    @property
+    def description(self):
+        """The short description of this system tray icon"""
+        return self._description
+
+
 def create(description):
     """
     Creates a systray icon with a text.

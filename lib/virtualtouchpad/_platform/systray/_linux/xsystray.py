@@ -22,10 +22,11 @@ import threading
 
 import PIL.Image
 
+from .. import SystemTrayIcon
 from virtualtouchpad._platform._linux import *
 
 
-class XSystemTrayIcon(object):
+class XSystemTrayIcon(SystemTrayIcon):
     _XEMBED_INFO = '_XEMBED_INFO'
     XEMBED_VERSION = 0
     XEMBED_MAPPED = 1
@@ -149,7 +150,8 @@ class XSystemTrayIcon(object):
         @param description
             A descriptive text to apply to the icon.
         """
-        self._description = description
+        super(SystemTrayIcon, self).__init__(description)
+
         self._display = None
         self._window = None
 

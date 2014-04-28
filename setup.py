@@ -38,7 +38,8 @@ def setup(**kwargs):
         install_requires = [
             'bottle >=0.11',
             'gevent >=0.13',
-            'gevent-websocket >=0.9'] + platform_requirements(),
+            'gevent-websocket >=0.9',
+            'netifaces >=0.8'] + platform_requirements(),
         setup_requires = [
             'cssmin',
             'polib >=1.0.4',

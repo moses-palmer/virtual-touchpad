@@ -39,11 +39,16 @@ def setup(**kwargs):
             'bottle >=0.11',
             'gevent >=0.13',
             'gevent-websocket >=0.9',
-            'netifaces >=0.8'] + platform_requirements(),
+            'netifaces >=0.8',
+            'pyzeroconf >=0.12.3'] + platform_requirements(),
         setup_requires = [
             'cssmin',
             'polib >=1.0.4',
             'slimit'],
+
+        dependency_links = [
+            'http://github.com/weijia/pyzeroconf/tarball/976e133'
+            '#egg=pyzeroconf-0.12.3'],
 
         author = INFO['author'],
         author_email = 'moses.palmer@gmail.com',

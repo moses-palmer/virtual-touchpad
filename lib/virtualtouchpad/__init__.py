@@ -21,7 +21,6 @@ from ._info import *
 from ._platform import *
 
 import gevent
-from gevent import monkey; monkey.patch_all(thread = False)
 
 import bottle
 import geventwebsocket
@@ -205,6 +204,7 @@ def main(port = 16080):
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         socket.gethostname(), port))
 
+    from gevent import monkey; monkey.patch_all(thread = False)
     return gevent.pywsgi.WSGIServer(
         (host, port),
         app,

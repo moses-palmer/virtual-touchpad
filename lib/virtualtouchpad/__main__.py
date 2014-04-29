@@ -71,6 +71,8 @@ def _get_bind_info():
 
 
 def start():
+    from . import announce
+
     parser = ArgumentParser(
         description = ''
             'Turns your mobile or tablet into a touchpad for your computer.')
@@ -95,7 +97,11 @@ def start():
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         args.address[0], args.port))
 
-    main(**vars(args)).serve_forever()
+    announcer = announce.announce(args.address[1], args.port)
+    try:
+        main(**vars(args)).serve_forever()
+    finally:
+        announcer.unregister()
 
 if __name__ == '__main__':
     try:

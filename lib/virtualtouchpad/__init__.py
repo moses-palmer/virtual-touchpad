@@ -18,10 +18,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 from ._info import *
 
-from _platform import *
+from ._platform import *
 
 import gevent
-from gevent import monkey; monkey.patch_all(thread = False)
 
 import bottle
 import geventwebsocket
@@ -193,18 +192,19 @@ if static_file_exists(MINIFIED_XHTML):
         return static(MINIFIED_XHTML)
 
 
-def main(port = 16080):
+def main(port, address):
     global app
 
     import gevent.pywsgi
     import geventwebsocket
-    import socket
     import sys
 
-    host = "0.0.0.0"
-    sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        socket.gethostname(), port))
+    name, host = address
 
+    sys.stdout.write('Starting server http://%s:%d/...\n' % (
+        name, port))
+
+    from gevent import monkey; monkey.patch_all(thread = False)
     return gevent.pywsgi.WSGIServer(
         (host, port),
         app,

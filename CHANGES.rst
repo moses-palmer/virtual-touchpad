@@ -2,6 +2,11 @@ Release Notes
 =============
 
 
+v0.12 - Announce service
+------------------------
+  * VirtualTouchpad now broadcasts its presence on the network using mDNS
+
+
 v0.11 - Translations
 --------------------
   * VirtualTouchpad can now be translated into other languages

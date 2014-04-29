@@ -192,7 +192,7 @@ if static_file_exists(MINIFIED_XHTML):
         return static(MINIFIED_XHTML)
 
 
-def main(port = 16080):
+def main(port):
     global app
 
     import gevent.pywsgi

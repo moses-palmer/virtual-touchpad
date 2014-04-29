@@ -18,7 +18,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 import socket
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Action
 
 from . import main, systray
 
@@ -33,9 +33,20 @@ def start():
             'The port on which to listen',
         default = 16080)
 
+    class AddressAction(Action):
+        def __call__(self, parser, namespace, value, option_string = None):
+            setattr(namespace, self.dest, (value, value))
+    parser.add_argument('--address',
+        type = str,
+        help = ''
+            'The IP address on which to listen',
+        default = (socket.gethostname(), '0.0.0.0'),
+        action = AddressAction)
+
     args = parser.parse_args()
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
-        socket.gethostname(), args.port))
+        args.address[0], args.port))
+
     main(**vars(args)).serve_forever()
 
 if __name__ == '__main__':

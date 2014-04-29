@@ -192,7 +192,7 @@ if static_file_exists(MINIFIED_XHTML):
         return static(MINIFIED_XHTML)
 
 
-def main(port):
+def main(port, address):
     global app
 
     import gevent.pywsgi
@@ -200,9 +200,10 @@ def main(port):
     import socket
     import sys
 
-    host = "0.0.0.0"
+    name, host = address
+
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        socket.gethostname(), port))
+        name, port))
 
     from gevent import monkey; monkey.patch_all(thread = False)
     return gevent.pywsgi.WSGIServer(

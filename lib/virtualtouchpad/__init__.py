@@ -197,7 +197,6 @@ def main(port, address):
 
     import gevent.pywsgi
     import geventwebsocket
-    import socket
     import sys
 
     name, host = address

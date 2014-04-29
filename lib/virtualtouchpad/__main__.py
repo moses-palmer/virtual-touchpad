@@ -22,6 +22,54 @@ from argparse import ArgumentParser, Action
 
 from . import main, systray
 
+
+def _get_bind_info():
+    """
+    Returns the name of the host and IP address to use as the tuple
+    (name, address).
+
+    The one returned is the one most likely on a LAN.
+
+    If no probable match is found, the tuple (socket.gethostname(), '0.0.0.0')
+    is returned.
+
+    @return the tuple (name, address)
+    """
+    import netifaces
+
+    # Get all interfaces
+    interfaces = {interface: netifaces.ifaddresses(interface)
+        for interface in netifaces.interfaces()}
+
+    # Get all IPv4 interfaces
+    interfaces4 = {key: value[netifaces.AF_INET]
+        for key, value in interfaces.items()
+        if netifaces.AF_INET in value}
+
+    # Get the IP address with the longest net mask
+    best_length = 0
+    result = None
+    for interface, descriptions in interfaces4.items():
+        for description in descriptions:
+            if not 'broadcast' in description:
+                continue
+
+            # Count the number of non-0 in the net mask
+            current_length = len([p
+                for p in description['netmask'].split('.')
+                if int(p)])
+            if current_length < best_length:
+                continue
+
+            best_length = current_length
+            result = interface, description
+
+    if result:
+        return (description['addr'], description['addr'])
+    else:
+        return (socket.gethostname(), '0.0.0.0')
+
+
 def start():
     parser = ArgumentParser(
         description = ''
@@ -40,7 +88,7 @@ def start():
         type = str,
         help = ''
             'The IP address on which to listen',
-        default = (socket.gethostname(), '0.0.0.0'),
+        default = _get_bind_info(),
         action = AddressAction)
 
     args = parser.parse_args()

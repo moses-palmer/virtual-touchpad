@@ -98,4 +98,11 @@ def start():
     main(**vars(args)).serve_forever()
 
 if __name__ == '__main__':
-    start()
+    try:
+        start()
+    except Exception as e:
+        import sys
+        try:
+            sys.stderr.write('%s\n' % e.args[0] % e.args[1:])
+        except TypeError:
+            sys.stderr.write('%s\n' % str(e))

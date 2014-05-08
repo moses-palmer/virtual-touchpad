@@ -272,7 +272,7 @@ class generate_webapp_icons(setuptools.Command):
     def finalize_options(self): pass
     def run(self):
         # Generate the application icons
-        for size in (196, 144, 114, 72, 57):
+        for size in (196, 144, 114, 72, 57, 48):
             build.icons.app_icon(
                 size,
                 os.path.join(

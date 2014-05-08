@@ -59,6 +59,27 @@ def _register_commands():
 _register_commands()
 
 
+def update_file_time(target, *sources):
+    """
+    Updates the file modification times of a file to match the latest
+    modification time in sources.
+
+    @param target
+        The target files whose times to update.
+    @param sources
+        The source files. If no source files are passed, no action is taken.
+    """
+    if not sources:
+        return
+
+    atime, mtime = 0, 0
+    for source in sources:
+        st = os.stat(source)
+        atime = max(atime, st.st_atime)
+        mtime = max(mtime, st.st_mtime)
+    os.utime(target, (atime, mtime))
+
+
 with open(os.path.join(
         os.path.dirname(__file__),
         os.pardir,

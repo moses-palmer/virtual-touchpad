@@ -3,7 +3,7 @@ import os
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
 
-from . import LICENSE
+from . import LICENSE, update_file_time
 
 
 def _recurse(e, callback, **kwargs):
@@ -31,7 +31,7 @@ def _clear_x_tr_values(e):
         e.setAttribute('x-tr', '')
 
 
-def _inline_script(e, source_dir, dom):
+def _inline_script(e, source_dir, dom, files):
     """Inlines script tags"""
     # Only use script tags with src attribute
     if e.nodeType != Node.ELEMENT_NODE \
@@ -52,8 +52,10 @@ def _inline_script(e, source_dir, dom):
     # Make sure to remove the src attribute
     e.removeAttribute('src')
 
+    files.append(src_path)
 
-def _inline_css(e, source_dir, dom):
+
+def _inline_css(e, source_dir, dom, files):
     """Inlines CSS"""
     # Only use CSS stylesheet tags
     if e.nodeType != Node.ELEMENT_NODE \
@@ -83,8 +85,10 @@ def _inline_css(e, source_dir, dom):
     # Change the tag name
     e.tagName = 'style'
 
+    files.append(href_path)
 
-def _inline_svg(e, source_dir, dom):
+
+def _inline_svg(e, source_dir, dom, files):
     """Inlines img elements with Scalable Vector Graphics source"""
     import subprocess
     from xml.dom.minidom import parseString
@@ -119,6 +123,8 @@ def _inline_svg(e, source_dir, dom):
     # Replace the img tag with inline SVG
     e.parentNode.insertBefore(svg.documentElement, e)
     e.parentNode.removeChild(e)
+
+    files.append(src)
 
 
 def _join_elements(e):
@@ -195,7 +201,7 @@ def start(source_path):
     """
     from xml.dom.minidom import parse
 
-    return (source_path, parse(source_path))
+    return (source_path, parse(source_path), [])
 
 
 def end(context, target_path):
@@ -208,11 +214,13 @@ def end(context, target_path):
         The output file.
     """
     global LICENSE
-    source_path, dom = context
+    source_path, dom, files = context
     with open(target_path, 'w') as target:
         target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
         target.write('<!--\n' + LICENSE.strip() + '\n-->')
         dom.documentElement.writexml(target)
+
+    update_file_time(target_path, *files)
 
 
 def minify_html(context):
@@ -222,7 +230,7 @@ def minify_html(context):
     @param context
         The DOM context.
     """
-    source_path, dom = context
+    source_path, dom, files = context
 
     # Trim text nodes
     _recurse(dom.documentElement, _trim)
@@ -236,12 +244,14 @@ def minify_html(context):
     # Inline script tags
     _recurse(dom.documentElement, _inline_script,
         source_dir = os.path.dirname(source_path),
-        dom = dom)
+        dom = dom,
+        files = files)
 
     # Inline CSS tags
     _recurse(dom.documentElement, _inline_css,
         source_dir = os.path.dirname(source_path),
-        dom = dom)
+        dom = dom,
+        files = files)
 
     # Normalise the XML
     _recurse(dom.documentElement,
@@ -263,7 +273,8 @@ def minify_html(context):
     # Inline and minify SVG img elements
     _recurse(dom.documentElement, _inline_svg,
         source_dir = os.path.dirname(source_path),
-        dom = dom)
+        dom = dom,
+        files = files)
 
 
 def _add_manifest(e, manifest_file):
@@ -284,7 +295,7 @@ def add_manifest(context, manifest_file):
     @param manifest_file
         The path, relative to the document, of the AppCache manifest file.
     """
-    source_path, dom = context
+    source_path, dom, files = context
 
     # Add the manifest
     _recurse(dom.documentElement, _add_manifest,

@@ -2,6 +2,8 @@ import os
 import subprocess
 import sys
 
+from . import update_file_time
+
 
 def _locate_convert():
     """
@@ -41,6 +43,8 @@ if CONVERT_COMMAND:
         if p.returncode != 0:
             raise RuntimeError('Failed to call convert: %s', stderr)
 
+        update_file_time(target, source)
+
 
     def combine(target, *icons):
         """
@@ -56,6 +60,8 @@ if CONVERT_COMMAND:
         stdout, stderr = p.communicate()
         if p.returncode != 0:
             raise RuntimeError('Failed to call convert: %s', stderr)
+
+        update_file_time(target, *icons)
 
 
 else:

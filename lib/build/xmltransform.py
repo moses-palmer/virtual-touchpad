@@ -1,4 +1,5 @@
 import os
+import sys
 
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
@@ -101,7 +102,7 @@ def _inline_svg(e, source_dir, dom, files):
 
     # Load the minified SVG
     src = os.path.join(source_dir, e.getAttribute('src'));
-    p = subprocess.Popen(['python',
+    p = subprocess.Popen([sys.executable,
         os.path.join(os.path.dirname(__file__),
             os.path.pardir, os.path.pardir, 'scour', 'scour', 'scour.py'),
         '-i', src,

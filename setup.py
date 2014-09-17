@@ -88,6 +88,10 @@ except ImportError:
         def command(c):
             return c
 
+        @staticmethod
+        def utility(c):
+            return c
+
 import setuptools
 
 try:

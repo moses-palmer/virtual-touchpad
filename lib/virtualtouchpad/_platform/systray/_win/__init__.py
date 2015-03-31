@@ -15,4 +15,4 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from win32systray import *
+from .win32systray import *

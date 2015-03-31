@@ -19,7 +19,7 @@ import socket
 
 from argparse import ArgumentParser, Action
 
-from . import main, systray
+from .server import main, systray
 
 
 def _get_bind_info():

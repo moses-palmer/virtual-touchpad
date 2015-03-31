@@ -30,14 +30,13 @@ SERVICE_NAME = '_virtualtouchpad._http._tcp.local.'
 
 
 def announce(ip_address, port):
-    """
-    Announces that Virtual Touchpad is available on the local network.
+    """Announces that *Virtual Touchpad* is available on the local network.
 
-    @param ip_address
-        The IP address on which Virtual Touchpad is reachable.
-    @param port
-        The port on which to connect to Virtual Touchpad.
-    @return an object with the method 'unregister()', which must be called to
+    :param str ip_address: The IP address on which *Virtual Touchpad* is reachable.
+
+    :param int port: The port on which to connect to *Virtual Touchpad*.
+
+    :return: an object with the method ``unregister()``, which must be called to
         remove the service from the system
     """
     import getpass

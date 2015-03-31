@@ -91,8 +91,9 @@ def handle_websocket():
 
 
 def static_file_exists(path):
-    """
-    Returns whether a static file exists.
+    """Returns whether a static file exists.
+
+    :param str path: The path of the static file.
     """
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
@@ -105,9 +106,10 @@ def static_file_exists(path):
 
 
 def static_file(path):
-    """
-    Returns a bottle.HTTPResponse or bottle.HTTPError containing either the
-    file requested or an error message.
+    """Returns a :class:`bottle.HTTPResponse` or :class:`bottle.HTTPError`
+    containing either the file requested or an error message.
+
+    :param str path: The path of the static file.
     """
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle

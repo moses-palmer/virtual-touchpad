@@ -23,16 +23,15 @@ from . import main, systray
 
 
 def _get_bind_info():
-    """
-    Returns the name of the host and IP address to use as the tuple
-    (name, address).
+    """Returns the name of the host and IP address to use as the tuple
+    ``(name, address)``.
 
-    The one returned is the one most likely on a LAN.
+    The one returned is the one most likely on a *LAN*.
 
-    If no probable match is found, the tuple (socket.gethostname(), '0.0.0.0')
-    is returned.
+    If no probable match is found, the tuple ``(socket.gethostname(),
+    '0.0.0.0')`` is returned.
 
-    @return the tuple (name, address)
+    :return: the tuple ``(name, address)``
     """
     import netifaces
 

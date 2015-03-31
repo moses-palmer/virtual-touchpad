@@ -16,64 +16,56 @@
 
 
 def key_down(key):
-    """
-    Sends a key down event.
+    """Sends a key down event.
 
-    @param key
-        The name of the key. This value will be handled just like
-        Xlib.XK.string_to_keysym would. Thus, 'A' and 'a' will trigger a press
-        of the 'A' key. 'Space' and 'space' will trigger space.
+    :param str key: The name of the key. This value will be handled just like
+        :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and ``'a'`` will
+        trigger a press of the ``'A'`` key. ``'Space'`` and ``'space'`` will
+        trigger space.
     """
     raise NotImplementedError()
 
 
 def key_up(key):
-    """
-    Sends a key up event.
+    """Sends a key up event.
 
-    @param key
-        The name of the key. This value is handled just like in key_down.
-    @see key_down
+    :param str key: The name of the key. This value is handled just like in
+        :func:`key_down`.
     """
     raise NotImplementedError()
 
 
 def mouse_down(button):
-    """
-    Presses a mouse button.
+    """Presses a mouse button.
 
-    @param button
-        The button index.
+    :param int button: The button index.
     """
     raise NotImplementedError()
 
 
 def mouse_up(button):
-    """
-    Releases a mouse button.
+    """Releases a mouse button.
 
-    @param button
-        The button index.
+    :param int button: The button index.
     """
     raise NotImplementedError()
 
 
 def mouse_scroll(dx, dy):
-    """
-    Scrolls the mouse wheel.
+    """Scrolls the mouse wheel.
 
-    @param dx, dy
-        The horisontal and vertical offset to scroll.
+    :param int dx: The horisontal offset to scroll.
+
+    :param int dy: The vertical offset to scroll.
     """
     raise NotImplementedError()
 
 
 def mouse_move(dx, dy):
-    """
-    Moves the mouse pointer.
+    """Moves the mouse pointer.
 
-    @param dx, dy
-        The horisontal and vertical offset to move.
+    :param int dx: The horisontal offset to move.
+    :param int dy: The vertical offset to move.
     """
     raise NotImplementedError()
 

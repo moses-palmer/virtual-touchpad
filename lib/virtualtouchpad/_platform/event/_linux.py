@@ -25,8 +25,7 @@ SCROLL_THRESHOLD = 10
 scroll = [0, 0]
 
 def mouse_scroll_cancel():
-    """
-    Cancels any scrolling in progress.
+    """Cancels any scrolling in progress.
     """
     global scroll
     scroll = [0, 0]

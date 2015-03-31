@@ -23,14 +23,13 @@ _DISPATCHERS = {}
 
 
 def dispatcher(f):
-    """
-    Marks a function as a dispatcher for WebSocket commands.
+    """Marks a function as a dispatcher for *WebSocket* commands.
 
-    @param f
-        The function to use as a WebSocket command dispatcher. Any websocket
-        message, JSON decoded, where the 'command' key value is equal to the
+    :param f:
+        The function to use as a *WebSocket* command dispatcher. Any websocket
+        message, *JSON* decoded, where the ``command`` key value is equal to the
         name of this function will be handled by this function. It will be
-        passed the 'data' key value parameter expanded as parameters.
+        passed the ``data`` key value parameter expanded as parameters.
     """
     global _DISPATCHERS
     _DISPATCHERS[f.__name__] = f
@@ -38,14 +37,14 @@ def dispatcher(f):
 
 
 def dispatch(command):
-    """
-    Dispatches a WebSocket command.
+    """Dispatches a *WebSocket* command.
 
-    @param command
-        The command to dispatch.
-    @see dispatcher
-    @raise KeyError if the 'command' key is not a known dispatcher
-    @raise ValueError if either 'command' or 'data' is missing from command
+    :param dict command: The command to dispatch.
+
+    :raises KeyError: if the ``command`` key is not a known dispatcher
+
+    :raises ValueError: if either ``command`` or ``data`` is missing from
+        ``command``
     """
     global _DISPATCHERS
 

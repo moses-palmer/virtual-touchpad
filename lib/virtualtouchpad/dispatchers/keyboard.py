@@ -22,23 +22,19 @@ from .. import event
 
 @dispatcher
 def key_down(key):
-    """
-    Triggers a key down event.
+    """Triggers a key down event.
 
-    @param key
-        The key that is being pressed. This value will be passed directly to
-        event.key_down.
+    :param str key: The key that is being pressed. This value will be passed
+        directly to :func:`event.key_down`.
     """
     event.key_down(key)
 
 
 @dispatcher
 def key_up(key):
-    """
-    Triggers a key up event.
+    """Triggers a key up event.
 
-    @param key
-        The key that is being release. This value will be passed directly to
-        event.key_up.
+    :param str key: The key that is being release. This value will be passed
+        directly to :func:`event.key_up`.
     """
     event.key_up(key)

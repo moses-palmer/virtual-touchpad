@@ -22,43 +22,39 @@ from .. import event
 
 @dispatcher
 def mouse_down(button = 1):
-    """
-    Triggers a a mouse press event.
+    """Triggers a a mouse press event.
 
-    @param button
-        The button index.
+    :param int button: The button index.
     """
     event.mouse_down(button)
 
 
 @dispatcher
 def mouse_up(button = 1):
-    """
-    Triggers a a mouse release event.
+    """Triggers a a mouse release event.
 
-    @param button
-        The button index.
+    :param int button: The button index.
     """
     event.mouse_up(button)
 
 
 @dispatcher
 def mouse_scroll(dx = 0, dy = 0):
-    """
-    Triggers a mouse scroll event.
+    """Triggers a mouse scroll event.
 
-    @param dx, dy
-        The horisontal and vertical offset to scroll.
+    :param int dx: The horisontal offset to scroll.
+
+    :param int dy: The vertical offset to scroll.
     """
     event.mouse_scroll(dx, dy)
 
 
 @dispatcher
 def mouse_move(dx = 0, dy = 0):
-    """
-    Treiggers a mouse move event.
+    """Triggers a mouse move event.
 
-    @param dx, dy
-        The horisontal and vertical offset to move.
+    :param int dx: The horisontal offset to move.
+
+    :param int dy: The vertical offset to move.
     """
     event.mouse_move(dx, dy)

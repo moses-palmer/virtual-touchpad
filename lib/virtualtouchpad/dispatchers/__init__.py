@@ -16,15 +16,14 @@
 
 
 def _names(files):
-    """
-    Returns a list of module names based on a file listing.
+    """Returns a list of module names based on a file listing.
 
-    Only files ending with '.py' or '.pyc', and not beginning with '_', are
-    included.
+    Only files ending with ``'.py'`` or ``'.pyc'``, and not beginning with
+    ``'_'``, are included.
 
-    @param files
-        The files from which to generate a list of module names.
-    @return a list of unique module names
+    :param [str] files: The files from which to generate a list of module names.
+
+    :return: a list of unique module names
     """
     return list(set(file_name.rsplit('.', 1)[0]
         for file_name in files

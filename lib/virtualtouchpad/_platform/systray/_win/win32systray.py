@@ -1,20 +1,19 @@
 # coding=utf-8
-'''
-virtual-touchpad
-Copyright (C) 2013-2014 Moses Palmér
+# virtual-touchpad
+# Copyright (C) 2013-2015 Moses Palmér
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
 
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <http://www.gnu.org/licenses/>.
-'''
 
 import os
 import sys
@@ -37,8 +36,7 @@ class SystemTrayIcon(SystemTrayIcon):
     WM_NOTIFY = win32con.WM_USER + 20
 
     def _add_icon(self):
-        """
-        Adds a systray icon.
+        """Adds a systray icon.
         """
         if self._notify_id:
             message = win32gui.NIM_MODIFY
@@ -55,8 +53,7 @@ class SystemTrayIcon(SystemTrayIcon):
         win32gui.Shell_NotifyIcon(message, self._notify_id)
 
     def _delete_icon(self):
-        """
-        Deletes a systray icon.
+        """Deletes a systray icon.
 
         If the icon has not been added, this method has no effect.
         """
@@ -67,8 +64,7 @@ class SystemTrayIcon(SystemTrayIcon):
         self._notify_id = None
 
     def _mainloop(self):
-        """
-        The main win32 event loop.
+        """The main *win32* event loop.
 
         This is blocking, so it should be run in a separate thread.
         """
@@ -77,11 +73,9 @@ class SystemTrayIcon(SystemTrayIcon):
         self._delete_icon()
 
     def __init__(self, description):
-        """
-        Creates a systray tray icon.
+        """Creates a systray tray icon.
 
-        @param description
-            A descriptive text to apply to the icon.
+        :param str description: A descriptive text to apply to the icon.
         """
         super(SystemTrayIcon, self).__init__(description)
 
@@ -98,7 +92,7 @@ class SystemTrayIcon(SystemTrayIcon):
 
     @property
     def icon(self):
-        """The Win32 icon handle for the systray icon; the icon will be loaded
+        """The *win32* icon handle for the systray icon; the icon will be loaded
         if has not yet been created"""
         if self._icon:
             return self._icon
@@ -136,7 +130,7 @@ class SystemTrayIcon(SystemTrayIcon):
 
     @property
     def window(self):
-        """The Win32 window to use as systray icon; the window will be created
+        """The *win32* window to use as systray icon; the window will be created
         when read unless already created"""
         if self._window:
             return self._window
@@ -164,7 +158,6 @@ class SystemTrayIcon(SystemTrayIcon):
         return self._window
 
     def destroy():
-        """
-        Removes the systray icon.
+        """Removes the systray icon.
         """
         self._delete_icon()

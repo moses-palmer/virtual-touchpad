@@ -1,20 +1,19 @@
 # coding=utf-8
-'''
-virtual-touchpad
-Copyright (C) 2013-2014 Moses Palmér
+# virtual-touchpad
+# Copyright (C) 2013-2015 Moses Palmér
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
 
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <http://www.gnu.org/licenses/>.
-'''
 
 from ._info import *
 
@@ -92,8 +91,9 @@ def handle_websocket():
 
 
 def static_file_exists(path):
-    """
-    Returns whether a static file exists.
+    """Returns whether a static file exists.
+
+    :param str path: The path of the static file.
     """
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
@@ -106,9 +106,10 @@ def static_file_exists(path):
 
 
 def static_file(path):
-    """
-    Returns a bottle.HTTPResponse or bottle.HTTPError containing either the
-    file requested or an error message.
+    """Returns a :class:`bottle.HTTPResponse` or :class:`bottle.HTTPError`
+    containing either the file requested or an error message.
+
+    :param str path: The path of the static file.
     """
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle

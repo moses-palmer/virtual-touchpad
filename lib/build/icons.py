@@ -6,10 +6,10 @@ from . import update_file_time
 
 
 def _locate_convert():
-    """
-    Locates convert from ImageMagick.
+    """Locates ``convert`` from *ImageMagick*.
 
-    @return the path to convert, or None
+    :return: the path to convert, or ``None``
+    :rtype: str or None
     """
     for path in os.getenv('PATH').split(os.pathsep):
         try:
@@ -24,14 +24,16 @@ CONVERT_COMMAND = _locate_convert()
 
 if CONVERT_COMMAND:
     def convert(source, target, dimensions):
-        """
-        Converts and resizes an image.
+        """Converts and resizes an image.
 
-        @param source, target
-            The source and target files.
-        @param dimensions
-            The dimensions for the target image.
-        @raise RuntimeError if the conversion fails
+        :param str source: The source file.
+
+        :param str target: The target file.
+
+        :param dimensions: The dimensions for the target image.
+        :type dimensions: (int, int)
+
+        :raises RuntimeError: if the conversion fails
         """
         p = subprocess.Popen([CONVERT_COMMAND,
             '-background', 'none',
@@ -47,13 +49,11 @@ if CONVERT_COMMAND:
 
 
     def combine(target, *icons):
-        """
-        Creates a combined ICO file.
+        """Creates a combined *ICO* file.
 
-        @param target
-            The target icon.
-        @param icons
-            The icons to combine into one.
+        :param str target: The target icon.
+
+        :param [str] icons: The icons to combine into one.
         """
         p = subprocess.Popen([CONVERT_COMMAND] + list(icons) + [target],
             stdout = subprocess.PIPE, stderr = subprocess.PIPE)
@@ -66,29 +66,26 @@ if CONVERT_COMMAND:
 
 else:
     def convert(source, target, dimensions):
-        """
-        A no-op placeholder function.
+        """A no-op placeholder function.
         """
         sys.stdout.write('Not converting %s to %s: ImageMagick is not installed'
             % (source, target) + '\n')
 
 
     def combine(target, *icons):
-        """
-        A no-op placeholder function.
+        """A no-op placeholder function.
         """
         sys.stdout.write('Not combining %s to %s: ImageMagick is not installed'
             % (', '.join(icons), target) + '\n')
 
 
 def app_icon(size, target_path):
-    """
-    Creates an application icon PNG.
+    """Creates an application icon *PNG*.
 
-    @param size
-        The required size of the output.
-    @param target
-        The output target.
+    :param size: The required size of the output.
+    :type size: (int, int)
+
+    :param str target: The output target.
     """
     # Create a PNG image from ./res/icon; its size is 16 px
     convert(

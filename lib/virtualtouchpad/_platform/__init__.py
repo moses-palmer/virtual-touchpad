@@ -1,20 +1,19 @@
 # coding=utf-8
-'''
-virtual-touchpad
-Copyright (C) 2013-2014 Moses Palmér
+# virtual-touchpad
+# Copyright (C) 2013-2015 Moses Palmér
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
 
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <http://www.gnu.org/licenses/>.
-'''
 
 import os
 import pkg_resources
@@ -28,20 +27,21 @@ __all__ = [directory
 
 
 def _import_symbols(globals_dict, *candidates):
-    """
-    Loads the platform dependent implementation and populates a dict.
+    """Loads the platform dependent implementation and populates a dict.
 
-    @param globals_dict
-        The globals dict. Use globals() when calling this function from another
-        module. Only callable symbols not beginning with '_' in this dictionary
-        will be imported from the driver module.
-    @param candidates
-        The names of candidate modules to try before trying the default platform
-        driver. The default name is '_' + sys.platform, with everything but
-        letters dripped from sys.platform.
-    @raise ImportError if no platform driver was found, or a global callable in
-        the driver was not present in globals_dict, or the function signature of
-        a global callable in the driver did not match in globals_dict
+    :param dict globals_dict: The globals dict. Use :func:`globals` when
+        calling this function from another module. Only callable symbols not
+        beginning with '_' in this dictionary will be imported from the driver
+        module.
+
+    :param [str] candidates: The names of candidate modules to try before trying
+        the default platform driver. The default name is ``'_' + sys.platform``,
+        with everything but letters dripped from :attr:`sys.platform`.
+
+    :raises ImportError: if no platform driver was found, or a global callable
+        in the driver was not present in ``globals_dict``, or the function
+        signature of a global callable in the driver did not match in
+        ``globals_dict``
     """
     import importlib
     import inspect
@@ -115,8 +115,7 @@ def _import_symbols(globals_dict, *candidates):
 
 
 def _freeze_modules(target, *names):
-    """
-    Freezes imported modules for a target module.
+    """Freezes imported modules for a target module.
 
     This function must be called before monkey-patching with gevent.
 
@@ -124,10 +123,9 @@ def _freeze_modules(target, *names):
     object that has all attributes that the module has, and the values at the
     time this function is called.
 
-    @param target
-        The target module.
-    @param names
-        The names of the modules to freeze.
+    :param target: The target module.
+
+    :param [str] names: The names of the modules to freeze.
     """
     for name in names:
         class container(object):

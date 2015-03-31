@@ -40,7 +40,7 @@ def setup(**kwargs):
             'gevent >=0.13',
             'gevent-websocket >=0.9',
             'netifaces >=0.8',
-            'pyzeroconf >=0.12.3'] + platform_requirements(),
+            'zeroconf >=0.17'] + platform_requirements(),
         setup_requires = [
             'cssmin',
             'polib >=1.0.4',

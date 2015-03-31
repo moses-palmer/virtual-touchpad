@@ -25,3 +25,23 @@
 
     background-color: transparent;
 }
+
+#toolbar {
+    left: 0;
+    right: 0;
+    top: 0;
+
+    vertical-align: middle;
+    text-align: right;
+
+    background-color: white;
+}
+
+#toolbar > button.help {
+    display: table-cell;
+    float: left;
+}
+
+#toolbar > button.settings {
+    display: table-cell;
+}

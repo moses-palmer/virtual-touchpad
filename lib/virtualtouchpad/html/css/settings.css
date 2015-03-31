@@ -1,5 +1,9 @@
 #settings-overlay {
     display: none;
+}
+
+#settings-overlay.toggled {
+    display: block;
     position: absolute;
     z-index: 50;
     min-height: 100%;

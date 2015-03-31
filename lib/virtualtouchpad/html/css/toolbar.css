@@ -1,4 +1,4 @@
-toolbar {
+.toolbar {
     z-index: 50;
     position: fixed;
 
@@ -8,7 +8,7 @@ toolbar {
     padding: 4px;
 }
 
-toolbar > button {
+.toolbar > button {
     display: none;
     height: 44px;
     width: 44px;

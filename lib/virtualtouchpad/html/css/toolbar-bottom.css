@@ -1,4 +1,4 @@
-toolbar.bottom {
+#toolbar-bottom {
     left: 0;
     right: 0;
     bottom: 0;
@@ -9,11 +9,11 @@ toolbar.bottom {
     background-color: white;
 }
 
-toolbar.bottom > button.help {
+#toolbar-bottom > button.help {
     display: table-cell;
     float: left;
 }
 
-toolbar.bottom > button.settings {
+#toolbar-bottom > button.settings {
     display: table-cell;
 }

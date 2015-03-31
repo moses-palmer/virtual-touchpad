@@ -55,7 +55,7 @@ def translations(domain):
             language.split(';')[0].strip(),
             float(language.split(';q=')[1]) if ';q=' in language else 1.0)
         for language in accept_language.split(',')),
-        key = lambda (l, q): q,
+        key = lambda l, q: q,
         reverse = True) + [('default', 0.0)]
 
     for language, q in languages:

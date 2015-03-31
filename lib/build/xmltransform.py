@@ -193,12 +193,11 @@ def _remove_self_closing(e, dom):
 
 
 def start(source_path):
-    """
-    Begins the XML transformation.
+    """Begins the *XML* transformation.
 
-    @param source_path
-        The path to the file which to transform.
-    @return a representation of the DOM
+    :param str source_path: The path to the file which to transform.
+
+    :return: a representation of the DOM
     """
     from xml.dom.minidom import parse
 
@@ -206,13 +205,11 @@ def start(source_path):
 
 
 def end(context, target_path):
-    """
-    Ends the XML transformation and writes the result.
+    """Ends the *XML* transformation and writes the result.
 
-    @param context
-        The DOM context.
-    @param target_path
-        The output file.
+    :param context: The *DOM* context as returned by :func:`start`.
+
+    :param str target_path: The output file.
     """
     global LICENSE
     source_path, dom, files = context
@@ -225,11 +222,9 @@ def end(context, target_path):
 
 
 def minify_html(context):
-    """
-    Minifies an HTML file.
+    """ Minifies an *HTML* file.
 
-    @param context
-        The DOM context.
+    :param context: The *DOM* context as returned by :func:`start`.
     """
     source_path, dom, files = context
 
@@ -288,13 +283,12 @@ def _add_manifest(e, manifest_file):
     e.setAttribute('manifest', manifest_file)
 
 def add_manifest(context, manifest_file):
-    """
-    Adds an AppCache manifest file to all html elements.
+    """Adds an *AppCache* manifest file to all ``html`` elements.
 
-    @param context
-        The DOM context.
-    @param manifest_file
-        The path, relative to the document, of the AppCache manifest file.
+    :param context: The *DOM* context as returned by :func:`start`.
+
+    :param str manifest_file: The path, relative to the document, of the
+        *AppCache* manifest file.
     """
     source_path, dom, files = context
 

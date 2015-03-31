@@ -8,16 +8,14 @@ from xml.sax import make_parser
 from .xmltransform import _recurse
 
 def _add_entry(pofile, entry):
-    """
-    Adds a new PO entry to a PO file.
+    """Adds a new *PO* entry to a *PO* file.
 
     If the message is already present in the pofile, it is updated by extending
     the comment and adding a new location.
 
-    @param pofile
-        The PO file to modify.
-    @param entry
-        The entry.
+    :param pofile.POFile pofile: The *PO* file to modify.
+
+    :param pofile.POEntry entry: The entry.
     """
     try:
         pofile.append(entry)
@@ -77,12 +75,12 @@ def _extract_javascript(e, pofile, path):
 
 
 def read_translatable_strings(path):
-    """
-    Reads all translatable strings from an XHTML file.
+    """Reads all translatable strings from an *XHTML* file.
 
-    @param path
-        The path to the file.
-    @return a polib.POFile instance
+    :param str path: The path to the file.
+
+    :return: a *PO* file instance
+    :rtype: polib.POFile
     """
     import polib
 
@@ -125,13 +123,11 @@ def read_translatable_strings(path):
 
 
 def merge_catalogs(template, catalog):
-    """
-    Merges all new messages from a template with a translation catalogue.
+    """Merges all new messages from a template with a translation catalogue.
 
-    @param template
-        The POT file path.
-    @param catalog
-        The PO file path.
+    :param str template: The *POT* file path.
+
+    :param str catalog: The *PO* file path.
     """
     subprocess.call(['msgmerge',
         '--update',

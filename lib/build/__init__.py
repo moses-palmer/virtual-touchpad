@@ -6,12 +6,10 @@ cmdclass = {}
 _ignored = []
 
 def command(c):
-    """
-    Registers a Command class as a build subcommand that should be run when
-    building.
+    """Registers a ``Command`` class as a build subcommand that should be
+        run when building.
 
-    @param c
-        The class to use as a build sub command.
+    :param type c: The class to use as a build sub command.
     """
     global cmdclass
     cmdclass[c.__name__] = c
@@ -20,11 +18,9 @@ def command(c):
     return c
 
 def utility(c):
-    """
-    Registers a Command class as a build subcommand.
+    """ Registers a ``Command`` class as a build subcommand.
 
-    @param c
-        The class to use as a build sub command.
+    :param type c: The class to use as a build sub command.
     """
     global cmdclass
     cmdclass[c.__name__] = c
@@ -33,8 +29,7 @@ def utility(c):
     return c
 
 def _register_commands():
-    """
-    Registers overrides for built in build commands.
+    """Registers overrides for built in build commands.
     """
     from distutils.command.build import build
     from setuptools.command.bdist_egg import bdist_egg
@@ -60,14 +55,13 @@ _register_commands()
 
 
 def update_file_time(target, *sources):
-    """
-    Updates the file modification times of a file to match the latest
+    """Updates the file modification times of a file to match the latest
     modification time in sources.
 
-    @param target
-        The target files whose times to update.
-    @param sources
-        The source files. If no source files are passed, no action is taken.
+    :param str target: The target files whose times to update.
+
+    :param str sources: The source files. If no source files are passed, no
+        action is taken.
     """
     if not sources:
         return

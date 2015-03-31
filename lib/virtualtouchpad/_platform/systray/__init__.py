@@ -16,16 +16,13 @@
 
 
 class SystemTrayIcon(object):
-    """
-    An object representing a system tray icon.
+    """An object representing a system tray icon.
     """
 
     def __init__(self, description):
-        """
-        Creates a new system tray icon.
+        """Creates a new system tray icon.
 
-        @param description
-            The short description of this system tray icon.
+        :param str description: The short description of this system tray icon.
         """
         self._description = description
 

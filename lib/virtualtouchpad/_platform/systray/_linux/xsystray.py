@@ -34,17 +34,19 @@ class SystemTrayIcon(SystemTrayIcon):
     SYSTEM_TRAY_REQUEST_DOCK = 0
 
     def _send_message(self, window, message, d1 = 0, d2 = 0, d3 = 0):
-        """
-        Sends a generic systray message.
+        """Sends a generic systray message.
 
-        This method does not trap X errors; that is up to the caller.
+        This method does not trap ``X`` errors; that is up to the caller.
 
-        @param window
-            An X window.
-        @param message
-            The message to send.
-        @param d1, d2, d3
-            Message specific data.
+        :param window: An ``X`` window.
+
+        :param int message: The message to send.
+
+        :param int d1: Message specific data.
+
+        :param int d2: Message specific data.
+
+        :param int d3: Message specific data.
         """
         self._display.send_event(self.systray_manager,
             display.event.ClientMessage(
@@ -59,10 +61,9 @@ class SystemTrayIcon(SystemTrayIcon):
             event_mask = X.NoEventMask)
 
     def _dock_window(self):
-        """
-        Docks the window in the systray.
+        """Docks the window in the systray.
 
-        This method traps X errors.
+        This method traps ``X`` errors.
         """
         with self.display:
             self._send_message(
@@ -71,12 +72,14 @@ class SystemTrayIcon(SystemTrayIcon):
                 self.window.id)
 
     def _get_icon_data(self, width, height):
-        """
-        Returns the tuple (width, height, data) for the icon image.
+        """Returns the icon image.
 
-        @param width, height
-            The requested width and height.
-        @return icon data, which may already be cached
+        :param int width: The requested width.
+
+        :param int height: The requested height.
+
+        :return: icon data, which may already be cached
+        :rtype: (width, height, data)
         """
         if self._icon_data is None \
                 or self._icon_data.size != (width, height):
@@ -89,12 +92,11 @@ class SystemTrayIcon(SystemTrayIcon):
         return self._icon_data
 
     def _on_event(self, e):
-        """
-        The default event handler.
+        """The default event handler.
 
-        @param e
-            The current X event.
-        @raise StopIteration if e is an X.DestroyNotify event
+        :param e: The current ``X`` event.
+
+        :raises StopIteration: if e is an ``X.DestroyNotify`` event
         """
         if e and e.type == X.DestroyNotify:
             raise StopIteration()
@@ -105,19 +107,17 @@ class SystemTrayIcon(SystemTrayIcon):
             self._get_icon_data(geometry.width, geometry.height))
 
     def _mainloop(self, handlers = {}):
-        """
-        The main X event loop.
+        """The main ``X`` event loop.
 
         This is blocking, so it should be run in a separate thread.
 
-        This method will break when an event handler raises StopIteration.
+        This method will break when an event handler raises ``StopIteration``.
 
-        @param handlers
-            Event handler overrides. The keys are on the format
-            'on_' + <lower case Xevent name>. If a key for an event is missing,
-            the corresponding method in self is called. If that does not exist,
-            the value for the key 'on_event' is used, and if that does not exist
-            a default event handler is called.
+        :param handlers: Event handler overrides. The keys are on the format
+            ``'on_' + <lower case X event name>``. If a key for an event is
+            missing, the corresponding method in self is called. If that does
+            not exist, the value for the key ``'on_event'`` is used, and if that
+            does not exist a default event handler is called.
         """
         self._display = display.Display()
 
@@ -143,11 +143,9 @@ class SystemTrayIcon(SystemTrayIcon):
                 break
 
     def __init__(self, description):
-        """
-        Creates a systray tray icon.
+        """Creates a systray tray icon.
 
-        @param description
-            A descriptive text to apply to the icon.
+        :param str description: A descriptive text to apply to the icon.
         """
         super(SystemTrayIcon, self).__init__(description)
 
@@ -244,12 +242,12 @@ class SystemTrayIcon(SystemTrayIcon):
                 break
 
     def events(self):
-        """
-        Generates X events until the X connection is terminated.
+        """Generates X events until the ``X`` connection is terminated.
 
-        If the X connection is killed, the last event yielded will be None.
+        If the ``X`` connection is killed, the last event yielded will be
+        ``None``.
 
-        @raise RuntimeError if the display has not been initiated
+        :raises RuntimeError: if the display has not been initiated
         """
         if self._display is None:
             raise RuntimeError('display not initiated')
@@ -267,8 +265,7 @@ class SystemTrayIcon(SystemTrayIcon):
                 break
 
     def destroy(self):
-        """
-        Destroys the system tray icon.
+        """Destroys the system tray icon.
         """
         self._window.destroy()
         self._thread.join()

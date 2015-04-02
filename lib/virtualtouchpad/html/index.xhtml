@@ -48,7 +48,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="css/settings.css" />
-        <link rel="stylesheet" type="text/css" href="css/toolbar-bottom.css" />
+        <link rel="stylesheet" type="text/css" href="css/toolbar.css" />
 
         <!-- For modules -->
         <link rel="stylesheet" type="text/css" href="css/message-box.css" />
@@ -68,13 +68,12 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <script type="text/javascript" src="js/features.js"></script>
         <script type="text/javascript" src="js/message-box.js"></script>
         <script type="text/javascript" src="js/view.js"></script>
-        <script type="text/javascript" src="js/toolbar.js"></script>
         <script type="text/javascript" src="js/trackbar.js"></script>
 
         <!-- The main application -->
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/settings.js"></script>
-        <script type="text/javascript" src="js/toolbar-bottom.js"></script>
+        <script type="text/javascript" src="js/toolbar.js"></script>
 
         <!-- Translations -->
         <script type="text/javascript" src="translations/index"
@@ -113,25 +112,21 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
 
-        <!-- The bottom toolbar -->
-        <toolbar id="toolbar-bottom" class="bottom">
+        <!-- The toolbar -->
+        <div id="toolbar" class="toolbar">
             <button class="help"
-                    onclick="javascript:toolbar.bottom.onHelp();">
+                    onclick="javascript:toolbar.onHelp();">
                 <img src="img/help.svg" />
             </button>
             <button class="settings"
-                    onclick="javascript:toolbar.bottom.onSettings();">
+                    onclick="javascript:toolbar.onSettings();">
                 <img src="img/settings.svg" />
             </button>
-            <button class="fullscreen-on"
-                    onclick="javascript:toolbar.bottom.onFullscreenOn();">
-                <img src="img/fullscreen-on.svg" />
+            <button class="fullscreen on"
+                    onclick="javascript:toolbar.onFullscreenOn();">
+                <img src="img/fullscreen.svg" />
             </button>
-            <button class="fullscreen-off"
-                    onclick="javascript:toolbar.bottom.onFullscreenOff();">
-                <img src="img/fullscreen-off.svg" />
-            </button>
-        </toolbar>
+        </div>
     </body>
 </html>
 

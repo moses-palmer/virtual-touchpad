@@ -71,13 +71,6 @@ msgstr ""
 "aktivera det."
 
 #
-# File: lib/virtualtouchpad/html/help.xhtml, line: 56
-#. Answer to 'How do I hide the address bar?'
-#: lib/virtualtouchpad/html/help.xhtml:56
-msgid "Tap it again to return."
-msgstr "Knacka igen för att återgå."
-
-#
 # File: lib/virtualtouchpad/html/help.xhtml, line: 59
 #. Answer to 'How do I hide the address bar?'
 #: lib/virtualtouchpad/html/help.xhtml:59

@@ -1,20 +1,45 @@
 trackbar {
     display: block;
-
-    height: 32px;
+    height: 48px;
     width: 100%;
 
-    border-radius: 16px;
-    background: linear-gradient(#B0B0B0 0%, #C0C0C0 50%, #D0D0D0 100%);
-    background-color: #C0C0C0;
+    background: none;
 }
 
-.trackbar-mark {
+trackbar .track {
+    display: block;
     position: relative;
+    width: 100%;
+    height: 4px;
     left: 0;
-    width: 32px;
-    height: 32px;
+    top: 0;
+    margin-top: 16px;
+    background-color: #A0A0A0;
+}
 
+trackbar .groove {
+    display: block;
+    position: relative;
+    height: 4px;
+    margin-right: 10px;
+
+    background-color: #0000FF;
+}
+
+trackbar .mark {
+    position: relative;
+    top: -10px;
+    float: right;
+    margin-right: -10px;
+    width: 16px;
+    height: 16px;
+
+    background-color: white;
+    transition: background-color 0.2s ease;
+    border: 4px solid #0000FF;
     border-radius: 16px;
-    background-color: #808080;
+}
+
+trackbar.active .mark {
+    background-color: #0000FF;
 }

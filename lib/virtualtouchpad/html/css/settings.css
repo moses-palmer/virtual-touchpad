@@ -31,6 +31,10 @@
     margin-left: 0;
 }
 
+#settings-view.sliding {
+    transition: none;
+}
+
 #settings-view > div {
     color: black;
     font-family: sans-serif;

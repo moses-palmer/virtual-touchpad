@@ -5,12 +5,9 @@ message-box {
     left: 0;
     right: 0;
 
-    border-radius: 5pt;
-    width: inherit;
-    margin: 5pt;
-    padding: 5pt;
-    background: radial-gradient(circle at top left,
-        white 0%, #E0E0E0 50%, #D0D0D0 100%);
+    margin: 4pt;
+    margin-top: 60px;
+    padding: 4pt;
     background-color: white;
 
     color: black;

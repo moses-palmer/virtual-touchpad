@@ -15,4 +15,4 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from xsystray import *
+from .xsystray import *

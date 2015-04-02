@@ -15,12 +15,10 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-import zeroconf.dns
-import zeroconf.mdns
+import zeroconf
 
 from ._platform import _freeze_modules
-_freeze_modules(zeroconf.dns, 'socket')
-_freeze_modules(zeroconf.mdns, 'socket')
+_freeze_modules(zeroconf, 'socket')
 
 from ._info import __version__
 
@@ -43,8 +41,8 @@ def announce(ip_address, port):
     import socket
     import types
 
-    result = zeroconf.mdns.Zeroconf('0.0.0.0')
-    info = zeroconf.dns.ServiceInfo(
+    result = zeroconf.Zeroconf()
+    info = zeroconf.ServiceInfo(
         SERVICE_NAME,
         '%s@%s.%s' % (getpass.getuser(), socket.gethostname(), SERVICE_NAME),
         socket.inet_aton(ip_address),
@@ -52,13 +50,12 @@ def announce(ip_address, port):
         0, 0, # weight, priority
         {
             'version': '.'.join(str(v) for v in __version__)})
-    result.registerService(info)
+    result.register_service(info)
 
     def unregister(self):
+        """Unregisters the Virtual Touchpad service.
         """
-        Unregisters the Virtual Touchpad service.
-        """
-        self.unregisterService()
+        self.unregister_service(info)
         self.close()
 
     result.unregister = types.MethodType(unregister, result)

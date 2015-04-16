@@ -39,9 +39,9 @@
 
 #toolbar > button.help {
     display: table-cell;
-    float: left;
 }
 
 #toolbar > button.settings {
     display: table-cell;
+    float: left;
 }

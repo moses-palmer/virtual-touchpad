@@ -1,5 +1,9 @@
 #settings-overlay {
     display: none;
+}
+
+#settings-overlay.toggled {
+    display: block;
     position: absolute;
     z-index: 50;
     min-height: 100%;
@@ -10,16 +14,25 @@
 
 #settings-view {
     position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
+    z-index: 51;
+    top: 48px;
+    left: 0;
+    bottom: 0;
+    width: 67%;
 
-    padding-top: 56px;
-
-    border-radius: 8px;
+    margin-left: -67%;
+    transition: margin-left 0.5s ease;
 
     background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
     background-color: white;
+}
+
+#settings-view.toggled {
+    margin-left: 0;
+}
+
+#settings-view.sliding {
+    transition: none;
 }
 
 #settings-view > div {

@@ -33,3 +33,30 @@ except ImportError:
 
 # The global X display
 DISPLAY = display.Display()
+
+
+def display_manager(display):
+    """Traps *X* errors and raises a ``RuntimeError`` at the end if any error
+    occurred.
+
+    :param display: The *X* display.
+    :type display: Xlib.display.Display
+
+    :return: the display
+    :rtype: Xlib.display.Display
+    """
+    from contextlib import contextmanager
+
+    @contextmanager
+    def manager():
+        errors = []
+        def handler(*args):
+            errors.append(args)
+        old_handler = display.set_error_handler(handler)
+        yield display
+        display.sync()
+        display.set_error_handler(old_handler)
+        if errors:
+            raise RuntimeError(errors)
+
+    return manager()

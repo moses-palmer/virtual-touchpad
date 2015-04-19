@@ -100,6 +100,7 @@ def handle_websocket():
                 bottle.abort(400, 'Invalid command')
 
         except geventwebsocket.WebSocketError:
+            log.exception('Failed to read WebSocket data')
             break
 
 

@@ -16,6 +16,7 @@
 
 
 from virtualtouchpad._platform._linux import *
+import Xlib.keysymdef.xkb
 
 
 # The scroll threshold required to actually perform scrolling
@@ -31,11 +32,27 @@ def mouse_scroll_cancel():
     scroll = [0, 0]
 
 
-def key_down(key):
-    # Convert the symbol name to an identifier
+def string_to_keysym(key):
+    """Converts a string to a keysym identifier.
+
+    :param str keysym: The string to convert.
+
+    :return: the corresponding key identifier
+    :rtype: int
+
+    :raises ValueError: if the string is unknown
+    """
     keysym = XK.string_to_keysym(key)
     if not keysym:
+        keysym = getattr(Xlib.keysymdef.xkb, 'XK_' + key, None)
+    if not keysym:
         raise ValueError('invalid symbol: %s', key)
+    return keysym
+
+
+def key_down(key):
+    # Convert the symbol name to an identifier
+    keysym = string_to_keysym(key)
 
     with display_manager(DISPLAY) as display:
         # Press the key
@@ -45,9 +62,7 @@ def key_down(key):
 
 def key_up(key):
     # Convert the symbol name to an identifier
-    keysym = XK.string_to_keysym(key)
-    if not keysym:
-        raise ValueError('invalid symbol: %s', key)
+    keysym = string_to_keysym(key)
 
     with display_manager(DISPLAY) as display:
         # Release the key

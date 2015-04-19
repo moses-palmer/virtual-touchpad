@@ -89,9 +89,14 @@ def handle_websocket():
 
             try:
                 command = json.loads(message)
-                dispatch(command)
+            except:
+                log.exception('An error occurred when loading JSON from %s',
+                    message)
 
+            try:
+                dispatch(command)
             except (KeyError, ValueError, TypeError):
+                log.exception('Failed to dispatch command %s', command)
                 bottle.abort(400, 'Invalid command')
 
         except geventwebsocket.WebSocketError:

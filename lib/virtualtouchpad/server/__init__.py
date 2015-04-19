@@ -105,7 +105,7 @@ def static_file_exists(path):
     else:
         # Otherwise, check with pkg_resource
         return pkg_resources.resource_exists(
-                    __name__, os.path.join('html', path))
+            __name__, os.path.join('html', path))
 
 
 def static_file(path):

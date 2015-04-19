@@ -31,6 +31,8 @@ import pkg_resources
 import sys
 import time
 
+log = logging.getLogger(__name__)
+
 try:
     from geventwebsocket.handler import WebSocketHandler
 except ImportError:
@@ -74,6 +76,8 @@ def translations(domain):
 def handle_websocket():
     # Get the actual websocket
     ws = bottle.request.environ.get('wsgi.websocket')
+    log.info('WebSocket with %s opened',
+        bottle.request.environ.get('REMOTE_ADDR'));
     if not ws:
         bottle.abort(400, 'Expected WebSocket request.')
 

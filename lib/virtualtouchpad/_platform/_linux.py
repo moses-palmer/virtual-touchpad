@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+log = logging.getLogger(__name__)
 
 from . import _freeze_modules
 
@@ -57,6 +59,8 @@ def display_manager(display):
         display.sync()
         display.set_error_handler(old_handler)
         if errors:
+            log.error('X requests failed: %s', ', '.join(
+                str(e) for e, v in errors))
             raise RuntimeError(errors)
 
     return manager()

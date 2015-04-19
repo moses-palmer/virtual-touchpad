@@ -15,6 +15,9 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import logging
+log = logging.getLogger(__name__)
+
 from ..dispatch import dispatcher
 
 from .. import event
@@ -27,7 +30,14 @@ def key_down(key):
     :param str key: The key that is being pressed. This value will be passed
         directly to :func:`event.key_down`.
     """
-    event.key_down(key)
+    try:
+        event.key_down(key)
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to press key symbol %s: %s' % (key, detail))
 
 
 @dispatcher
@@ -37,4 +47,11 @@ def key_up(key):
     :param str key: The key that is being release. This value will be passed
         directly to :func:`event.key_up`.
     """
-    event.key_up(key)
+    try:
+        event.key_up(key)
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to release key symbol %s: %s' % (key, detail))

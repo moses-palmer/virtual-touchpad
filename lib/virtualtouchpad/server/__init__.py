@@ -24,6 +24,7 @@ import gevent
 import bottle
 import geventwebsocket
 import json
+import logging
 import mimetypes
 import os
 import pkg_resources
@@ -196,7 +197,7 @@ if static_file_exists(MINIFIED_XHTML):
         return static(MINIFIED_XHTML)
 
 
-def main(port, address):
+def main(port, address, log_level):
     global app
 
     import gevent.pywsgi

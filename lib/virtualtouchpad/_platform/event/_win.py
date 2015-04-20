@@ -66,12 +66,12 @@ class INPUT(ctypes.Structure):
         ('value', ANYINPUT)]
 
 
-def key_down(key):
+def key_down(keysym, symbol):
     global _SendInput
     raise NotImplementedError();
 
 
-def key_up(key):
+def key_up(keysym, symbol):
     global _SendInput
     raise NotImplementedError();
 

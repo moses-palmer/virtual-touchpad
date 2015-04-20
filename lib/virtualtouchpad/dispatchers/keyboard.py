@@ -24,34 +24,46 @@ from .. import event
 
 
 @dispatcher
-def key_down(key):
+def key_down(keysym, symbol):
     """Triggers a key down event.
 
-    :param str key: The key that is being pressed. This value will be passed
-        directly to :func:`event.key_down`.
+    :param int keysym: The keysym identifier of the key that is being pressed.
+        This value will be passed directly to :func:`event.key_down`.
+
+        If ``symbol`` is a valid value, this parameter will be ignored.
+
+    :param str symbol: The symbol name of the key that is being pressed. This
+        value will be passed directly to :func:`event.key_down`.
     """
     try:
-        event.key_down(key)
+        event.key_down(keysym, symbol)
     except Exception as e:
         try:
             detail = e.args[0] % e.args[1:]
         except:
             detail = str(e)
-        log.error('Failed to press key symbol %s: %s' % (key, detail))
+        log.error('Failed to press key %s (%s): %s' % (
+            symbol, keysym, detail))
 
 
 @dispatcher
-def key_up(key):
+def key_up(keysym, symbol):
     """Triggers a key up event.
 
-    :param str key: The key that is being release. This value will be passed
-        directly to :func:`event.key_up`.
+    :param int keysym: The keysym identifier of the key that is being released.
+        This value will be passed directly to :func:`event.key_up`.
+
+        If ``symbol`` is a valid value, this parameter will be ignored.
+
+    :param str symbol: The symbol name of the key that is being released. This
+        value will be passed directly to :func:`event.key_up`.
     """
     try:
-        event.key_up(key)
+        event.key_up(keysym, symbol)
     except Exception as e:
         try:
             detail = e.args[0] % e.args[1:]
         except:
             detail = str(e)
-        log.error('Failed to release key symbol %s: %s' % (key, detail))
+        log.error('Failed to release key %s (%s): %s' % (
+            symbol, keysym, detail))

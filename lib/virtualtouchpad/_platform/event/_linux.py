@@ -32,7 +32,7 @@ def mouse_scroll_cancel():
     scroll = [0, 0]
 
 
-def string_to_keysym(key):
+def string_to_keysym(key, default = None):
     """Converts a string to a keysym identifier.
 
     :param str keysym: The string to convert.
@@ -44,15 +44,15 @@ def string_to_keysym(key):
     """
     keysym = XK.string_to_keysym(key)
     if not keysym:
-        keysym = getattr(Xlib.keysymdef.xkb, 'XK_' + key, None)
+        keysym = getattr(Xlib.keysymdef.xkb, 'XK_' + key, default)
     if not keysym:
         raise ValueError('invalid symbol: %s', key)
     return keysym
 
 
-def key_down(key):
+def key_down(keysym, symbol):
     # Convert the symbol name to an identifier
-    keysym = string_to_keysym(key)
+    keysym = string_to_keysym(symbol, keysym)
 
     with display_manager(DISPLAY) as display:
         # Press the key
@@ -60,9 +60,9 @@ def key_down(key):
         fake_input(display, X.KeyPress, keycode)
 
 
-def key_up(key):
+def key_up(keysym, symbol):
     # Convert the symbol name to an identifier
-    keysym = string_to_keysym(key)
+    keysym = string_to_keysym(symbol, keysym)
 
     with display_manager(DISPLAY) as display:
         # Release the key

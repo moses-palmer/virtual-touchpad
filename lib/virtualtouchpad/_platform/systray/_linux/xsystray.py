@@ -176,19 +176,7 @@ class SystemTrayIcon(SystemTrayIcon):
         if self._display is None:
             raise RuntimeError('display not initiated')
 
-        from contextlib import contextmanager
-
-        @contextmanager
-        def manager():
-            errors = []
-            old_handler = self._display.set_error_handler(errors.append)
-            yield self._display
-            self._display.sync()
-            self._display.set_error_handler(old_handler)
-            if errors:
-                raise RuntimeError(errors)
-
-        return manager()
+        return display_manager(self._display)
 
     @property
     def window(self):

@@ -24,6 +24,8 @@ import PIL.Image
 from .. import SystemTrayIcon
 from virtualtouchpad._platform._linux import *
 
+from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+
 
 class SystemTrayIcon(SystemTrayIcon):
     _XEMBED_INFO = '_XEMBED_INFO'
@@ -154,11 +156,10 @@ class SystemTrayIcon(SystemTrayIcon):
 
         # Load the icon from ../../../html/img/
         self._icon = PIL.Image.open(
-            pkg_resources.resource_stream(__name__, os.path.join(
-                os.pardir,
-                os.pardir,
-                os.pardir,
-                'html', 'img', 'icon196x196.png')))
+            pkg_resources.resource_stream(
+                PKG_RESOURCES_PACKAGE,
+                os.path.join(
+                    'html', 'img', 'icon196x196.png')))
         self._icon_data = None
 
         self._thread = threading.Thread(target = self._mainloop)

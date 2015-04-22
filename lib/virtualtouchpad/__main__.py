@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+log = logging.getLogger('virtualtouchpad')
 
 import socket
 
@@ -91,7 +93,17 @@ def start():
         default = _get_bind_info(),
         action = AddressAction)
 
+    parser.add_argument('--log-level',
+        type = str,
+        help = 'The log level to use.',
+        choices = ['debug', 'info', 'warning', 'error', 'critical'],
+        default = 'error')
+
     args = parser.parse_args()
+
+    logging.basicConfig(
+        level = getattr(logging, args.log_level.upper()))
+
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         args.address[0], args.port))
 
@@ -105,8 +117,4 @@ if __name__ == '__main__':
     try:
         start()
     except Exception as e:
-        import sys
-        try:
-            sys.stderr.write('%s\n' % e.args[0] % e.args[1:])
-        except TypeError:
-            sys.stderr.write('%s\n' % str(e))
+        log.exception('An unhandled exception occurred')

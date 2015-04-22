@@ -3,3 +3,107 @@ html, body {
     height: 100%;
     margin: 0;
 }
+
+table.stack caption {
+    font-size: 12pt;
+    margin-top: 5pt;
+    text-align: left;
+}
+
+table.stack td {
+    font-family: courier;
+    font-size: 10pt;
+}
+
+table.stack td:nth-child(2) {
+    padding-right: 50pt;
+}
+
+#settings-overlay {
+    display: none;
+}
+
+#settings-overlay.toggled {
+    display: block;
+    position: absolute;
+    z-index: 50;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#settings-view {
+    position: absolute;
+    z-index: 51;
+    top: 48px;
+    left: 0;
+    bottom: 0;
+    width: 67%;
+
+    margin-left: -67%;
+    transition: margin-left 0.5s ease;
+
+    background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
+    background-color: white;
+}
+
+#settings-view.toggled {
+    margin-left: 0;
+}
+
+#settings-view.sliding {
+    transition: none;
+}
+
+#settings-view > div {
+    color: black;
+    font-family: sans-serif;
+    font-size: 18pt;
+
+    margin: 32px;
+}
+
+#toolbar {
+    z-index: 50;
+    position: fixed;
+    display: table-cell;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    margin: 0;
+    padding: 4px;
+
+    vertical-align: middle;
+    text-align: right;
+
+    background-color: white;
+}
+
+#toolbar > button {
+    display: none;
+    height: 44px;
+    width: 44px;
+    float: right;
+
+    border: 0;
+    margin-left: 4px;
+    margin-right: 4px;
+    padding: 0;
+    outline: 0;
+
+    vertical-align: middle;
+    text-align: center;
+
+    background-color: transparent;
+}
+
+#toolbar > button.help {
+    display: table-cell;
+}
+
+#toolbar > button.settings {
+    display: table-cell;
+    float: left;
+}

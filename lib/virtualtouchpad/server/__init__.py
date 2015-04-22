@@ -24,11 +24,12 @@ import gevent
 import bottle
 import geventwebsocket
 import json
-import mimetypes
+import logging
 import os
-import pkg_resources
 import sys
-import time
+import traceback
+
+log = logging.getLogger(__name__)
 
 try:
     from geventwebsocket.handler import WebSocketHandler
@@ -37,17 +38,9 @@ except ImportError:
 
 from ..dispatch import dispatch
 
+from . import static_file
+
 app = bottle.Bottle()
-
-
-# Set a default value for STATIC_ROOT only if it is accessible
-DEFAULT_STATIC_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    os.path.pardir,
-    'html')
-STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
-    DEFAULT_STATIC_ROOT if os.access(DEFAULT_STATIC_ROOT, os.R_OK)
-    else None)
 
 
 @app.route('/translations/<domain>')
@@ -63,8 +56,8 @@ def translations(domain):
 
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
-        if static_file_exists(path):
-            return static_file(path)
+        if static_file.exists(path):
+            return static_file.get(path)
 
     return bottle.HTTPResponse(status = 404)
 
@@ -73,8 +66,17 @@ def translations(domain):
 def handle_websocket():
     # Get the actual websocket
     ws = bottle.request.environ.get('wsgi.websocket')
+    log.info('WebSocket with %s opened',
+        bottle.request.environ.get('REMOTE_ADDR'));
     if not ws:
         bottle.abort(400, 'Expected WebSocket request.')
+
+    def report_error(reason, exception, tb):
+        ws.send(json.dumps(dict(
+            reason = reason,
+            exception = type(exception).__name__,
+            data = str(exception),
+            tb = traceback.extract_tb(tb))))
 
     while True:
         try:
@@ -84,104 +86,39 @@ def handle_websocket():
 
             try:
                 command = json.loads(message)
-                dispatch(command)
+            except Exception as e:
+                log.exception('An error occurred when loading JSON from %s',
+                    message)
+                ex_type, ex, tb = sys.exc_info()
+                report_error('invalid_data',
+                    e, tb)
+                continue
 
-            except (KeyError, ValueError, TypeError):
-                bottle.abort(400, 'Invalid command')
+            try:
+                dispatch(command)
+            except (KeyError, ValueError, TypeError) as e:
+                log.exception('Failed to dispatch command %s',
+                    command)
+                ex_type, ex, tb = sys.exc_info()
+                report_error('invalid_command',
+                    e, tb)
+                continue
+            except Exception as e:
+                log.exception('An error occurred while dispatching %s',
+                    command)
+                ex_type, ex, tb = sys.exc_info()
+                report_error('internal_error',
+                    e, tb)
+                continue
 
         except geventwebsocket.WebSocketError:
+            log.exception('Failed to read WebSocket data')
             break
-
-
-def static_file_exists(path):
-    """Returns whether a static file exists.
-
-    :param str path: The path of the static file.
-    """
-    if not STATIC_ROOT is None:
-        # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
-        # read the file
-        return os.access(os.path.join(STATIC_ROOT, path), os.R_OK)
-    else:
-        # Otherwise, check with pkg_resource
-        return pkg_resources.resource_exists(
-                    __name__, os.path.join('html', path))
-
-
-def static_file(path):
-    """Returns a :class:`bottle.HTTPResponse` or :class:`bottle.HTTPError`
-    containing either the file requested or an error message.
-
-    :param str path: The path of the static file.
-    """
-    if not STATIC_ROOT is None:
-        # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle
-        return bottle.static_file(path, root = STATIC_ROOT)
-    else:
-        # Otherwise, try to serve a resource from the egg
-        try:
-            path = pkg_resources.resource_filename(
-                    __name__, os.path.join('html', path))
-            return bottle.static_file(
-                os.path.basename(path), root = os.path.dirname(path))
-        except KeyError:
-            # The file does not exist; we try to serve a file that we are
-            # certain does not exist to trigger a 404
-            return bottle.static_file(
-                path, root = os.path.join(os.path.dirname(__file__), 'html'))
-        except NotImplementedError:
-            # pkg_resources does not support resource_filename when running from
-            # a zip file
-            if hasattr(sys, 'frozen'):
-                pass
-            else:
-                raise
-
-    # Open the file and get its size
-    try:
-        stream = pkg_resources.resource_stream(__name__,
-                os.path.join('html', path))
-        stream.seek(0, os.SEEK_END)
-        size = stream.tell()
-        stream.seek(0, os.SEEK_SET)
-        if bottle.request.method == 'HEAD':
-            body = ''
-        else:
-            body = stream.read()
-    except IOError:
-        return bottle.HTTPError(404, 'File does not exist.')
-
-    headers = dict()
-    headers['Content-Length'] = size
-
-    # Guess the content type and encoding
-    mimetype, encoding = mimetypes.guess_type(path)
-    if mimetype:
-        headers['Content-Type'] = mimetype
-    if encoding:
-        headers['Content-Encoding'] = encoding
-
-    # Check the file mtime; we use the egg file
-    st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
-    last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
-        time.gmtime(st.st_mtime))
-    headers['Last-Modified'] = last_modified
-
-    if bottle.request.environ.get('HTTP_IF_MODIFIED_SINCE'):
-        if_modified_since = bottle.parse_date(bottle.request.environ.get(
-            'HTTP_IF_MODIFIED_SINCE').split(";")[0].strip())
-        if not if_modified_since is None \
-                and if_modified_since >= int(st.st_mtime):
-            headers['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S GMT",
-                time.gmtime())
-        return bottle.HTTPResponse(status = 304, **headers)
-
-    return bottle.HTTPResponse(body, **headers)
 
 
 @app.route('/<filepath:path>')
 def static(filepath):
-    return static_file(filepath)
+    return static_file.get(filepath)
 
 
 @app.route('/')
@@ -190,13 +127,13 @@ def index():
 
 
 MINIFIED_XHTML = 'index.min.xhtml'
-if static_file_exists(MINIFIED_XHTML):
+if static_file.exists(MINIFIED_XHTML):
     @app.route('/')
     def index_minified():
         return static(MINIFIED_XHTML)
 
 
-def main(port, address):
+def main(port, address, log_level):
     global app
 
     import gevent.pywsgi

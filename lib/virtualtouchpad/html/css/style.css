@@ -4,6 +4,21 @@ html, body {
     margin: 0;
 }
 
+table.stack caption {
+    font-size: 12pt;
+    margin-top: 5pt;
+    text-align: left;
+}
+
+table.stack td {
+    font-family: courier;
+    font-size: 10pt;
+}
+
+table.stack td:nth-child(2) {
+    padding-right: 50pt;
+}
+
 #settings-overlay {
     display: none;
 }

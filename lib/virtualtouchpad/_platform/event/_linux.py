@@ -22,6 +22,10 @@ import Xlib.keysymdef.xkb
 # The scroll threshold required to actually perform scrolling
 SCROLL_THRESHOLD = 10
 
+# The thresholds for movements
+SHRT_MAX = 32767
+SHRT_MIN = -SHRT_MAX - 1
+
 # The accumulated scrolling
 scroll = [0, 0]
 
@@ -120,6 +124,10 @@ def mouse_scroll(dx, dy):
 def mouse_move(dx, dy):
     with display_manager(DISPLAY) as display:
         mouse_scroll_cancel()
+
+        # The movement is a short
+        dx = max(min(dx, SHRT_MAX), SHRT_MIN)
+        dy = max(min(dy, SHRT_MAX), SHRT_MIN)
 
         if pyatspi:
             pyatspi.Registry.generateMouseEvent(dx, dy, 'rel')

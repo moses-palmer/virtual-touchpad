@@ -15,22 +15,28 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-def key_down(key):
+def key_down(keysym, symbol):
     """Sends a key down event.
 
-    :param str key: The name of the key. This value will be handled just like
-        :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and ``'a'`` will
-        trigger a press of the ``'A'`` key. ``'Space'`` and ``'space'`` will
-        trigger space.
+    :param int keysym: The key symbol identifier of the key being pressed.
+
+    :param str symbol: The symbol name of the key. This value will be handled
+        just like :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and
+        ``'a'`` will trigger a press of the ``'A'`` key. ``'Space'`` and
+        ``'space'`` will trigger space.
     """
     raise NotImplementedError()
 
 
-def key_up(key):
+def key_up(keysym, symbol):
     """Sends a key up event.
 
-    :param str key: The name of the key. This value is handled just like in
-        :func:`key_down`.
+    :param int keysym: The key symbol identifier of the key being pressed.
+
+    :param str symbol: The symbol name of the key. This value will be handled
+        just like :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and
+        ``'a'`` will trigger a press of the ``'A'`` key. ``'Space'`` and
+        ``'space'`` will trigger space.
     """
     raise NotImplementedError()
 

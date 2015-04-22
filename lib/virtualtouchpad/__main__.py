@@ -106,12 +106,14 @@ def start():
 
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         args.address[0], args.port))
-
-    announcer = announce.announce(args.address[1], args.port)
     try:
-        main(**vars(args)).serve_forever()
+        announcer = announce.announce(args.address[1], args.port)
+        try:
+            main(**vars(args)).serve_forever()
+        finally:
+            announcer.unregister()
     finally:
-        announcer.unregister()
+        icon.destroy()
 
 if __name__ == '__main__':
     try:

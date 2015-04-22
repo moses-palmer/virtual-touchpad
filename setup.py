@@ -11,7 +11,8 @@ PACKAGE_DATA = {
         'html/*.*',
         'html/css/*.*',
         'html/img/*.*',
-        'html/js/*.*']}
+        'html/js/*.*',
+        'html/translations/*/*.*',]}
 
 # The directories in which the packages can be found
 PACKAGE_DIR = {

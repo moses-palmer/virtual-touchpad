@@ -87,9 +87,6 @@ class SystemTrayIcon(SystemTrayIcon):
         self._thread.daemon  = True
         self._thread.start()
 
-    def __del__(self):
-        self.destroy()
-
     @property
     def icon(self):
         """The *win32* icon handle for the systray icon; the icon will be loaded

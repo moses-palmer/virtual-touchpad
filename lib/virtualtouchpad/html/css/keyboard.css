@@ -1,0 +1,66 @@
+keyboard svg {
+    width: 100%;
+}
+
+keyboard circle, keyboard line, keyboard path, keyboard rect {
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+keyboard path.shift {
+    fill: none;
+}
+
+keyboard text {
+    font-family: arial;
+    font-size: 16px;
+}
+keyboard text.small {
+    font-size: 10px;
+}
+
+keyboard .key text {
+    visibility: hidden;
+}
+keyboard.mod-none .key text.mod-none {
+    visibility: visible;
+}
+keyboard.mod-shift .key text.mod-shift {
+    visibility: visible;
+}
+keyboard.mod-altgr .key text.mod-altgr {
+    visibility: visible;
+}
+keyboard.mod-both .key text.mod-both {
+    visibility: visible;
+}
+
+keyboard .background {
+    fill: #e0e0e0;
+}
+keyboard .background.special {
+    fill: #a0a0e0;
+}
+
+keyboard .overlay {
+    fill: url(#shade);
+    fill-opacity: 0.2;
+    stroke: #c0c0c0;
+}
+keyboard .overlay.special {
+    stroke: #a0a0c0;
+}
+
+keyboard .drawing {
+    stroke: black;
+}
+
+keyboard .key {
+    transform-origin: 50% 50%;
+    transform: scale(1.0);
+    transition: transform 0.05s ease;
+}
+keyboard .key.pressed {
+    transform: scale(0.85);
+}

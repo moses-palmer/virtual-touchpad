@@ -23,7 +23,7 @@ table.stack td:nth-child(2) {
     display: none;
 }
 
-#settings-overlay.toggled {
+.connected #settings-overlay.toggled {
     display: block;
     position: absolute;
     z-index: 50;
@@ -103,7 +103,7 @@ table.stack td:nth-child(2) {
     display: table-cell;
 }
 
-#toolbar > button.settings {
+.connected #toolbar > button.settings {
     display: table-cell;
     float: left;
 }

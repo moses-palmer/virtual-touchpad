@@ -48,6 +48,21 @@ def exists(path):
         PKG_RESOURCES_PACKAGE, os.path.join('html', path))
 
 
+def list(path):
+    """Lists all resources available under ``path``.
+
+    :param str path: The path to check.
+
+    :return: a list of resources
+    :rtype: [str]
+    """
+    if not STATIC_ROOT is None:
+        return os.listdir(os.path.join(STATIC_ROOT, path))
+
+    return pkg_resources.resource_listdir(PKG_RESOURCES_PACKAGE,
+        os.path.join('html', path))
+
+
 def get(path):
     """Returns a :class:`bottle.HTTPResponse` or :class:`bottle.HTTPError`
     containing either the file requested or an error message.

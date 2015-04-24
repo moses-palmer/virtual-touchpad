@@ -1,18 +1,25 @@
 message-box {
     z-index: 100;
-    display: none;
     position: fixed;
     left: 0;
     right: 0;
 
+    max-height: 0;
+    transition: max-height 1s ease;
+
     margin: 4pt;
     margin-top: 60px;
-    padding: 4pt;
+    padding: 0;
     background-color: white;
 
     color: black;
     font-family: sans-serif;
     font-size: 18pt;
+}
+
+.message-box message-box {
+    max-height: 100%;
+    padding: 4pt;
 }
 
 message-box.error {}

@@ -19,6 +19,30 @@ table.stack td:nth-child(2) {
     padding-right: 50pt;
 }
 
+#keyboard {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    overflow: hidden;
+    max-height: 0;
+}
+
+@media screen and (min-width: 448px) {
+    #keyboard {
+        transition: max-height 1s ease;
+    }
+
+    .connected #keyboard.ready {
+        max-height: 100%;
+    }
+
+    .message-box #keyboard.ready {
+         max-height: 0;
+     }
+}
+
 #settings-overlay {
     display: none;
 }

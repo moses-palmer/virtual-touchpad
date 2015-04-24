@@ -129,6 +129,14 @@ this program. If not, see <http://www.gnu.org/licenses/>.
                 <x-include href="img/fullscreen.svg" />
             </button>
         </div>
+
+        <x-include href="keyboard/buttons.svg" />
+        <keyboard
+            id="keyboard"
+            src="keyboard/geometry/large.svg"
+            layout="keyboard/layout/default"
+            onpress="app.keyboard.onPress.apply(null, event.detail);"
+            onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>
     </body>
 </html>
 

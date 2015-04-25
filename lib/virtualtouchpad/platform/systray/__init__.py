@@ -32,5 +32,5 @@ class SystemTrayIcon(object):
         return self._description
 
 
-from .. import _import_symbols
-_import_symbols(globals())
+from virtualtouchpad.platform import implement
+implement(globals())

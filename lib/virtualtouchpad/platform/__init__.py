@@ -47,7 +47,7 @@ __all__ = [directory
         and directory[0] != '_']
 
 
-def _import_symbols(globals_dict):
+def implement(globals_dict):
     """Loads the platform dependent implementation and populates a dict.
 
     :param dict globals_dict: The globals dict. Use :func:`globals` when

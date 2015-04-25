@@ -392,7 +392,7 @@ class generate_translations(setuptools.Command):
 
 
 if py2exe:
-    import virtualtouchpad._platform._win as _win
+    import virtualtouchpad.platform._win as _win
 
     # Construct the data_files argument to setup from the package_data argument
     # value; py2exe does not support data files
@@ -436,10 +436,10 @@ if py2exe:
             'includes': [
                 'greenlet',
                 'gevent.select',
-                'virtualtouchpad._platform._win',
-                'virtualtouchpad._platform.event._win',
-                'virtualtouchpad._platform.systray._win',
-                'virtualtouchpad._platform.systray._win.win32systray'] + [
+                'virtualtouchpad.platform._win',
+                'virtualtouchpad.platform.event._win',
+                'virtualtouchpad.platform.systray._win',
+                'virtualtouchpad.platform.systray._win.win32systray'] + [
                     'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
                         for m in os.listdir(
                             os.path.join(

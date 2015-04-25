@@ -15,7 +15,7 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from virtualtouchpad._platform._linux import *
+from virtualtouchpad.platform._linux import *
 import Xlib.keysymdef.xkb
 
 

@@ -22,7 +22,7 @@ import threading
 import PIL.Image
 
 from .. import SystemTrayIcon
-from virtualtouchpad._platform._linux import *
+from virtualtouchpad.platform._linux import *
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 

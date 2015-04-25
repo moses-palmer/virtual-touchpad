@@ -27,7 +27,7 @@ except ImportError:
     import win32gui
 
 from .. import SystemTrayIcon
-import virtualtouchpad._platform._win as _win
+import virtualtouchpad.platform._win as _win
 
 
 class SystemTrayIcon(SystemTrayIcon):

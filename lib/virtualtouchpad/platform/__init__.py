@@ -14,9 +14,30 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 import os
 import pkg_resources
+
+from contextlib import contextmanager
+
+
+class ImplementationImportError(Exception):
+    """Raised when a module required for a platform specific implementation does
+    not exist.
+    """
+    pass
+
+@contextmanager
+def modules():
+    """A context manager for trying to import platform dependent modules.
+
+    Use this in a ``with`` statement when importing platform dependent modules
+    to allow :func:`implement` to gracefully try another implementation.
+    """
+    try:
+        yield
+    except ImportError as e:
+        raise ImplementationImportError(e)
+
 
 _package, _subpackage = __package__.split('.', 1)
 _path = _subpackage.replace('.', os.path.sep)

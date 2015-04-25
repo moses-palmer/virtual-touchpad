@@ -47,17 +47,13 @@ __all__ = [directory
         and directory[0] != '_']
 
 
-def _import_symbols(globals_dict, *candidates):
+def _import_symbols(globals_dict):
     """Loads the platform dependent implementation and populates a dict.
 
     :param dict globals_dict: The globals dict. Use :func:`globals` when
         calling this function from another module. Only callable symbols not
         beginning with '_' in this dictionary will be imported from the driver
         module.
-
-    :param [str] candidates: The names of candidate modules to try before trying
-        the default platform driver. The default name is ``'_' + sys.platform``,
-        with everything but letters dripped from :attr:`sys.platform`.
 
     :raises ImportError: if no platform driver was found, or a global callable
         in the driver was not present in ``globals_dict``, or the function
@@ -69,16 +65,14 @@ def _import_symbols(globals_dict, *candidates):
     import sys
 
     # Get the name of the platform and load the driver module
-    platform_driver = '_' + ''.join(c for c in sys.platform if c.isalpha())
+    candidate = '_' + ''.join(c for c in sys.platform if c.isalpha())
     driver = None
-    for candidate in list(candidates) + [platform_driver]:
-        try:
-            driver = importlib.import_module(
-                '.%s' % candidate,
-                globals_dict['__package__'])
-            break
-        except ImportError:
-            pass
+    try:
+        driver = importlib.import_module(
+            '.%s' % candidate,
+            globals_dict['__package__'])
+    except ImportError:
+        driver = None
     if driver is None:
         raise ImportError('Failed to locate platform driver for package %s',
             globals_dict['__package__'])

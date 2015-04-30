@@ -82,7 +82,7 @@ table.stack td:nth-child(2) {
 }
 
 #toolbar > button {
-    display: none;
+    display: table-cell;
     height: 44px;
     width: 44px;
     float: right;
@@ -99,11 +99,18 @@ table.stack td:nth-child(2) {
     background-color: transparent;
 }
 
-#toolbar > button.help {
-    display: table-cell;
+.connected #toolbar > button.settings {
+    float: left;
 }
 
-.connected #toolbar > button.settings {
-    display: table-cell;
-    float: left;
+*:fullscreen #toolbar > button.fullscreen {
+     display: none;
+}
+
+*:-moz-full-screen #toolbar > button.fullscreen {
+    display: none;
+}
+
+*:-webkit-full-screen #toolbar > button.fullscreen {
+    display: none;
 }

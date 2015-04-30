@@ -46,7 +46,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             Virtual Touchpad
         </title>
 
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
 
         <!-- For modules -->
         <link rel="stylesheet" type="text/css" href="css/keyboard.css" />
@@ -55,24 +55,22 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <link rel="stylesheet" type="text/css" href="css/touchpad.css" />
 
         <!-- Setup script -->
-        <script type="text/javascript" src="js/init.js"></script>
+        <script type="text/javascript" src="js/lib/init.js"></script>
 
         <!-- Required modules -->
-        <script type="text/javascript" src="js/translation.js"></script>
-        <script type="text/javascript" src="js/util.js"></script>
-        <script type="text/javascript" src="js/checks.js"></script>
-        <script type="text/javascript" src="js/controller.js"></script>
-        <script type="text/javascript" src="js/configuration.js"></script>
-        <script type="text/javascript" src="js/features.js"></script>
-        <script type="text/javascript" src="js/keyboard.js"></script>
-        <script type="text/javascript" src="js/message-box.js"></script>
-        <script type="text/javascript" src="js/view.js"></script>
-        <script type="text/javascript" src="js/trackbar.js"></script>
+        <script type="text/javascript" src="js/lib/translation.js"></script>
+        <script type="text/javascript" src="js/lib/util.js"></script>
+        <script type="text/javascript" src="js/lib/checks.js"></script>
+        <script type="text/javascript" src="js/lib/controller.js"></script>
+        <script type="text/javascript" src="js/lib/configuration.js"></script>
+        <script type="text/javascript" src="js/lib/features.js"></script>
+        <script type="text/javascript" src="js/lib/keyboard.js"></script>
+        <script type="text/javascript" src="js/lib/message-box.js"></script>
+        <script type="text/javascript" src="js/lib/view.js"></script>
+        <script type="text/javascript" src="js/lib/trackbar.js"></script>
 
         <!-- The main application -->
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/settings.js"></script>
-        <script type="text/javascript" src="js/toolbar.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
 
         <!-- Translations -->
         <script type="text/javascript" src="translations/index"
@@ -84,7 +82,12 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <message-box id="message-box"></message-box>
 
         <!-- The control that is used as touchpad -->
-        <touchpad id="touchpad"></touchpad>
+        <touchpad id="touchpad"
+            onbuttondown="app.touchpad.onButtonDown(event.detail);"
+            onbuttonup="app.touchpad.onButtonUp(event.detail);"
+            onmove="app.touchpad.onMove(event.detail[0], event.detail[1]);"
+            onscroll="app.touchpad.onScroll(event.detail[0], event.detail[1]);">
+        </touchpad>
 
         <!-- The settings container -->
         <div id="settings-overlay"></div>
@@ -113,15 +116,15 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <!-- The toolbar -->
         <div id="toolbar" class="toolbar">
             <button class="help"
-                    onclick="toolbar.onHelp();">
+                    onclick="app.toolbar.onHelp();">
                 <img src="img/help.svg" />
             </button>
             <button class="settings"
-                    onclick="toolbar.onSettings();">
+                    onclick="app.toolbar.onSettings();">
                 <img src="img/settings.svg" />
             </button>
             <button class="fullscreen on"
-                    onclick="toolbar.onFullscreenOn();">
+                    onclick="app.toolbar.onFullscreenOn();">
                 <img src="img/fullscreen.svg" />
             </button>
         </div>

@@ -89,30 +89,30 @@ def _inline_css(e, source_dir, dom, files):
     files.append(href_path)
 
 
-def _inline_svg(e, source_dir, dom, files):
+def _inline_include(e, source_dir, dom, files):
     """Inlines img elements with Scalable Vector Graphics source"""
     import subprocess
     from xml.dom.minidom import parseString
 
     # Only use img tags
     if e.nodeType != Node.ELEMENT_NODE \
-            or e.tagName != 'img' \
-            or e.getAttribute('src').rsplit('.', 1)[-1] != 'svg':
+            or e.tagName != 'x-include' \
+            or not e.getAttribute('href'):
         return
 
-    # Load the SVG
-    src = os.path.join(source_dir, e.getAttribute('src'));
-    with open(src, 'rb') as f:
-        svg = parseString(f.read())
+    # Load the XML
+    href = os.path.join(source_dir, e.getAttribute('href'));
+    with open(href, 'rb') as f:
+        doc = parseString(f.read())
 
     # Strip space
-    _recurse(svg, _trim)
+    _recurse(doc, _trim)
 
-    # Replace the img tag with inline SVG
-    e.parentNode.insertBefore(svg.documentElement, e)
+    # Replace the x-include tag with inline XML
+    e.parentNode.insertBefore(doc.documentElement, e)
     e.parentNode.removeChild(e)
 
-    files.append(src)
+    files.append(href)
 
 
 def _join_elements(e):
@@ -254,7 +254,7 @@ def minify_html(context):
         dom = dom)
 
     # Inline and minify SVG img elements
-    _recurse(dom.documentElement, _inline_svg,
+    _recurse(dom.documentElement, _inline_include,
         source_dir = os.path.dirname(source_path),
         dom = dom,
         files = files)

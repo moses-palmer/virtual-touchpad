@@ -6,386 +6,73 @@
         version="1.1"
         viewBox="0 0 450 144"
         xml:space="preserve">
-    <defs>
-        <radialGradient
-                id="shade"
-                r="1"
-                cx="0.5"
-                cy="0.7"
-                gradientTransform="scale(2,1) translate(-0.25,0)">
-            <stop
-                style="stop-color:#ffffff"
-                offset="0" />
-            <stop
-                style="stop-color:#000000"
-                offset="1" />
-        </radialGradient>
-
-
-        <!-- Drawings -->
-
-        <g id="arrow">
-            <path class="drawing"
-                d="M -8,0 l 16,0 m -8,-4 l 8,4 l -8,4 z" />
-        </g>
-
-        <g id="arrow-stop">
-            <line class="drawing"
-                x1="8" y1="4"
-                x2="8" y2="-4" />
-        </g>
-
-        <g id="shift">
-            <path class="drawing shift"
-                d="M 0,-9 l 9,9 l -3,0 l 0,3 l -12,0 l 0,-3 l -3,0 z" />
-        </g>
-
-        <g id="icon">
-            <circle class="drawing"
-                cx="-3"
-                cy="3"
-                r="2" />
-            <circle class="drawing"
-                cx="-2"
-                cy="-3"
-                r="2" />
-            <circle class="drawing"
-                cx="3"
-                cy="4"
-                r="2" />
-            <circle class="drawing"
-                cx="4"
-                cy="-2"
-                r="2" />
-        </g>
-
-        <g id="alternatives">
-            <line class="drawing"
-                x1="-4" y1="-4"
-                x2="4" y2="-4" />
-            <line class="drawing"
-                x1="-4" y1="0"
-                x2="4" y2="0" />
-            <line class="drawing"
-                x1="-4" y1="4"
-                x2="4" y2="4" />
-        </g>
-
-
-        <!-- Keys -->
-
-        <g id="key">
-            <rect
-                class="background"
-                width="26"
-                height="24"
-                rx="2"
-                ry="2" />
-            <rect
-                class="overlay"
-                width="26"
-                height="24"
-                rx="2"
-                ry="2" />
-        </g>
-
-        <g id="backspace">
-            <rect
-                class="background backspace"
-                width="50"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay backspace"
-                width="50"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#arrow"
-                transform="translate(25,12) rotate(180)" />
-        </g>
-
-        <g id="tab">
-            <rect
-                class="background tab"
-                width="40"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay tab"
-                width="40"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#arrow"
-                transform="translate(20,12)" />
-            <use
-                xlink:href="#arrow-stop"
-                transform="translate(20,12)" />
-        </g>
-
-        <g id="enter">
-            <path
-                class="background enter"
-                d="M 0,2 a 2,2,0,0,1,2,-2 l 32,0 a 2,2,0,0,1,2,2 l 0,48 a 2,2,0,0,1,-2,2 l -22,0 a 2,2,0,0,1,-2,-2 l 0,-24 a 2,2,0,0,0,-2,-2 l -6,0 a 2,2,0,0,1,-2,-2 z" />
-            <path
-                class="overlay enter"
-                d="M 0,2 a 2,2,0,0,1,2,-2 l 32,0 a 2,2,0,0,1,2,2 l 0,48 a 2,2,0,0,1,-2,2 l -22,0 a 2,2,0,0,1,-2,-2 l 0,-24 a 2,2,0,0,0,-2,-2 l -6,0 a 2,2,0,0,1,-2,-2 z" />
-            <use
-                xlink:href="#arrow"
-                transform="translate(22,20) rotate(180)" />
-            <use
-                xlink:href="#arrow-stop"
-                transform="translate(22,16)" />
-        </g>
-
-        <g id="caps">
-            <rect
-                class="background caps special"
-                width="50"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay caps special"
-                width="50"
-                height="24"
-                rx="2"
-                ry="2" />
-            <text
-                    class="small"
-                    text-anchor="middle"
-                    x="25"
-                    y="16">
-                Caps
-            </text>
-        </g>
-
-        <g id="lshift">
-            <rect
-                class="background shift lshift special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay shift lshift special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#shift"
-                transform="translate(14,14)" />
-        </g>
-
-        <g id="rshift">
-            <rect
-                class="background shift rshift special"
-                width="78"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay shift rshift special"
-                width="78"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#shift"
-                transform="translate(39,14)" />
-        </g>
-
-        <g id="ctrl">
-            <rect
-                class="background ctrl special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay ctrl special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <text
-                    class="small"
-                    text-anchor="middle"
-                    x="14"
-                    y="16">
-                Ctrl
-            </text>
-        </g>
-
-        <g id="super">
-            <rect
-                class="background super"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay super"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#icon"
-                transform="translate(14,12)" />
-        </g>
-
-        <g id="alt">
-            <rect
-                class="background alt special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay alt special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <text
-                    class="small"
-                    text-anchor="middle"
-                    x="14"
-                    y="16">
-                Alt
-            </text>
-        </g>
-
-        <g id="space">
-            <rect
-                class="background space"
-                width="216"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay space"
-                width="216"
-                height="24"
-                rx="2"
-                ry="2" />
-        </g>
-
-        <g id="altgr">
-            <rect
-                class="background altgr special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay altgr special"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <text
-                    class="small"
-                    text-anchor="middle"
-                    x="14"
-                    y="16">
-                AltGr
-            </text>
-        </g>
-
-        <g id="menu">
-            <rect
-                class="background menu"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2"/>
-            <rect
-                class="overlay menu"
-                width="28"
-                height="24"
-                rx="2"
-                ry="2" />
-            <use
-                xlink:href="#alternatives"
-                transform="translate(14,12)" />
-        </g>
-    </defs>
-
-    <g id="keys">
+    <g class="keys">
         <!-- The normal keys defined in the layout file -->
-        <g class="key" x-row="0" x-col="1"><use xlink:href="#key" x="34" y="4" /></g>
-        <g class="key" x-row="0" x-col="2"><use xlink:href="#key" x="64" y="4" /></g>
-        <g class="key" x-row="0" x-col="0"><use xlink:href="#key" x="4" y="4" /></g>
-        <g class="key" x-row="0" x-col="3"><use xlink:href="#key" x="94" y="4" /></g>
-        <g class="key" x-row="0" x-col="4"><use xlink:href="#key" x="124" y="4" /></g>
-        <g class="key" x-row="0" x-col="5"><use xlink:href="#key" x="154" y="4" /></g>
-        <g class="key" x-row="0" x-col="6"><use xlink:href="#key" x="184" y="4" /></g>
-        <g class="key" x-row="0" x-col="7"><use xlink:href="#key" x="214" y="4" /></g>
-        <g class="key" x-row="0" x-col="8"><use xlink:href="#key" x="244" y="4" /></g>
-        <g class="key" x-row="0" x-col="9"><use xlink:href="#key" x="274" y="4" /></g>
-        <g class="key" x-row="0" x-col="10"><use xlink:href="#key" x="304" y="4" /></g>
-        <g class="key" x-row="0" x-col="11"><use xlink:href="#key" x="334" y="4" /></g>
-        <g class="key" x-row="0" x-col="12"><use xlink:href="#key" x="364" y="4" /></g>
-        <g class="key" x-row="1" x-col="0"><use xlink:href="#key" x="48" y="32" /></g>
-        <g class="key" x-row="1" x-col="1"><use xlink:href="#key" x="78" y="32" /></g>
-        <g class="key" x-row="1" x-col="2"><use xlink:href="#key" x="108" y="32" /></g>
-        <g class="key" x-row="1" x-col="3"><use xlink:href="#key" x="138" y="32" /></g>
-        <g class="key" x-row="1" x-col="4"><use xlink:href="#key" x="168" y="32" /></g>
-        <g class="key" x-row="1" x-col="5"><use xlink:href="#key" x="198" y="32" /></g>
-        <g class="key" x-row="1" x-col="6"><use xlink:href="#key" x="228" y="32" /></g>
-        <g class="key" x-row="1" x-col="7"><use xlink:href="#key" x="258" y="32" /></g>
-        <g class="key" x-row="1" x-col="8"><use xlink:href="#key" x="288" y="32" /></g>
-        <g class="key" x-row="1" x-col="9"><use xlink:href="#key" x="318" y="32" /></g>
-        <g class="key" x-row="1" x-col="10"><use xlink:href="#key" x="348" y="32" /></g>
-        <g class="key" x-row="1" x-col="11"><use xlink:href="#key" x="378" y="32" /></g>
-        <g class="key" x-row="2" x-col="0"><use xlink:href="#key" x="58" y="60" /></g>
-        <g class="key" x-row="2" x-col="1"><use xlink:href="#key" x="88" y="60" /></g>
-        <g class="key" x-row="2" x-col="2"><use xlink:href="#key" x="118" y="60" /></g>
-        <g class="key" x-row="2" x-col="3"><use xlink:href="#key" x="148" y="60" /></g>
-        <g class="key" x-row="2" x-col="4"><use xlink:href="#key" x="178" y="60" /></g>
-        <g class="key" x-row="2" x-col="5"><use xlink:href="#key" x="208" y="60" /></g>
-        <g class="key" x-row="2" x-col="6"><use xlink:href="#key" x="238" y="60" /></g>
-        <g class="key" x-row="2" x-col="7"><use xlink:href="#key" x="268" y="60" /></g>
-        <g class="key" x-row="2" x-col="8"><use xlink:href="#key" x="298" y="60" /></g>
-        <g class="key" x-row="2" x-col="9"><use xlink:href="#key" x="328" y="60" /></g>
-        <g class="key" x-row="2" x-col="10"><use xlink:href="#key" x="358" y="60" /></g>
-        <g class="key" x-row="2" x-col="11"><use xlink:href="#key" x="388" y="60" /></g>
-        <g class="key" x-row="3" x-col="1"><use xlink:href="#key" x="66" y="88" /></g>
-        <g class="key" x-row="3" x-col="2"><use xlink:href="#key" x="96" y="88" /></g>
-        <g class="key" x-row="3" x-col="3"><use xlink:href="#key" x="126" y="88" /></g>
-        <g class="key" x-row="3" x-col="5"><use xlink:href="#key" x="186" y="88" /></g>
-        <g class="key" x-row="3" x-col="6"><use xlink:href="#key" x="216" y="88" /></g>
-        <g class="key" x-row="3" x-col="7"><use xlink:href="#key" x="246" y="88" /></g>
-        <g class="key" x-row="3" x-col="8"><use xlink:href="#key" x="276" y="88" /></g>
-        <g class="key" x-row="3" x-col="9"><use xlink:href="#key" x="306" y="88" /></g>
-        <g class="key" x-row="3" x-col="10"><use xlink:href="#key" x="336" y="88" /></g>
-        <g class="key" x-row="3" x-col="4"><use xlink:href="#key" x="156" y="88" /></g>
-        <g class="key" x-row="3" x-col="0"><use xlink:href="#key" x="36" y="88" /></g>
+        <g class="key" x-row="0" x-col="1"><use xlink:href="#keyboard-key" x="34" y="4" /></g>
+        <g class="key" x-row="0" x-col="2"><use xlink:href="#keyboard-key" x="64" y="4" /></g>
+        <g class="key" x-row="0" x-col="0"><use xlink:href="#keyboard-key" x="4" y="4" /></g>
+        <g class="key" x-row="0" x-col="3"><use xlink:href="#keyboard-key" x="94" y="4" /></g>
+        <g class="key" x-row="0" x-col="4"><use xlink:href="#keyboard-key" x="124" y="4" /></g>
+        <g class="key" x-row="0" x-col="5"><use xlink:href="#keyboard-key" x="154" y="4" /></g>
+        <g class="key" x-row="0" x-col="6"><use xlink:href="#keyboard-key" x="184" y="4" /></g>
+        <g class="key" x-row="0" x-col="7"><use xlink:href="#keyboard-key" x="214" y="4" /></g>
+        <g class="key" x-row="0" x-col="8"><use xlink:href="#keyboard-key" x="244" y="4" /></g>
+        <g class="key" x-row="0" x-col="9"><use xlink:href="#keyboard-key" x="274" y="4" /></g>
+        <g class="key" x-row="0" x-col="10"><use xlink:href="#keyboard-key" x="304" y="4" /></g>
+        <g class="key" x-row="0" x-col="11"><use xlink:href="#keyboard-key" x="334" y="4" /></g>
+        <g class="key" x-row="0" x-col="12"><use xlink:href="#keyboard-key" x="364" y="4" /></g>
+        <g class="key" x-row="1" x-col="0"><use xlink:href="#keyboard-key" x="48" y="32" /></g>
+        <g class="key" x-row="1" x-col="1"><use xlink:href="#keyboard-key" x="78" y="32" /></g>
+        <g class="key" x-row="1" x-col="2"><use xlink:href="#keyboard-key" x="108" y="32" /></g>
+        <g class="key" x-row="1" x-col="3"><use xlink:href="#keyboard-key" x="138" y="32" /></g>
+        <g class="key" x-row="1" x-col="4"><use xlink:href="#keyboard-key" x="168" y="32" /></g>
+        <g class="key" x-row="1" x-col="5"><use xlink:href="#keyboard-key" x="198" y="32" /></g>
+        <g class="key" x-row="1" x-col="6"><use xlink:href="#keyboard-key" x="228" y="32" /></g>
+        <g class="key" x-row="1" x-col="7"><use xlink:href="#keyboard-key" x="258" y="32" /></g>
+        <g class="key" x-row="1" x-col="8"><use xlink:href="#keyboard-key" x="288" y="32" /></g>
+        <g class="key" x-row="1" x-col="9"><use xlink:href="#keyboard-key" x="318" y="32" /></g>
+        <g class="key" x-row="1" x-col="10"><use xlink:href="#keyboard-key" x="348" y="32" /></g>
+        <g class="key" x-row="1" x-col="11"><use xlink:href="#keyboard-key" x="378" y="32" /></g>
+        <g class="key" x-row="2" x-col="0"><use xlink:href="#keyboard-key" x="58" y="60" /></g>
+        <g class="key" x-row="2" x-col="1"><use xlink:href="#keyboard-key" x="88" y="60" /></g>
+        <g class="key" x-row="2" x-col="2"><use xlink:href="#keyboard-key" x="118" y="60" /></g>
+        <g class="key" x-row="2" x-col="3"><use xlink:href="#keyboard-key" x="148" y="60" /></g>
+        <g class="key" x-row="2" x-col="4"><use xlink:href="#keyboard-key" x="178" y="60" /></g>
+        <g class="key" x-row="2" x-col="5"><use xlink:href="#keyboard-key" x="208" y="60" /></g>
+        <g class="key" x-row="2" x-col="6"><use xlink:href="#keyboard-key" x="238" y="60" /></g>
+        <g class="key" x-row="2" x-col="7"><use xlink:href="#keyboard-key" x="268" y="60" /></g>
+        <g class="key" x-row="2" x-col="8"><use xlink:href="#keyboard-key" x="298" y="60" /></g>
+        <g class="key" x-row="2" x-col="9"><use xlink:href="#keyboard-key" x="328" y="60" /></g>
+        <g class="key" x-row="2" x-col="10"><use xlink:href="#keyboard-key" x="358" y="60" /></g>
+        <g class="key" x-row="2" x-col="11"><use xlink:href="#keyboard-key" x="388" y="60" /></g>
+        <g class="key" x-row="3" x-col="1"><use xlink:href="#keyboard-key" x="66" y="88" /></g>
+        <g class="key" x-row="3" x-col="2"><use xlink:href="#keyboard-key" x="96" y="88" /></g>
+        <g class="key" x-row="3" x-col="3"><use xlink:href="#keyboard-key" x="126" y="88" /></g>
+        <g class="key" x-row="3" x-col="5"><use xlink:href="#keyboard-key" x="186" y="88" /></g>
+        <g class="key" x-row="3" x-col="6"><use xlink:href="#keyboard-key" x="216" y="88" /></g>
+        <g class="key" x-row="3" x-col="7"><use xlink:href="#keyboard-key" x="246" y="88" /></g>
+        <g class="key" x-row="3" x-col="8"><use xlink:href="#keyboard-key" x="276" y="88" /></g>
+        <g class="key" x-row="3" x-col="9"><use xlink:href="#keyboard-key" x="306" y="88" /></g>
+        <g class="key" x-row="3" x-col="10"><use xlink:href="#keyboard-key" x="336" y="88" /></g>
+        <g class="key" x-row="3" x-col="4"><use xlink:href="#keyboard-key" x="156" y="88" /></g>
+        <g class="key" x-row="3" x-col="0"><use xlink:href="#keyboard-key" x="36" y="88" /></g>
 
         <!-- Special keys -->
-        <g class="key" x-symbol="BackSpace"><use xlink:href="#backspace" x="394" y="4" /></g>
-        <g class="key" x-symbol="Tab"><use xlink:href="#tab" x="4" y="32" /></g>
-        <g class="key" x-symbol="Return"><use xlink:href="#enter" x="408" y="32" /></g>
-        <g class="key" x-symbol="Super_L"><use xlink:href="#super" x="36" y="116" /></g>
-        <g class="key" x-symbol="space"><use xlink:href="#space" x="100" y="116" /></g>
-        <g class="key" x-symbol="Super_R"><use xlink:href="#super" x="352" y="116" /></g>
-        <g class="key" x-symbol="Menu"><use xlink:href="#menu" x="384" y="116" /></g>
+        <g class="key" x-symbol="BackSpace"><use xlink:href="#keyboard-backspace" x="394" y="4" /></g>
+        <g class="key" x-symbol="Tab"><use xlink:href="#keyboard-tab" x="4" y="32" /></g>
+        <g class="key" x-symbol="Return"><use xlink:href="#keyboard-enter" x="408" y="32" /></g>
+        <g class="key" x-symbol="Super_L"><use xlink:href="#keyboard-super" x="36" y="116" /></g>
+        <g class="key" x-symbol="space"><use xlink:href="#keyboard-space" x="100" y="116" /></g>
+        <g class="key" x-symbol="Super_R"><use xlink:href="#keyboard-super" x="352" y="116" /></g>
+        <g class="key" x-symbol="Menu"><use xlink:href="#keyboard-menu" x="384" y="116" /></g>
 
         <!-- Toggle keys -->
-        <g class="key toggle caps" x-symbol="Caps_Lock"><use xlink:href="#caps" x="4" y="60" /></g>
-        <g class="key toggle lshift" x-symbol="Shift_L"><use xlink:href="#lshift" x="4" y="88" /></g>
-        <g class="key toggle rshift" x-symbol="Shift_R"><use xlink:href="#rshift" x="366" y="88" /></g>
-        <g class="key toggle lctrl" x-symbol="Control_L"><use xlink:href="#ctrl" x="4" y="116" /></g>
-        <g class="key toggle alt" x-symbol="Alt_L"><use xlink:href="#alt" x="68" y="116" /></g>
-        <g class="key toggle altgr" x-symbol="ISO_Level3_Shift"><use xlink:href="#altgr" x="320" y="116" /></g>
-        <g class="key toggle rctrl" x-symbol="Control_R"><use xlink:href="#ctrl" x="416" y="116" /></g>
+        <g class="key toggle caps" x-symbol="Caps_Lock"><use xlink:href="#keyboard-caps" x="4" y="60" /></g>
+        <g class="key toggle lshift" x-symbol="Shift_L"><use xlink:href="#keyboard-lshift" x="4" y="88" /></g>
+        <g class="key toggle rshift" x-symbol="Shift_R"><use xlink:href="#keyboard-rshift" x="366" y="88" /></g>
+        <g class="key toggle lctrl" x-symbol="Control_L"><use xlink:href="#keyboard-ctrl" x="4" y="116" /></g>
+        <g class="key toggle alt" x-symbol="Alt_L"><use xlink:href="#keyboard-alt" x="68" y="116" /></g>
+        <g class="key toggle altgr" x-symbol="ISO_Level3_Shift"><use xlink:href="#keyboard-altgr" x="320" y="116" /></g>
+        <g class="key toggle rctrl" x-symbol="Control_R"><use xlink:href="#keyboard-ctrl" x="416" y="116" /></g>
     </g>
 </svg>

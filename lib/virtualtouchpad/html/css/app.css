@@ -99,6 +99,27 @@ table.stack td:nth-child(2) {
     background-color: transparent;
 }
 
+#toolbar > button svg {
+    fill: #606060;
+    stroke: #606060;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 4;
+}
+#toolbar > button text {
+    font-family: sans;
+    font-size: 32px;
+    font-weight: bolder;
+
+    stroke: none;
+}
+#toolbar > button .frame {
+    fill: none;
+}
+#toolbar > button .shape {
+    stroke: none;
+}
+
 .connected #toolbar > button.settings {
     float: left;
 }

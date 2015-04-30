@@ -6,28 +6,6 @@
         width="44"
         height="44"
         version="1.1">
-    <style><![CDATA[
-        svg {
-            fill: #606060;
-            stroke: #606060;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-width: 4;
-        }
-        text {
-            font-family: sans;
-            font-size: 32px;
-            font-weight: bolder;
-
-            stroke: none;
-        }
-        .frame {
-            fill: none;
-        }
-        .shape {
-            stroke: none;
-        }
-    ]]></style>
     <defs>
         <path id="arrow"
             d="M 0,6 l 0,-6 l 6,0 M 0,0 l 8,8" />

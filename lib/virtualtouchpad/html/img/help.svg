@@ -5,24 +5,6 @@
         width="44"
         height="44"
         version="1.1">
-    <style><![CDATA[
-        svg {
-            fill: #606060;
-            stroke: #606060;
-            stroke-linecap: round;
-            stroke-width: 4;
-        }
-        text {
-            font-family: sans;
-            font-size: 32px;
-            font-weight: bolder;
-
-            stroke: none;
-        }
-        .frame {
-            fill: none;
-        }
-    ]]></style>
     <circle
             class="frame"
             cx="22"

@@ -64,6 +64,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <script type="text/javascript" src="js/lib/controller.js"></script>
         <script type="text/javascript" src="js/lib/configuration.js"></script>
         <script type="text/javascript" src="js/lib/features.js"></script>
+        <script type="text/javascript" src="js/lib/include.js"></script>
         <script type="text/javascript" src="js/lib/keyboard.js"></script>
         <script type="text/javascript" src="js/lib/message-box.js"></script>
         <script type="text/javascript" src="js/lib/view.js"></script>
@@ -117,15 +118,15 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <div id="toolbar" class="toolbar">
             <button class="help"
                     onclick="app.toolbar.onHelp();">
-                <img src="img/help.svg" />
+                <x-include href="img/help.svg" />
             </button>
             <button class="settings"
                     onclick="app.toolbar.onSettings();">
-                <img src="img/settings.svg" />
+                <x-include href="img/settings.svg" />
             </button>
             <button class="fullscreen on"
                     onclick="app.toolbar.onFullscreenOn();">
-                <img src="img/fullscreen.svg" />
+                <x-include href="img/fullscreen.svg" />
             </button>
         </div>
     </body>

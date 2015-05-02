@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        version="1.1"
+        xml:space="preserve">
+    <defs>
+        <radialGradient
+                id="keyboard-shade"
+                r="1"
+                cx="0.5"
+                cy="0.7"
+                gradientTransform="scale(2,1) translate(-0.25,0)">
+            <stop
+                style="stop-color:#ffffff"
+                offset="0" />
+            <stop
+                style="stop-color:#000000"
+                offset="1" />
+        </radialGradient>
+
+
+        <!-- Drawings -->
+
+        <g id="keyboard-arrow">
+            <path class="keyboard drawing"
+                d="M -8,0 l 16,0 m -8,-4 l 8,4 l -8,4 z" />
+        </g>
+
+        <g id="keyboard-arrow-stop">
+            <line class="keyboard drawing"
+                x1="8" y1="4"
+                x2="8" y2="-4" />
+        </g>
+
+        <g id="keyboard-shift">
+            <path class="keyboard drawing shift"
+                d="M 0,-9 l 9,9 l -3,0 l 0,3 l -12,0 l 0,-3 l -3,0 z" />
+        </g>
+
+        <g id="keyboard-icon">
+            <circle class="keyboard drawing"
+                cx="-3"
+                cy="3"
+                r="2" />
+            <circle class="keyboard drawing"
+                cx="-2"
+                cy="-3"
+                r="2" />
+            <circle class="keyboard drawing"
+                cx="3"
+                cy="4"
+                r="2" />
+            <circle class="keyboard drawing"
+                cx="4"
+                cy="-2"
+                r="2" />
+        </g>
+
+        <g id="keyboard-alternatives">
+            <line class="keyboard drawing"
+                x1="-4" y1="-4"
+                x2="4" y2="-4" />
+            <line class="keyboard drawing"
+                x1="-4" y1="0"
+                x2="4" y2="0" />
+            <line class="keyboard drawing"
+                x1="-4" y1="4"
+                x2="4" y2="4" />
+        </g>
+
+
+        <!-- Keys -->
+
+        <g id="keyboard-key">
+            <rect
+                class="keyboard background"
+                width="26"
+                height="24"
+                rx="2"
+                ry="2" />
+            <rect
+                class="keyboard overlay"
+                width="26"
+                height="24"
+                rx="2"
+                ry="2" />
+        </g>
+
+        <g id="keyboard-backspace">
+            <rect
+                class="keyboard background backspace"
+                width="50"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay backspace"
+                width="50"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-arrow"
+                transform="translate(25,12) rotate(180)" />
+        </g>
+
+        <g id="keyboard-tab">
+            <rect
+                class="keyboard background tab"
+                width="40"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay tab"
+                width="40"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-arrow"
+                transform="translate(20,12)" />
+            <use
+                xlink:href="#keyboard-arrow-stop"
+                transform="translate(20,12)" />
+        </g>
+
+        <g id="keyboard-enter">
+            <path
+                class="keyboard background enter"
+                d="M 0,2 a 2,2,0,0,1,2,-2 l 32,0 a 2,2,0,0,1,2,2 l 0,48 a 2,2,0,0,1,-2,2 l -22,0 a 2,2,0,0,1,-2,-2 l 0,-24 a 2,2,0,0,0,-2,-2 l -6,0 a 2,2,0,0,1,-2,-2 z" />
+            <path
+                class="keyboard overlay enter"
+                d="M 0,2 a 2,2,0,0,1,2,-2 l 32,0 a 2,2,0,0,1,2,2 l 0,48 a 2,2,0,0,1,-2,2 l -22,0 a 2,2,0,0,1,-2,-2 l 0,-24 a 2,2,0,0,0,-2,-2 l -6,0 a 2,2,0,0,1,-2,-2 z" />
+            <use
+                xlink:href="#keyboard-arrow"
+                transform="translate(22,20) rotate(180)" />
+            <use
+                xlink:href="#keyboard-arrow-stop"
+                transform="translate(22,16)" />
+        </g>
+
+        <g id="keyboard-caps">
+            <rect
+                class="keyboard background caps special"
+                width="50"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay caps special"
+                width="50"
+                height="24"
+                rx="2"
+                ry="2" />
+            <text
+                    class="keyboard small"
+                    text-anchor="middle"
+                    x="25"
+                    y="16">
+                Caps
+            </text>
+        </g>
+
+        <g id="keyboard-lshift">
+            <rect
+                class="keyboard background shift lshift special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay shift lshift special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-shift"
+                transform="translate(14,14)" />
+        </g>
+
+        <g id="keyboard-rshift">
+            <rect
+                class="keyboard background shift rshift special"
+                width="78"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay shift rshift special"
+                width="78"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-shift"
+                transform="translate(39,14)" />
+        </g>
+
+        <g id="keyboard-ctrl">
+            <rect
+                class="keyboard background ctrl special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay ctrl special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <text
+                    class="keyboard small"
+                    text-anchor="middle"
+                    x="14"
+                    y="16">
+                Ctrl
+            </text>
+        </g>
+
+        <g id="keyboard-super">
+            <rect
+                class="keyboard background super"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay super"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-icon"
+                transform="translate(14,12)" />
+        </g>
+
+        <g id="keyboard-alt">
+            <rect
+                class="keyboard background alt special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay alt special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <text
+                    class="keyboard small"
+                    text-anchor="middle"
+                    x="14"
+                    y="16">
+                Alt
+            </text>
+        </g>
+
+        <g id="keyboard-space">
+            <rect
+                class="keyboard background space"
+                width="216"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay space"
+                width="216"
+                height="24"
+                rx="2"
+                ry="2" />
+        </g>
+
+        <g id="keyboard-altgr">
+            <rect
+                class="keyboard background altgr special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay altgr special"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <text
+                    class="keyboard small"
+                    text-anchor="middle"
+                    x="14"
+                    y="16">
+                AltGr
+            </text>
+        </g>
+
+        <g id="keyboard-menu">
+            <rect
+                class="keyboard background menu"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay menu"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <use
+                xlink:href="#keyboard-alternatives"
+                transform="translate(14,12)" />
+        </g>
+    </defs>
+</svg>

@@ -15,4 +15,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from .win32systray import *
+from virtualtouchpad import platform
+with platform.modules():
+    from .win32systray import *

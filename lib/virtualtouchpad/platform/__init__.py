@@ -14,10 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 import pkg_resources
 
 from contextlib import contextmanager
+
+log = logging.getLogger(__name__)
 
 
 class ImplementationImportError(Exception):
@@ -91,15 +94,14 @@ def implement(globals_dict):
     # Get the name of the platform and load the driver module
     package_name = globals_dict['__package__']
     driver = None
-    print _package_importables(package_name)
     for candidate in _package_importables(globals_dict['__package__']):
         try:
             driver = importlib.import_module(
                 '.%s' % candidate.rsplit('.', 1)[-1],
                 package_name)
-        except ImplementationImportError:
-            import traceback; traceback.print_exc()
-            pass
+        except ImplementationImportError as e:
+            log.info('Not loading %s.%s: %s', package_name, candidate, str(e))
+
     if driver is None:
         raise ImportError('Failed to locate platform driver for package %s',
             globals_dict['__package__'])

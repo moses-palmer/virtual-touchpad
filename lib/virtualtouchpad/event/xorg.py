@@ -14,9 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+from virtualtouchpad import platform
+with platform.modules():
+    import Xlib.keysymdef.xkb
 
-from virtualtouchpad.platform._linux import *
-import Xlib.keysymdef.xkb
+
+from virtualtouchpad.platform.xorg import *
 
 
 # The scroll threshold required to actually perform scrolling

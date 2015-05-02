@@ -47,6 +47,30 @@ __all__ = [directory
         and directory[0] != '_']
 
 
+def _package_importables(package_name):
+    """Yields all importable modules and packages in a package.
+
+    Names beginning with ``'_'`` are ignored.
+
+    :param str package_name: The name of the package.
+    """
+    package, subpackage = package_name.split('.', 1)
+    path = subpackage.replace('.', os.path.sep)
+
+    for name in pkg_resources.resource_listdir(package, path):
+        if name[0] == '_':
+            continue
+
+        if name.endswith('.py') and not pkg_resources.resource_isdir(package,
+                os.path.join(path, name)):
+            yield '.'.join((package_name, name.rsplit('.', 1)[0]))
+
+        if pkg_resources.resource_isdir(package, os.path.join(path, name)) \
+                and pkg_resources.resource_exists(package, os.path.join(path,
+                    name, '__init__.py')):
+            yield '.'.join((package_name, name))
+
+
 def implement(globals_dict):
     """Loads the platform dependent implementation and populates a dict.
 
@@ -65,14 +89,17 @@ def implement(globals_dict):
     import sys
 
     # Get the name of the platform and load the driver module
-    candidate = '_' + ''.join(c for c in sys.platform if c.isalpha())
+    package_name = globals_dict['__package__']
     driver = None
-    try:
-        driver = importlib.import_module(
-            '.%s' % candidate,
-            globals_dict['__package__'])
-    except ImportError:
-        driver = None
+    print _package_importables(package_name)
+    for candidate in _package_importables(globals_dict['__package__']):
+        try:
+            driver = importlib.import_module(
+                '.%s' % candidate.rsplit('.', 1)[-1],
+                package_name)
+        except ImplementationImportError:
+            import traceback; traceback.print_exc()
+            pass
     if driver is None:
         raise ImportError('Failed to locate platform driver for package %s',
             globals_dict['__package__'])

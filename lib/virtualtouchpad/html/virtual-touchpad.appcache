@@ -5,3 +5,5 @@ CACHE:
     translations/index
     translations/help
 
+NETWORK:
+    *

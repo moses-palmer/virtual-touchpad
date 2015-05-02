@@ -42,10 +42,10 @@ def exists(path):
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
         # read the file
         return os.access(os.path.join(STATIC_ROOT, path), os.R_OK)
-    else:
-        # Otherwise, check with pkg_resource
-        return pkg_resources.resource_exists(
-            PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+
+    # Otherwise, check with pkg_resource
+    return pkg_resources.resource_exists(
+        PKG_RESOURCES_PACKAGE, os.path.join('html', path))
 
 
 def get(path):
@@ -57,25 +57,25 @@ def get(path):
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle
         return bottle.static_file(path, root = STATIC_ROOT)
-    else:
-        # Otherwise, try to serve a resource from the egg
-        try:
-            path = pkg_resources.resource_filename(
-                    PKG_RESOURCES_PACKAGE, os.path.join('html', path))
-            return bottle.static_file(
-                os.path.basename(path), root = os.path.dirname(path))
-        except KeyError:
-            # The file does not exist; we try to serve a file that we are
-            # certain does not exist to trigger a 404
-            return bottle.static_file(
-                path, root = os.path.join(os.path.dirname(__file__), 'html'))
-        except NotImplementedError:
-            # pkg_resources does not support resource_filename when running from
-            # a zip file
-            if hasattr(sys, 'frozen'):
-                pass
-            else:
-                raise
+
+    # Otherwise, try to serve a resource from the egg
+    try:
+        path = pkg_resources.resource_filename(
+                PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+        return bottle.static_file(
+            os.path.basename(path), root = os.path.dirname(path))
+    except KeyError:
+        # The file does not exist; we try to serve a file that we are
+        # certain does not exist to trigger a 404
+        return bottle.static_file(
+            path, root = os.path.join(os.path.dirname(__file__), 'html'))
+    except NotImplementedError:
+        # pkg_resources does not support resource_filename when running from
+        # a zip file
+        if hasattr(sys, 'frozen'):
+            pass
+        else:
+            raise
 
     # Open the file and get its size
     try:

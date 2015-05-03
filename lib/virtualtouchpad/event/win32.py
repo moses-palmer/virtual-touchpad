@@ -71,18 +71,14 @@ class INPUT(ctypes.Structure):
 
 
 def key_down(keysym, symbol):
-    global _SendInput
     raise NotImplementedError();
 
 
 def key_up(keysym, symbol):
-    global _SendInput
     raise NotImplementedError();
 
 
 def mouse_down(button):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,
@@ -93,8 +89,6 @@ def mouse_down(button):
 
 
 def mouse_up(button):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,
@@ -105,8 +99,6 @@ def mouse_up(button):
 
 
 def mouse_scroll(dx, dy):
-    global _SendInput
-
     # TODO: Support horisontal scroll
     _SendInput(1,
         ctypes.byref(INPUT(
@@ -119,8 +111,6 @@ def mouse_scroll(dx, dy):
 
 
 def mouse_move(dx, dy):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,

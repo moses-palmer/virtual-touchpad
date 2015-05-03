@@ -36,7 +36,7 @@ try:
 except ImportError:
     from geventwebsocket import WebSocketHandler
 
-from ..dispatch import dispatch
+from .dispatch import dispatch
 
 from . import static_file
 

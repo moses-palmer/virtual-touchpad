@@ -31,6 +31,9 @@ def _names(files):
             file_name.endswith('.py') or file_name.endswith('.pyc'))))
 
 
+import os
 import pkg_resources
+from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 __all__ = _names(pkg_resources.resource_listdir(
-    'virtualtouchpad', 'dispatchers'))
+    PKG_RESOURCES_PACKAGE,
+    os.path.join('server', 'dispatchers')))

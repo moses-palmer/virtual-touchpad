@@ -17,7 +17,7 @@
 
 from ..dispatch import dispatcher
 
-from .. import event
+from virtualtouchpad import event
 
 
 @dispatcher

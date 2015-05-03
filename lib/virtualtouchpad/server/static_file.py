@@ -20,6 +20,8 @@ import pkg_resources
 import os
 import time
 
+from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+
 
 # Set a default value for STATIC_ROOT only if it is accessible
 DEFAULT_STATIC_ROOT = os.path.join(
@@ -29,8 +31,6 @@ DEFAULT_STATIC_ROOT = os.path.join(
 STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
     DEFAULT_STATIC_ROOT if os.access(DEFAULT_STATIC_ROOT, os.R_OK)
     else None)
-
-from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 
 
 def exists(path):

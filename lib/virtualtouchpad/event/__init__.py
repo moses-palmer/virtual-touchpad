@@ -76,5 +76,5 @@ def mouse_move(dx, dy):
     raise NotImplementedError()
 
 
-from .. import _import_symbols
-_import_symbols(globals())
+from virtualtouchpad.platform import implement
+implement(globals())

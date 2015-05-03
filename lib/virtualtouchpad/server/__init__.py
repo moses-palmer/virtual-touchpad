@@ -14,14 +14,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from .._info import *
-
-from .._platform import *
-
-import gevent
-
 import bottle
+import gevent
 import geventwebsocket
 import json
 import logging
@@ -29,18 +23,20 @@ import os
 import sys
 import traceback
 
-log = logging.getLogger(__name__)
+from .._info import *
+from ..platform import *
+
+from .dispatch import dispatch
+from . import static_file
 
 try:
     from geventwebsocket.handler import WebSocketHandler
 except ImportError:
     from geventwebsocket import WebSocketHandler
 
-from ..dispatch import dispatch
-
-from . import static_file
 
 app = bottle.Bottle()
+log = logging.getLogger(__name__)
 
 
 @app.route('/translations/<domain>')

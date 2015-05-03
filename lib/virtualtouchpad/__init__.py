@@ -16,5 +16,5 @@
 
 
 from ._info import *
-from ._platform import *
-from .dispatch import dispatch
+
+from . import platform

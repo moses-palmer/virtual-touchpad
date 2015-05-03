@@ -15,22 +15,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-class SystemTrayIcon(object):
-    """An object representing a system tray icon.
-    """
-
-    def __init__(self, description):
-        """Creates a new system tray icon.
-
-        :param str description: The short description of this system tray icon.
-        """
-        self._description = description
-
-    @property
-    def description(self):
-        """The short description of this system tray icon"""
-        return self._description
-
-
-from .. import _import_symbols
-_import_symbols(globals())
+from virtualtouchpad import platform
+with platform.modules():
+    from .win32systray import *

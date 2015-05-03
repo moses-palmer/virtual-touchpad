@@ -15,7 +15,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-log = logging.getLogger(__name__)
 
 from . import _freeze_modules
 
@@ -32,6 +31,9 @@ try:
     import pyatspi
 except ImportError:
     pyatspi = None
+
+
+log = logging.getLogger(__name__)
 
 # The global X display
 DISPLAY = display.Display()

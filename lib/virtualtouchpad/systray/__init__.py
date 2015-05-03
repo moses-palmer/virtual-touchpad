@@ -15,22 +15,22 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-def _names(files):
-    """Returns a list of module names based on a file listing.
-
-    Only files ending with ``'.py'`` or ``'.pyc'``, and not beginning with
-    ``'_'``, are included.
-
-    :param [str] files: The files from which to generate a list of module names.
-
-    :return: a list of unique module names
+class SystemTrayIcon(object):
+    """An object representing a system tray icon.
     """
-    return list(set(file_name.rsplit('.', 1)[0]
-        for file_name in files
-        if file_name[0] != '_' and (
-            file_name.endswith('.py') or file_name.endswith('.pyc'))))
+
+    def __init__(self, description):
+        """Creates a new system tray icon.
+
+        :param str description: The short description of this system tray icon.
+        """
+        self._description = description
+
+    @property
+    def description(self):
+        """The short description of this system tray icon"""
+        return self._description
 
 
-import pkg_resources
-__all__ = _names(pkg_resources.resource_listdir(
-    'virtualtouchpad', 'dispatchers'))
+from virtualtouchpad.platform import implement
+implement(globals())

@@ -14,9 +14,34 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-
+import logging
 import os
 import pkg_resources
+
+from contextlib import contextmanager
+
+
+log = logging.getLogger(__name__)
+
+
+class ImplementationImportError(Exception):
+    """Raised when a module required for a platform specific implementation does
+    not exist.
+    """
+    pass
+
+@contextmanager
+def modules():
+    """A context manager for trying to import platform dependent modules.
+
+    Use this in a ``with`` statement when importing platform dependent modules
+    to allow :func:`implement` to gracefully try another implementation.
+    """
+    try:
+        yield
+    except ImportError as e:
+        raise ImplementationImportError(e)
+
 
 _package, _subpackage = __package__.split('.', 1)
 _path = _subpackage.replace('.', os.path.sep)
@@ -26,17 +51,37 @@ __all__ = [directory
         and directory[0] != '_']
 
 
-def _import_symbols(globals_dict, *candidates):
+def _package_importables(package_name):
+    """Yields all importable modules and packages in a package.
+
+    Names beginning with ``'_'`` are ignored.
+
+    :param str package_name: The name of the package.
+    """
+    package, subpackage = package_name.split('.', 1)
+    path = subpackage.replace('.', os.path.sep)
+
+    for name in pkg_resources.resource_listdir(package, path):
+        if name[0] == '_':
+            continue
+
+        if name.endswith('.py') and not pkg_resources.resource_isdir(package,
+                os.path.join(path, name)):
+            yield '.'.join((package_name, name.rsplit('.', 1)[0]))
+
+        if pkg_resources.resource_isdir(package, os.path.join(path, name)) \
+                and pkg_resources.resource_exists(package, os.path.join(path,
+                    name, '__init__.py')):
+            yield '.'.join((package_name, name))
+
+
+def implement(globals_dict):
     """Loads the platform dependent implementation and populates a dict.
 
     :param dict globals_dict: The globals dict. Use :func:`globals` when
         calling this function from another module. Only callable symbols not
         beginning with '_' in this dictionary will be imported from the driver
         module.
-
-    :param [str] candidates: The names of candidate modules to try before trying
-        the default platform driver. The default name is ``'_' + sys.platform``,
-        with everything but letters dripped from :attr:`sys.platform`.
 
     :raises ImportError: if no platform driver was found, or a global callable
         in the driver was not present in ``globals_dict``, or the function
@@ -48,16 +93,16 @@ def _import_symbols(globals_dict, *candidates):
     import sys
 
     # Get the name of the platform and load the driver module
-    platform_driver = '_' + ''.join(c for c in sys.platform if c.isalpha())
+    package_name = globals_dict['__package__']
     driver = None
-    for candidate in list(candidates) + [platform_driver]:
+    for candidate in _package_importables(globals_dict['__package__']):
         try:
             driver = importlib.import_module(
-                '.%s' % candidate,
-                globals_dict['__package__'])
-            break
-        except ImportError:
-            pass
+                '.%s' % candidate.rsplit('.', 1)[-1],
+                package_name)
+        except ImplementationImportError as e:
+            log.info('Not loading %s.%s: %s', package_name, candidate, str(e))
+
     if driver is None:
         raise ImportError('Failed to locate platform driver for package %s',
             globals_dict['__package__'])

@@ -14,8 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+from virtualtouchpad import platform
+with platform.modules():
+    import win32api
 
 import ctypes
+
 
 _SendInput = ctypes.windll.user32.SendInput
 
@@ -67,18 +71,14 @@ class INPUT(ctypes.Structure):
 
 
 def key_down(keysym, symbol):
-    global _SendInput
     raise NotImplementedError();
 
 
 def key_up(keysym, symbol):
-    global _SendInput
     raise NotImplementedError();
 
 
 def mouse_down(button):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,
@@ -89,8 +89,6 @@ def mouse_down(button):
 
 
 def mouse_up(button):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,
@@ -101,8 +99,6 @@ def mouse_up(button):
 
 
 def mouse_scroll(dx, dy):
-    global _SendInput
-
     # TODO: Support horisontal scroll
     _SendInput(1,
         ctypes.byref(INPUT(
@@ -115,8 +111,6 @@ def mouse_scroll(dx, dy):
 
 
 def mouse_move(dx, dy):
-    global _SendInput
-
     _SendInput(1,
         ctypes.byref(INPUT(
             type = INPUT.MOUSE,

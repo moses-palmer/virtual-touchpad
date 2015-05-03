@@ -20,6 +20,7 @@ with platform.modules():
 
 import ctypes
 
+
 _SendInput = ctypes.windll.user32.SendInput
 
 

@@ -21,13 +21,15 @@ import threading
 import win32api
 import win32con
 import win32gui_struct
+
+from .. import SystemTrayIcon
+
+import virtualtouchpad.platform.win32 as win
+
 try:
     import winxpgui as win32gui
 except ImportError:
     import win32gui
-
-from .. import SystemTrayIcon
-import virtualtouchpad.platform.win32 as win
 
 
 class SystemTrayIcon(SystemTrayIcon):

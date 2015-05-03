@@ -32,6 +32,7 @@ SHRT_MIN = -SHRT_MAX - 1
 # The accumulated scrolling
 scroll = [0, 0]
 
+
 def mouse_scroll_cancel():
     """Cancels any scrolling in progress.
     """

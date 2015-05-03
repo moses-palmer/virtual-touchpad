@@ -14,26 +14,4 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-def _names(files):
-    """Returns a list of module names based on a file listing.
-
-    Only files ending with ``'.py'`` or ``'.pyc'``, and not beginning with
-    ``'_'``, are included.
-
-    :param [str] files: The files from which to generate a list of module names.
-
-    :return: a list of unique module names
-    """
-    return list(set(file_name.rsplit('.', 1)[0]
-        for file_name in files
-        if file_name[0] != '_' and (
-            file_name.endswith('.py') or file_name.endswith('.pyc'))))
-
-
-import os
-import pkg_resources
-from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
-__all__ = _names(pkg_resources.resource_listdir(
-    PKG_RESOURCES_PACKAGE,
-    os.path.join('server', 'dispatchers')))
+from . import keyboard, mouse

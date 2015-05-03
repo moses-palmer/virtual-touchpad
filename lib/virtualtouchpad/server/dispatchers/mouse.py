@@ -30,7 +30,15 @@ def mouse_down(button = 1):
 
     :param int button: The button index.
     """
-    event.mouse_down(int(button))
+    try:
+        event.mouse_down(int(button))
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to press button %d: %s' % (
+            button, detail))
 
 
 @dispatcher
@@ -39,7 +47,15 @@ def mouse_up(button = 1):
 
     :param int button: The button index.
     """
-    event.mouse_up(int(button))
+    try:
+        event.mouse_up(int(button))
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to release button %d: %s' % (
+            button, detail))
 
 
 @dispatcher
@@ -50,7 +66,15 @@ def mouse_scroll(dx = 0, dy = 0):
 
     :param int dy: The vertical offset to scroll.
     """
-    event.mouse_scroll(int(dx), int(dy))
+    try:
+        event.mouse_scroll(int(dx), int(dy))
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to scroll (%d, %d): %s' % (
+            int(dx), int(dy), detail))
 
 
 @dispatcher
@@ -61,4 +85,12 @@ def mouse_move(dx = 0, dy = 0):
 
     :param int dy: The vertical offset to move.
     """
-    event.mouse_move(int(dx), int(dy))
+    try:
+        event.mouse_move(int(dx), int(dy))
+    except Exception as e:
+        try:
+            detail = e.args[0] % e.args[1:]
+        except:
+            detail = str(e)
+        log.error('Failed to move (%d, %d): %s' % (
+            int(dx), int(dy), detail))

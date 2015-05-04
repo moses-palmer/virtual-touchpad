@@ -47,6 +47,10 @@ text.keyboard.small, keyboard text.small {
 keyboard .key text {
     visibility: hidden;
 }
+keyboard .key text.static {
+    visibility: visible;
+    font-size: 9px;
+}
 keyboard.mod-none .key text.mod-none {
     visibility: visible;
 }

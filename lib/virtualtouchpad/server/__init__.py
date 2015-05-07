@@ -58,6 +58,18 @@ def translations(domain):
     return bottle.HTTPResponse(status = 404)
 
 
+@app.route('/keyboard/layout/default')
+def default_layout():
+    """Returns the default keyboard layout.
+    """
+    geometry_files = static_file.list('keyboard/layout')
+    if not geometry_files:
+        return bottle.HTTPResponse(status = 404)
+
+    # TODO: Select the one used by the current system
+    return static_file.get('keyboard/layout/' + geometry_files[0])
+
+
 @app.route('/ws')
 def handle_websocket():
     # Get the actual websocket

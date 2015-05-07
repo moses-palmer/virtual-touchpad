@@ -17,6 +17,7 @@
 import logging
 import os
 import pkg_resources
+import re
 
 from contextlib import contextmanager
 
@@ -51,6 +52,10 @@ __all__ = [directory
         and directory[0] != '_']
 
 
+#: The regular expression used to match importable modules
+_MODULE_RE = re.compile(r'[a-zA-Z][a-zA-Z0-9_]*\.pyc?$')
+
+
 def _package_importables(package_name):
     """Yields all importable modules and packages in a package.
 
@@ -64,15 +69,17 @@ def _package_importables(package_name):
     for name in pkg_resources.resource_listdir(package, path):
         if name[0] == '_':
             continue
+        full = os.path.join(path, name)
 
-        if name.endswith('.py') and not pkg_resources.resource_isdir(package,
-                os.path.join(path, name)):
-            yield '.'.join((package_name, name.rsplit('.', 1)[0]))
-
-        if pkg_resources.resource_isdir(package, os.path.join(path, name)) \
-                and pkg_resources.resource_exists(package, os.path.join(path,
-                    name, '__init__.py')):
-            yield '.'.join((package_name, name))
+        if not pkg_resources.resource_isdir(package, full):
+            if _MODULE_RE.match(name):
+                yield '.'.join((package_name, name.rsplit('.', 1)[0]))
+        else:
+            if any(pkg_resources.resource_exists(package,
+                    os.path.join(full, f)) for f in (
+                        '__init__.py',
+                        '__init__.pyc')):
+                yield '.'.join((package_name, name))
 
 
 def implement(globals_dict):

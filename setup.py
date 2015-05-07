@@ -452,7 +452,7 @@ if py2exe:
         'scripts/virtualtouchpad-console.py']
     setup_arguments['windows'] = [
         {
-            'script': 'scripts/virtualtouchpad-gui.py',
+            'script': 'scripts/virtualtouchpad.py',
             'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 

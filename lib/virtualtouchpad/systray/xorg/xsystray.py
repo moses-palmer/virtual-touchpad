@@ -108,6 +108,9 @@ class SystemTrayIcon(SystemTrayIcon):
         self.window.put_pil_image(self._gc, 0, 0,
             self._get_icon_data(geometry.width, geometry.height))
 
+    def on_buttonpress(self, e):
+        self.on_click()
+
     def _mainloop(self, handlers = {}):
         """The main ``X`` event loop.
 

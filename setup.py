@@ -453,10 +453,4 @@ if py2exe:
             'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
-try:
-    setup(**setup_arguments)
-except Exception as e:
-    try:
-        sys.stderr.write(e.args[0] % e.args[1:] + '\n')
-    except:
-        sys.stderr.write(str(e) + '\n')
+setup(**setup_arguments)

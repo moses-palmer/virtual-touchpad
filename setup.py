@@ -13,6 +13,8 @@ PACKAGE_DATA = {
         'html/img/*.*',
         'html/js/*.*',
         'html/js/*/*.*',
+        'html/keyboard/*.*',
+        'html/keyboard/*/*.*',
         'html/translations/*/*.*',]}
 
 # The directories in which the packages can be found

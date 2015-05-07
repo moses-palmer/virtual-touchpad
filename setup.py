@@ -348,7 +348,7 @@ class generate_translations(setuptools.Command):
                 # Load the PO file
                 language_path = os.path.join(domain_path, language)
                 if not language_path.endswith('.po'):
-                    continue;
+                    continue
                 pofile = polib.pofile(language_path)
 
                 # Extract interesting meta data

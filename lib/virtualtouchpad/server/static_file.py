@@ -19,6 +19,7 @@ import logging
 import mimetypes
 import pkg_resources
 import os
+import sys
 import time
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE

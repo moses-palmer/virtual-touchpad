@@ -79,6 +79,20 @@ table.stack td:nth-child(2) {
     text-align: right;
 
     background-color: white;
+
+    transition: margin-top 1s ease;
+}
+
+@media (orientation: landscape) {
+    *:fullscreen #toolbar {
+        margin-top: -52px;
+    }
+    *:-moz-full-screen #toolbar {
+        margin-top: -52px;
+    }
+    *:-webkit-full-screen #toolbar {
+        margin-top: -52px;
+    }
 }
 
 #toolbar > button {

@@ -114,7 +114,7 @@ def start():
         level = getattr(logging, args.log_level.upper()))
 
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
-        args.address[0], args.port))
+        args.address[0], args.port), lambda: None)
     try:
         if announce:
             announcer = announce.announce(args.address[1], args.port)

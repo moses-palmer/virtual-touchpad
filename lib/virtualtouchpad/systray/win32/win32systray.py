@@ -74,12 +74,15 @@ class SystemTrayIcon(SystemTrayIcon):
         win32gui.PumpMessages()
         self._delete_icon()
 
-    def __init__(self, description):
+    def __init__(self, description, on_click):
         """Creates a systray tray icon.
 
         :param str description: A descriptive text to apply to the icon.
+
+        :param callable on_click: A callback for when the systray icon is
+            clicked.
         """
-        super(SystemTrayIcon, self).__init__(description)
+        super(SystemTrayIcon, self).__init__(description, on_click)
 
         self._icon = None
         self._window = None

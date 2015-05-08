@@ -15,8 +15,11 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-def key_down(keysym, symbol):
+def key_down(name, keysym, symbol):
     """Sends a key down event.
+
+    :param str name: The name of the key. This should typically be the actual
+        character requested, or ``None``.
 
     :param int keysym: The key symbol identifier of the key being pressed.
 
@@ -28,8 +31,11 @@ def key_down(keysym, symbol):
     raise NotImplementedError()
 
 
-def key_up(keysym, symbol):
+def key_up(name, keysym, symbol):
     """Sends a key up event.
+
+    :param str name: The name of the key. This should typically be the actual
+        character requested, or ``None``.
 
     :param int keysym: The key symbol identifier of the key being pressed.
 

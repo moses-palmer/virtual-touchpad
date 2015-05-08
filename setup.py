@@ -48,7 +48,7 @@ def setup(**kwargs):
 
         install_requires = REQUIREMENTS + platform_requirements(),
 
-        setup_requires = [
+        setup_requires = REQUIREMENTS + platform_requirements() + [
             'cssmin',
             'polib >=1.0.4',
             'slimit'],

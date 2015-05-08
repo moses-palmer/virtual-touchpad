@@ -156,7 +156,7 @@ class SystemTrayIcon(SystemTrayIcon):
 
         return self._window
 
-    def destroy():
+    def destroy(self):
         """Removes the systray icon.
         """
         self._delete_icon()

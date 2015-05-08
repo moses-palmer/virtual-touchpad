@@ -470,6 +470,9 @@ if py2exe:
     setup_arguments['options'] = {
         'py2exe': {
             'bundle_files': 1,
+            'excludes': [
+                'netifaces',
+                'zeroconf'],
             'includes': [
                 'greenlet',
                 'gevent.select',

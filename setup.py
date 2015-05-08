@@ -401,6 +401,36 @@ class generate_translations(setuptools.Command):
 if py2exe:
     import virtualtouchpad.platform._win as _win
 
+    @build.command
+    class extract_local_eggs(setuptools.Command):
+        description = 'extract local egg files to allow py2exe to use them'
+        user_options = []
+        def initialize_options(self): pass
+        def finalize_options(self): pass
+        def run(self):
+            import glob
+            import zipfile
+
+            for path in glob.glob('*.egg') + glob.glob('.*/*.egg'):
+                # If it is not a ZIP file, this is not an egg module
+                try:
+                    zf = zipfile.ZipFile(path, 'r')
+                except:
+                    continue
+
+                try:
+                    # Create a temporary target directory and unzip the egg
+                    target = path + '.tmp'
+                    if not os.path.isdir(target):
+                        os.mkdir(target)
+                    zf.extractall(target)
+                finally:
+                    zf.close()
+
+                # Rename the files
+                os.rename(path, path + '.bak')
+                os.rename(target, path)
+
     # Construct the data_files argument to setup from the package_data argument
     # value; py2exe does not support data files
     class py2exe_with_resources(py2exe.build_exe.py2exe):

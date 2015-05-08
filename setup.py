@@ -473,14 +473,15 @@ if py2exe:
             'includes': [
                 'greenlet',
                 'gevent.select',
-                'virtualtouchpad.platform._win',
-                'virtualtouchpad.platform.event._win',
-                'virtualtouchpad.platform.systray._win',
-                'virtualtouchpad.platform.systray._win.win32systray'] + [
-                    'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
+                'virtualtouchpad.platform.win32',
+                'virtualtouchpad.event.win32',
+                'virtualtouchpad.systray.win32',
+                'virtualtouchpad.systray.win32.win32systray'] + [
+                    'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]
                         for m in os.listdir(
                             os.path.join(
-                                'lib', 'virtualtouchpad', 'dispatchers'))
+                                'lib', 'virtualtouchpad', 'server',
+                                'dispatchers'))
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
         'scripts/virtualtouchpad-console.py']

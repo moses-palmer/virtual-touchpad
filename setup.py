@@ -17,6 +17,13 @@ PACKAGE_DATA = {
         'html/keyboard/*/*.*',
         'html/translations/*/*.*',]}
 
+REQUIREMENTS = [
+    'bottle >=0.11',
+    'gevent >=0.13',
+    'gevent-websocket >=0.9',
+    'netifaces >=0.8',
+    'zeroconf >=0.17']
+
 # The directories in which the packages can be found
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
@@ -39,14 +46,11 @@ def setup(**kwargs):
             'Turns your mobile or tablet into a touchpad for your computer.',
         long_description = README + '\n\n' + CHANGES,
 
-        install_requires = [
-            'bottle >=0.11',
-            'gevent >=0.13',
-            'gevent-websocket >=0.9',
-            'netifaces >=0.8',
-            'zeroconf >=0.17'] + platform_requirements(),
-        setup_requires = [
+        install_requires = REQUIREMENTS + platform_requirements(),
+
+        setup_requires = REQUIREMENTS + platform_requirements() + [
             'cssmin',
+            'ply ==3.4',
             'polib >=1.0.4',
             'slimit'],
 
@@ -395,7 +399,37 @@ class generate_translations(setuptools.Command):
 
 
 if py2exe:
-    import virtualtouchpad.platform._win as _win
+    import virtualtouchpad.platform.win32 as win
+
+    @build.command
+    class extract_local_eggs(setuptools.Command):
+        description = 'extract local egg files to allow py2exe to use them'
+        user_options = []
+        def initialize_options(self): pass
+        def finalize_options(self): pass
+        def run(self):
+            import glob
+            import zipfile
+
+            for path in glob.glob('*.egg') + glob.glob('.*/*.egg'):
+                # If it is not a ZIP file, this is not an egg module
+                try:
+                    zf = zipfile.ZipFile(path, 'r')
+                except:
+                    continue
+
+                try:
+                    # Create a temporary target directory and unzip the egg
+                    target = path + '.tmp'
+                    if not os.path.isdir(target):
+                        os.mkdir(target)
+                    zf.extractall(target)
+                finally:
+                    zf.close()
+
+                # Rename the files
+                os.rename(path, path + '.bak')
+                os.rename(target, path)
 
     # Construct the data_files argument to setup from the package_data argument
     # value; py2exe does not support data files
@@ -436,24 +470,28 @@ if py2exe:
     setup_arguments['options'] = {
         'py2exe': {
             'bundle_files': 1,
+            'excludes': [
+                'netifaces',
+                'zeroconf'],
             'includes': [
                 'greenlet',
                 'gevent.select',
-                'virtualtouchpad.platform._win',
-                'virtualtouchpad.platform.event._win',
-                'virtualtouchpad.platform.systray._win',
-                'virtualtouchpad.platform.systray._win.win32systray'] + [
-                    'virtualtouchpad.dispatchers.%s' % m.rsplit('.', 1)[0]
+                'virtualtouchpad.platform.win32',
+                'virtualtouchpad.event.win32',
+                'virtualtouchpad.systray.win32',
+                'virtualtouchpad.systray.win32.win32systray'] + [
+                    'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]
                         for m in os.listdir(
                             os.path.join(
-                                'lib', 'virtualtouchpad', 'dispatchers'))
+                                'lib', 'virtualtouchpad', 'server',
+                                'dispatchers'))
                         if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
         'scripts/virtualtouchpad-console.py']
     setup_arguments['windows'] = [
         {
             'script': 'scripts/virtualtouchpad.py',
-            'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
+            'icon_resources': [(win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
 setup(**setup_arguments)

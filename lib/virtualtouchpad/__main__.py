@@ -25,18 +25,23 @@ from virtualtouchpad import systray
 from .server import main
 
 
-def _get_bind_info():
+def _get_bind_info(default = (socket.gethostname(), '0.0.0.0')):
     """Returns the name of the host and IP address to use as the tuple
     ``(name, address)``.
 
     The one returned is the one most likely on a *LAN*.
 
-    If no probable match is found, the tuple ``(socket.gethostname(),
-    '0.0.0.0')`` is returned.
+    If no probable match is found, or an error occurs, ``default`` is returned.
+
+    :param default: The default return value if none can be calculated.
+    :type default: (str, str)
 
     :return: the tuple ``(name, address)``
     """
-    import netifaces
+    try:
+        import netifaces
+    except ImportError:
+        return default
 
     # Get all interfaces
     interfaces = {interface: netifaces.ifaddresses(interface)
@@ -68,11 +73,14 @@ def _get_bind_info():
     if result:
         return (description['addr'], description['addr'])
     else:
-        return (socket.gethostname(), '0.0.0.0')
+        return default
 
 
 def start():
-    from . import announce
+    try:
+        from . import announce
+    except ImportError:
+        announce = None
 
     parser = ArgumentParser(
         description = ''
@@ -108,11 +116,13 @@ def start():
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         args.address[0], args.port))
     try:
-        announcer = announce.announce(args.address[1], args.port)
+        if announce:
+            announcer = announce.announce(args.address[1], args.port)
         try:
             main(**vars(args)).serve_forever()
         finally:
-            announcer.unregister()
+            if announce:
+                announcer.unregister()
     finally:
         icon.destroy()
 

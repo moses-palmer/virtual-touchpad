@@ -122,8 +122,11 @@ def get(path):
     if encoding:
         headers['Content-Encoding'] = encoding
 
-    # Check the file mtime; we use the egg file
-    st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
+    # Check the file mtime; we use the egg file or the current binary
+    try:
+        st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
+    except OSError:
+        st = os.stat(os.path.abspath(sys.argv[0]))
     last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
         time.gmtime(st.st_mtime))
     headers['Last-Modified'] = last_modified

@@ -399,7 +399,7 @@ class generate_translations(setuptools.Command):
 
 
 if py2exe:
-    import virtualtouchpad.platform._win as _win
+    import virtualtouchpad.platform.win32 as win
 
     @build.command
     class extract_local_eggs(setuptools.Command):
@@ -487,7 +487,7 @@ if py2exe:
     setup_arguments['windows'] = [
         {
             'script': 'scripts/virtualtouchpad.py',
-            'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
+            'icon_resources': [(win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
 setup(**setup_arguments)

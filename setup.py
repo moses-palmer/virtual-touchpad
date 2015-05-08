@@ -17,6 +17,13 @@ PACKAGE_DATA = {
         'html/keyboard/*/*.*',
         'html/translations/*/*.*',]}
 
+REQUIREMENTS = [
+    'bottle >=0.11',
+    'gevent >=0.13',
+    'gevent-websocket >=0.9',
+    'netifaces >=0.8',
+    'zeroconf >=0.17']
+
 # The directories in which the packages can be found
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
@@ -39,12 +46,8 @@ def setup(**kwargs):
             'Turns your mobile or tablet into a touchpad for your computer.',
         long_description = README + '\n\n' + CHANGES,
 
-        install_requires = [
-            'bottle >=0.11',
-            'gevent >=0.13',
-            'gevent-websocket >=0.9',
-            'netifaces >=0.8',
-            'zeroconf >=0.17'] + platform_requirements(),
+        install_requires = REQUIREMENTS + platform_requirements(),
+
         setup_requires = [
             'cssmin',
             'polib >=1.0.4',

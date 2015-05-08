@@ -26,8 +26,11 @@ log = logging.getLogger(__name__)
 
 
 @dispatcher
-def key_down(keysym, symbol):
+def key_down(name, keysym, symbol):
     """Triggers a key down event.
+
+    :param str name: The name of the key. This should typically be the actual
+        character requested, or ``None``.
 
     :param int keysym: The keysym identifier of the key that is being pressed.
         This value will be passed directly to :func:`event.key_down`.
@@ -38,7 +41,7 @@ def key_down(keysym, symbol):
         value will be passed directly to :func:`event.key_down`.
     """
     try:
-        event.key_down(keysym, symbol)
+        event.key_down(name, keysym, symbol)
     except Exception as e:
         try:
             detail = e.args[0] % e.args[1:]
@@ -49,8 +52,11 @@ def key_down(keysym, symbol):
 
 
 @dispatcher
-def key_up(keysym, symbol):
+def key_up(name, keysym, symbol):
     """Triggers a key up event.
+
+    :param str name: The name of the key. This should typically be the actual
+        character requested, or ``None``.
 
     :param int keysym: The keysym identifier of the key that is being released.
         This value will be passed directly to :func:`event.key_up`.
@@ -61,7 +67,7 @@ def key_up(keysym, symbol):
         value will be passed directly to :func:`event.key_up`.
     """
     try:
-        event.key_up(keysym, symbol)
+        event.key_up(name, keysym, symbol)
     except Exception as e:
         try:
             detail = e.args[0] % e.args[1:]

@@ -58,7 +58,7 @@ def string_to_keysym(key, default = None):
     return keysym
 
 
-def key_down(keysym, symbol):
+def key_down(name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 
@@ -68,7 +68,7 @@ def key_down(keysym, symbol):
         fake_input(display, X.KeyPress, keycode)
 
 
-def key_up(keysym, symbol):
+def key_up(name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 

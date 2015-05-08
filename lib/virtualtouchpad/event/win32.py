@@ -70,11 +70,11 @@ class INPUT(ctypes.Structure):
         ('value', ANYINPUT)]
 
 
-def key_down(keysym, symbol):
+def key_down(name, keysym, symbol):
     raise NotImplementedError();
 
 
-def key_up(keysym, symbol):
+def key_up(name, keysym, symbol):
     raise NotImplementedError();
 
 

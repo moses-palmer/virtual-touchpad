@@ -50,6 +50,7 @@ def setup(**kwargs):
 
         setup_requires = REQUIREMENTS + platform_requirements() + [
             'cssmin',
+            'ply ==3.4',
             'polib >=1.0.4',
             'slimit'],
 

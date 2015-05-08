@@ -62,7 +62,7 @@ class SystemTrayIcon(SystemTrayIcon):
         if not self._notify_id:
             return
 
-        win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, self.notify_id)
+        win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, self._notify_id)
         self._notify_id = None
 
     def _mainloop(self):
@@ -156,7 +156,7 @@ class SystemTrayIcon(SystemTrayIcon):
 
         return self._window
 
-    def destroy():
+    def destroy(self):
         """Removes the systray icon.
         """
         self._delete_icon()

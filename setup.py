@@ -12,6 +12,9 @@ PACKAGE_DATA = {
         'html/css/*.*',
         'html/img/*.*',
         'html/js/*.*',
+        'html/js/*/*.*',
+        'html/keyboard/*.*',
+        'html/keyboard/*/*.*',
         'html/translations/*/*.*',]}
 
 # The directories in which the packages can be found
@@ -348,7 +351,7 @@ class generate_translations(setuptools.Command):
                 # Load the PO file
                 language_path = os.path.join(domain_path, language)
                 if not language_path.endswith('.po'):
-                    continue;
+                    continue
                 pofile = polib.pofile(language_path)
 
                 # Extract interesting meta data
@@ -449,14 +452,8 @@ if py2exe:
         'scripts/virtualtouchpad-console.py']
     setup_arguments['windows'] = [
         {
-            'script': 'scripts/virtualtouchpad-gui.py',
+            'script': 'scripts/virtualtouchpad.py',
             'icon_resources': [(_win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
 
 
-try:
-    setup(**setup_arguments)
-except Exception as e:
-    try:
-        sys.stderr.write(e.args[0] % e.args[1:] + '\n')
-    except:
-        sys.stderr.write(str(e) + '\n')
+setup(**setup_arguments)

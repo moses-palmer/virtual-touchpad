@@ -15,12 +15,17 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import bottle
+import logging
 import mimetypes
 import pkg_resources
 import os
+import sys
 import time
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+
+
+log = logging.getLogger(__name__)
 
 
 # Set a default value for STATIC_ROOT only if it is accessible

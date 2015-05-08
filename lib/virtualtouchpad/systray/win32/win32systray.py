@@ -139,7 +139,7 @@ class SystemTrayIcon(SystemTrayIcon):
         window_class.hInstance = win32gui.GetModuleHandle(None)
         window_class.hIcon = self.icon
         window_class.lpszClassName = self.WINDOW_CLASS_NAME
-        window_class.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW;
+        window_class.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW
         window_class.hCursor = win32gui.LoadCursor(0, win32con.IDC_ARROW)
         window_class.hbrBackground = win32con.COLOR_WINDOW
 

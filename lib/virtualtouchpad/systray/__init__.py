@@ -19,17 +19,25 @@ class SystemTrayIcon(object):
     """An object representing a system tray icon.
     """
 
-    def __init__(self, description):
+    def __init__(self, description, on_click):
         """Creates a new system tray icon.
 
         :param str description: The short description of this system tray icon.
+
+        :param callable on_click: A callback for when the systray icon is
+            clicked.
         """
         self._description = description
+        self._on_click = on_click
 
     @property
     def description(self):
         """The short description of this system tray icon"""
         return self._description
+
+    def on_click(self):
+        if self._on_click:
+            self._on_click()
 
 
 from virtualtouchpad.platform import implement

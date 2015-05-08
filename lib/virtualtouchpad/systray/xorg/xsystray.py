@@ -108,6 +108,9 @@ class SystemTrayIcon(SystemTrayIcon):
         self.window.put_pil_image(self._gc, 0, 0,
             self._get_icon_data(geometry.width, geometry.height))
 
+    def on_buttonpress(self, e):
+        self.on_click()
+
     def _mainloop(self, handlers = {}):
         """The main ``X`` event loop.
 
@@ -144,12 +147,15 @@ class SystemTrayIcon(SystemTrayIcon):
             except StopIteration:
                 break
 
-    def __init__(self, description):
+    def __init__(self, description, on_click):
         """Creates a systray tray icon.
 
         :param str description: A descriptive text to apply to the icon.
+
+        :param callable on_click: A callback for when the systray icon is
+            clicked.
         """
-        super(SystemTrayIcon, self).__init__(description)
+        super(SystemTrayIcon, self).__init__(description, on_click)
 
         self._display = None
         self._window = None

@@ -65,6 +65,10 @@ class SystemTrayIcon(SystemTrayIcon):
         win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, self._notify_id)
         self._notify_id = None
 
+    def _on_notify(self, event):
+        if event == win32con.WM_LBUTTONDOWN:
+            self.on_click()
+
     def _mainloop(self):
         """The main *win32* event loop.
 
@@ -74,12 +78,15 @@ class SystemTrayIcon(SystemTrayIcon):
         win32gui.PumpMessages()
         self._delete_icon()
 
-    def __init__(self, description):
+    def __init__(self, description, on_click):
         """Creates a systray tray icon.
 
         :param str description: A descriptive text to apply to the icon.
+
+        :param callable on_click: A callback for when the systray icon is
+            clicked.
         """
-        super(SystemTrayIcon, self).__init__(description)
+        super(SystemTrayIcon, self).__init__(description, on_click)
 
         self._icon = None
         self._window = None
@@ -139,12 +146,13 @@ class SystemTrayIcon(SystemTrayIcon):
         window_class.hInstance = win32gui.GetModuleHandle(None)
         window_class.hIcon = self.icon
         window_class.lpszClassName = self.WINDOW_CLASS_NAME
-        window_class.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW;
+        window_class.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW
         window_class.hCursor = win32gui.LoadCursor(0, win32con.IDC_ARROW)
         window_class.hbrBackground = win32con.COLOR_WINDOW
 
         # TODO: Create mapping from message to method
-        window_class.lpfnWndProc = {}
+        window_class.lpfnWndProc = {
+            SystemTrayIcon.WM_NOTIFY: lambda wnd, msg, w, l: self._on_notify(l)}
         class_atom = win32gui.RegisterClass(window_class)
 
         # Create the window

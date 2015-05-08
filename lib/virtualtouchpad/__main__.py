@@ -77,7 +77,10 @@ def _get_bind_info(default = (socket.gethostname(), '0.0.0.0')):
 
 
 def start():
-    from . import announce
+    try:
+        from . import announce
+    except ImportError:
+        announce = None
 
     parser = ArgumentParser(
         description = ''
@@ -113,11 +116,13 @@ def start():
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
         args.address[0], args.port))
     try:
-        announcer = announce.announce(args.address[1], args.port)
+        if announce:
+            announcer = announce.announce(args.address[1], args.port)
         try:
             main(**vars(args)).serve_forever()
         finally:
-            announcer.unregister()
+            if announce:
+                announcer.unregister()
     finally:
         icon.destroy()
 

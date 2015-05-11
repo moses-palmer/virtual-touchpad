@@ -25,18 +25,17 @@ from virtualtouchpad import systray
 from .server import main
 
 
-def _get_bind_info(default = (socket.gethostname(), '0.0.0.0')):
-    """Returns the name of the host and IP address to use as the tuple
-    ``(name, address)``.
+def _get_local_address(default = socket.gethostname()):
+    """Returns the address for the local network.
 
     The one returned is the one most likely on a *LAN*.
 
     If no probable match is found, or an error occurs, ``default`` is returned.
 
     :param default: The default return value if none can be calculated.
-    :type default: (str, str)
+    :type default: str
 
-    :return: the tuple ``(name, address)``
+    :return: the address
     """
     try:
         import netifaces
@@ -68,10 +67,10 @@ def _get_bind_info(default = (socket.gethostname(), '0.0.0.0')):
                 continue
 
             best_length = current_length
-            result = interface, description
+            result = description
 
     if result:
-        return (description['addr'], description['addr'])
+        return result['addr']
     else:
         return default
 
@@ -92,16 +91,6 @@ def start():
             'The port on which to listen',
         default = 16080)
 
-    class AddressAction(Action):
-        def __call__(self, parser, namespace, value, option_string = None):
-            setattr(namespace, self.dest, (value, value))
-    parser.add_argument('--address',
-        type = str,
-        help = ''
-            'The IP address on which to listen',
-        default = _get_bind_info(),
-        action = AddressAction)
-
     parser.add_argument('--log-level',
         type = str,
         help = 'The log level to use.',
@@ -113,13 +102,14 @@ def start():
     logging.basicConfig(
         level = getattr(logging, args.log_level.upper()))
 
+    address = _get_local_address()
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
-        args.address[0], args.port), lambda: None)
+        address, args.port), lambda: None)
     try:
         if announce:
-            announcer = announce.announce(args.address[1], args.port)
+            announcer = announce.announce(address, args.port)
         try:
-            main(**vars(args)).serve_forever()
+            main(address = address, **vars(args)).serve_forever()
         finally:
             if announce:
                 announcer.unregister()

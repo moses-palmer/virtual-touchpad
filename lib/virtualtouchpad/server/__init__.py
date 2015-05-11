@@ -154,13 +154,11 @@ def main(port, address, log_level):
     import geventwebsocket
     import sys
 
-    name, host = address
-
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        name, port))
+        address, port))
 
     from gevent import monkey; monkey.patch_all(thread = False)
     return gevent.pywsgi.WSGIServer(
-        (host, port),
+        ('0.0.0.0', port),
         app,
         handler_class = WebSocketHandler)

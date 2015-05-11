@@ -53,6 +53,21 @@ def exists(path):
         PKG_RESOURCES_PACKAGE, os.path.join('html', path))
 
 
+def isdir(path):
+    """Returns whether a static file exists and is a directory.
+
+    :param str path: The path of the static file.
+    """
+    if not STATIC_ROOT is None:
+        # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
+        # read the file
+        return os.path.isdir(os.path.join(STATIC_ROOT, path))
+
+    # Otherwise, check with pkg_resource
+    return pkg_resources.resource_isdir(
+        PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+
+
 def list(path):
     """Lists all resources available under ``path``.
 

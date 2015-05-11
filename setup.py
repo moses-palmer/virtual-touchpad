@@ -253,7 +253,7 @@ class minify_index(setuptools.Command):
 
 @build.command
 class minify_help(setuptools.Command):
-    description = 'minify help.xhtml'
+    description = 'minify help/index.xhtml'
     user_options = []
     def initialize_options(self): pass
     def finalize_options(self): pass
@@ -264,7 +264,8 @@ class minify_help(setuptools.Command):
         dom_context = build.xmltransform.start(
             os.path.join(
                 HTML_ROOT,
-                'help.xhtml'))
+                'help',
+                'index.xhtml'))
 
         # Minify the index file
         build.xmltransform.minify_html(dom_context)
@@ -273,7 +274,8 @@ class minify_help(setuptools.Command):
         build.xmltransform.end(dom_context,
             os.path.join(
                 HTML_ROOT,
-                'help.min.xhtml'))
+                'help',
+                'index.min.xhtml'))
 
 
 @build.command

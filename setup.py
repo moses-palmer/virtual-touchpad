@@ -54,10 +54,6 @@ def setup(**kwargs):
             'polib >=1.0.4',
             'slimit'],
 
-        dependency_links = [
-            'http://github.com/weijia/pyzeroconf/tarball/976e133'
-            '#egg=pyzeroconf-0.12.3'],
-
         author = INFO['author'],
         author_email = 'moses.palmer@gmail.com',
 

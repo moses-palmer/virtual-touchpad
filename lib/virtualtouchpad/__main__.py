@@ -19,7 +19,7 @@ log = logging.getLogger('virtualtouchpad')
 
 import socket
 
-from argparse import ArgumentParser, Action
+from argparse import ArgumentParser
 
 from virtualtouchpad import systray
 from .server import main

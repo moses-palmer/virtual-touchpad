@@ -49,60 +49,7 @@ log = logging.getLogger(__name__)
 
 from . import translations
 from . import keyboard
-
-
-@app.route('/ws')
-def handle_websocket():
-    # Get the actual websocket
-    ws = bottle.request.environ.get('wsgi.websocket')
-    log.info('WebSocket with %s opened',
-        bottle.request.environ.get('REMOTE_ADDR'));
-    if not ws:
-        bottle.abort(400, 'Expected WebSocket request.')
-
-    def report_error(reason, exception, tb):
-        ws.send(json.dumps(dict(
-            reason = reason,
-            exception = type(exception).__name__,
-            data = str(exception),
-            tb = traceback.extract_tb(tb))))
-
-    while True:
-        try:
-            message = ws.receive()
-            if message is None:
-                break
-
-            try:
-                command = json.loads(message)
-            except Exception as e:
-                log.exception('An error occurred when loading JSON from %s',
-                    message)
-                ex_type, ex, tb = sys.exc_info()
-                report_error('invalid_data',
-                    e, tb)
-                continue
-
-            try:
-                dispatch(command)
-            except (KeyError, ValueError, TypeError) as e:
-                log.exception('Failed to dispatch command %s',
-                    command)
-                ex_type, ex, tb = sys.exc_info()
-                report_error('invalid_command',
-                    e, tb)
-                continue
-            except Exception as e:
-                log.exception('An error occurred while dispatching %s',
-                    command)
-                ex_type, ex, tb = sys.exc_info()
-                report_error('internal_error',
-                    e, tb)
-                continue
-
-        except geventwebsocket.WebSocketError:
-            log.exception('Failed to read WebSocket data')
-            break
+from . import controller
 
 
 @app.route('/')

@@ -47,24 +47,7 @@ INDEX_FILE = 'index.xhtml'
 app = bottle.Bottle()
 log = logging.getLogger(__name__)
 
-
-@app.route('/translations/<domain>')
-def translations(domain):
-    accept_language = bottle.request.headers.get('Accept-Language') or 'default'
-    languages = sorted((
-        (
-            language.split(';')[0].strip(),
-            float(language.split(';q=')[1]) if ';q=' in language else 1.0)
-        for language in accept_language.split(',')),
-        key = lambda p: p[1],
-        reverse = True) + [('default', 0.0)]
-
-    for language, q in languages:
-        path = os.path.join('translations', domain, language + '.js')
-        if static_file.exists(path):
-            return static_file.get(path)
-
-    return bottle.HTTPResponse(status = 404)
+from . import translations
 
 
 @app.route('/keyboard/layout/default')

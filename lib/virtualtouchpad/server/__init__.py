@@ -15,41 +15,26 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import bottle
-import gevent
-import geventwebsocket
-import json
-import logging
-import os
-import sys
-import traceback
-
-from .._info import *
-from ..platform import *
-
-from .dispatch import dispatch
-from . import static_file
-
-try:
-    from geventwebsocket.handler import WebSocketHandler
-except ImportError:
-    from geventwebsocket import WebSocketHandler
-
 
 app = bottle.Bottle()
-log = logging.getLogger(__name__)
-
-from . import translations
-from . import keyboard
-from . import controller
-from . import static
 
 
 def main(port, address, log_level):
-    global app
-
     import gevent.pywsgi
-    import geventwebsocket
     import sys
+
+    try:
+        from geventwebsocket.handler import WebSocketHandler
+    except ImportError:
+        from geventwebsocket import WebSocketHandler
+
+    # Importing these modules will attach routes to app
+    from . import controller
+    from . import keyboard
+    from . import translations
+
+    # Import static last since it is the catch-all route
+    from . import static
 
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         address, port))

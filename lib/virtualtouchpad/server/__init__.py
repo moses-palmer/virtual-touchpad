@@ -35,35 +35,13 @@ except ImportError:
     from geventwebsocket import WebSocketHandler
 
 
-#: The name of the file in every directory used as index
-INDEX_MIN_FILE = 'index.min.xhtml'
-
-
-#: The name of the file in every directory used as index unless the minified
-#: version exists
-INDEX_FILE = 'index.xhtml'
-
-
 app = bottle.Bottle()
 log = logging.getLogger(__name__)
 
 from . import translations
 from . import keyboard
 from . import controller
-
-
-@app.route('/')
-@app.route('/<filepath:path>')
-def static(filepath = '.'):
-    if static_file.isdir(filepath):
-        for index_file in (
-                os.path.join(filepath, INDEX_MIN_FILE),
-                os.path.join(filepath, INDEX_FILE)):
-            if static_file.exists(index_file):
-                return static_file.get(index_file)
-        return bottle.HTTPResponse(status = 404)
-    else:
-        return static_file.get(filepath)
+from . import static
 
 
 def main(port, address, log_level):

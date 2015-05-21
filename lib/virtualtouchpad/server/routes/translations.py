@@ -18,7 +18,7 @@ import bottle
 import os
 
 from . import app
-from .. import static_file
+from ..util import static_file
 
 
 @app.get('/translations/<domain>')

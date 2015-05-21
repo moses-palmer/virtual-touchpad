@@ -17,9 +17,6 @@
 
 import zeroconf
 
-from .platform import _freeze_modules
-_freeze_modules(zeroconf, 'socket')
-
 from ._info import __version__
 
 

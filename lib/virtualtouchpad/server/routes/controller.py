@@ -20,7 +20,7 @@ import json
 import logging
 
 from . import app
-from ..dispatch import dispatch
+from ..dispatchers import dispatch
 
 
 log = logging.getLogger(__name__)

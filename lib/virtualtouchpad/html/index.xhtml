@@ -25,7 +25,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             name="viewport"
             content="width=device-width,user-scalable=no" />
         <link rel="shortcut icon" sizes="196x196"
-            href="img/icon196x196.png" />
+            href="/img/icon196x196.png" />
 
         <meta
             name="apple-mobile-web-app-capable"
@@ -34,47 +34,47 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             name="apple-mobile-web-app-status-bar-style"
             content="black-translucent" />
         <link rel="apple-touch-icon" sizes="144x144"
-            href="img/icon144x144.png" />
+            href="/img/icon144x144.png" />
         <link rel="apple-touch-icon" sizes="114x114"
-            href="img/icon114x114.png" />
+            href="/img/icon114x114.png" />
         <link rel="apple-touch-icon" sizes="72x72"
-            href="img/icon72x72.png" />
+            href="/img/icon72x72.png" />
         <link rel="apple-touch-icon" sizes="57x57"
-            href="img/icon57x57.png" />
+            href="/img/icon57x57.png" />
 
         <title>
             Virtual Touchpad
         </title>
 
-        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="stylesheet" type="text/css" href="/css/app.css" />
 
         <!-- For modules -->
-        <link rel="stylesheet" type="text/css" href="css/keyboard.css" />
-        <link rel="stylesheet" type="text/css" href="css/message-box.css" />
-        <link rel="stylesheet" type="text/css" href="css/trackbar.css" />
-        <link rel="stylesheet" type="text/css" href="css/touchpad.css" />
+        <link rel="stylesheet" type="text/css" href="/css/keyboard.css" />
+        <link rel="stylesheet" type="text/css" href="/css/message-box.css" />
+        <link rel="stylesheet" type="text/css" href="/css/trackbar.css" />
+        <link rel="stylesheet" type="text/css" href="/css/touchpad.css" />
 
         <!-- Setup script -->
-        <script type="text/javascript" src="js/lib/init.js"></script>
+        <script type="text/javascript" src="/js/lib/init.js"></script>
 
         <!-- Required modules -->
-        <script type="text/javascript" src="js/lib/translation.js"></script>
-        <script type="text/javascript" src="js/lib/util.js"></script>
-        <script type="text/javascript" src="js/lib/checks.js"></script>
-        <script type="text/javascript" src="js/lib/controller.js"></script>
-        <script type="text/javascript" src="js/lib/configuration.js"></script>
-        <script type="text/javascript" src="js/lib/features.js"></script>
-        <script type="text/javascript" src="js/lib/include.js"></script>
-        <script type="text/javascript" src="js/lib/keyboard.js"></script>
-        <script type="text/javascript" src="js/lib/message-box.js"></script>
-        <script type="text/javascript" src="js/lib/view.js"></script>
-        <script type="text/javascript" src="js/lib/trackbar.js"></script>
+        <script type="text/javascript" src="/js/lib/translation.js"></script>
+        <script type="text/javascript" src="/js/lib/util.js"></script>
+        <script type="text/javascript" src="/js/lib/checks.js"></script>
+        <script type="text/javascript" src="/js/lib/controller.js"></script>
+        <script type="text/javascript" src="/js/lib/configuration.js"></script>
+        <script type="text/javascript" src="/js/lib/features.js"></script>
+        <script type="text/javascript" src="/js/lib/include.js"></script>
+        <script type="text/javascript" src="/js/lib/keyboard.js"></script>
+        <script type="text/javascript" src="/js/lib/message-box.js"></script>
+        <script type="text/javascript" src="/js/lib/view.js"></script>
+        <script type="text/javascript" src="/js/lib/trackbar.js"></script>
 
         <!-- The main application -->
-        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>
 
         <!-- Translations -->
-        <script type="text/javascript" src="translations/index"
+        <script type="text/javascript" src="/translations/index"
             x-no-inline="true"></script>
     </head>
 
@@ -118,22 +118,22 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <div id="toolbar" class="toolbar">
             <button class="help"
                     onclick="app.toolbar.onHelp();">
-                <x-include href="img/help.svg" />
+                <x-include href="/img/help.svg" />
             </button>
             <button class="settings"
                     onclick="app.toolbar.onSettings();">
-                <x-include href="img/settings.svg" />
+                <x-include href="/img/settings.svg" />
             </button>
             <button class="fullscreen on"
                     onclick="app.toolbar.onFullscreenOn();">
-                <x-include href="img/fullscreen.svg" />
+                <x-include href="/img/fullscreen.svg" />
             </button>
         </div>
 
-        <x-include href="keyboard/buttons.svg" />
+        <x-include href="/keyboard/buttons.svg" />
         <keyboard
             id="keyboard"
-            src="keyboard/geometry/large.svg"
+            src="/keyboard/geometry/large.svg"
             layout="keyboard/layout/default"
             onpress="app.keyboard.onPress.apply(null, event.detail);"
             onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>

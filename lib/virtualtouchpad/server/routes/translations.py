@@ -15,27 +15,26 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import bottle
+import os
 
-app = bottle.Bottle()
+from . import app
+from ..util import static_file
 
 
-def main(port, address, log_level):
-    import gevent.pywsgi
-    import sys
+@app.get('/translations/<domain>')
+def translations(domain):
+    accept_language = bottle.request.headers.get('Accept-Language') or 'default'
+    languages = sorted((
+        (
+            language.split(';')[0].strip(),
+            float(language.split(';q=')[1]) if ';q=' in language else 1.0)
+        for language in accept_language.split(',')),
+        key = lambda p: p[1],
+        reverse = True) + [('default', 0.0)]
 
-    try:
-        from geventwebsocket.handler import WebSocketHandler
-    except ImportError:
-        from geventwebsocket import WebSocketHandler
+    for language, q in languages:
+        path = os.path.join('translations', domain, language + '.js')
+        if static_file.exists(path):
+            return static_file.get(path)
 
-    # Importing this module will attach routes to app
-    from . import routes
-
-    sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        address, port))
-
-    from gevent import monkey; monkey.patch_all(thread = False)
-    return gevent.pywsgi.WSGIServer(
-        ('0.0.0.0', port),
-        app,
-        handler_class = WebSocketHandler)
+    return bottle.HTTPResponse(status = 404)

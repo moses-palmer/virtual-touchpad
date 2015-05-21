@@ -17,7 +17,7 @@
 
 import logging
 
-from ..dispatch import dispatcher
+from . import dispatcher
 
 from virtualtouchpad import event
 

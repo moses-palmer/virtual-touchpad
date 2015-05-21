@@ -16,26 +16,17 @@
 
 import bottle
 
-app = bottle.Bottle()
+from . import app
+from .. import static_file
 
 
-def main(port, address, log_level):
-    import gevent.pywsgi
-    import sys
+@app.get('/keyboard/layout/default')
+def default_layout():
+    """Returns the default keyboard layout.
+    """
+    geometry_files = static_file.list('keyboard/layout')
+    if not geometry_files:
+        return bottle.HTTPResponse(status = 404)
 
-    try:
-        from geventwebsocket.handler import WebSocketHandler
-    except ImportError:
-        from geventwebsocket import WebSocketHandler
-
-    # Importing this module will attach routes to app
-    from . import routes
-
-    sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        address, port))
-
-    from gevent import monkey; monkey.patch_all(thread = False)
-    return gevent.pywsgi.WSGIServer(
-        ('0.0.0.0', port),
-        app,
-        handler_class = WebSocketHandler)
+    # TODO: Select the one used by the current system
+    return static_file.get('keyboard/layout/' + geometry_files[0])

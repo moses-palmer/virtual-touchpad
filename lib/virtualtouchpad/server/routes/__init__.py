@@ -14,28 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import bottle
+from .. import app
 
-app = bottle.Bottle()
+# Importing these modules will attach routes to app
+from . import controller
+from . import keyboard
+from . import translations
 
-
-def main(port, address, log_level):
-    import gevent.pywsgi
-    import sys
-
-    try:
-        from geventwebsocket.handler import WebSocketHandler
-    except ImportError:
-        from geventwebsocket import WebSocketHandler
-
-    # Importing this module will attach routes to app
-    from . import routes
-
-    sys.stdout.write('Starting server http://%s:%d/...\n' % (
-        address, port))
-
-    from gevent import monkey; monkey.patch_all(thread = False)
-    return gevent.pywsgi.WSGIServer(
-        ('0.0.0.0', port),
-        app,
-        handler_class = WebSocketHandler)
+# Import static last since it is the catch-all route
+from . import static

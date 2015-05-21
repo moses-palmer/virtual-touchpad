@@ -264,4 +264,3 @@ class SystemTrayIcon(SystemTrayIcon):
         """Destroys the system tray icon.
         """
         self._window.destroy()
-        self._thread.join()

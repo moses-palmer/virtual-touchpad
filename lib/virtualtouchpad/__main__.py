@@ -110,6 +110,10 @@ def start():
             announcer = announce.announce(address, args.port)
         try:
             main(address = address, **vars(args)).serve_forever()
+        except KeyboardInterrupt:
+            log.info('Interrupted, terminating')
+        except:
+            log.exception('An unhandler exception occurred in main')
         finally:
             if announce:
                 announcer.unregister()

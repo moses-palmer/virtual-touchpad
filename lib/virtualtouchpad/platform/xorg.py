@@ -35,9 +35,6 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-# The global X display
-DISPLAY = display.Display()
-
 
 def display_manager(display):
     """Traps *X* errors and raises a ``RuntimeError`` at the end if any error

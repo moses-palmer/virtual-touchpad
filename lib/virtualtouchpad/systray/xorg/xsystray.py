@@ -21,10 +21,14 @@ import threading
 
 import PIL.Image
 
-from .. import SystemTrayIcon
-from virtualtouchpad.platform.xorg import *
+from Xlib import X
+from Xlib import display
+
+from virtualtouchpad.platform.xorg import display_manager
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+
+from .. import SystemTrayIcon
 
 
 class SystemTrayIcon(SystemTrayIcon):
@@ -260,4 +264,3 @@ class SystemTrayIcon(SystemTrayIcon):
         """Destroys the system tray icon.
         """
         self._window.destroy()
-        self._thread.join()

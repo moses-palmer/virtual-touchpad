@@ -18,8 +18,22 @@ from virtualtouchpad import platform
 with platform.modules():
     import Xlib.keysymdef.xkb
 
+    from Xlib import display
+    from Xlib import X
+    from Xlib import XK
+    from Xlib.ext.xtest import fake_input
 
-from virtualtouchpad.platform.xorg import *
+    try:
+        import pyatspi
+    except ImportError:
+        pyatspi = None
+
+
+from virtualtouchpad.platform.xorg import display_manager
+
+
+#: The global X display
+DISPLAY = display.Display()
 
 
 # The scroll threshold required to actually perform scrolling

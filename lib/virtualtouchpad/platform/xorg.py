@@ -16,27 +16,7 @@
 
 import logging
 
-from . import _freeze_modules
-
-# Make sure select is usable in Xlib
-import Xlib.protocol.display
-_freeze_modules(Xlib.protocol.display, 'select')
-
-from Xlib import X
-from Xlib import XK
-from Xlib import display
-from Xlib.ext.xtest import fake_input
-
-try:
-    import pyatspi
-except ImportError:
-    pyatspi = None
-
-
 log = logging.getLogger(__name__)
-
-# The global X display
-DISPLAY = display.Display()
 
 
 def display_manager(display):

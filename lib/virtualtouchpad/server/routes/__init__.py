@@ -14,19 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import bottle
+from .. import app
 
-from . import app
-from . import static_file
+# Importing these modules will attach routes to app
+from . import controller
+from . import keyboard
+from . import translations
 
-
-@app.get('/keyboard/layout/default')
-def default_layout():
-    """Returns the default keyboard layout.
-    """
-    geometry_files = static_file.list('keyboard/layout')
-    if not geometry_files:
-        return bottle.HTTPResponse(status = 404)
-
-    # TODO: Select the one used by the current system
-    return static_file.get('keyboard/layout/' + geometry_files[0])
+# Import static last since it is the catch-all route
+from . import static

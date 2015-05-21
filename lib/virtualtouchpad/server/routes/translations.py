@@ -18,27 +18,23 @@ import bottle
 import os
 
 from . import app
-from . import static_file
+from .. import static_file
 
 
-#: The name of the file in every directory used as index
-INDEX_MIN_FILE = 'index.min.xhtml'
+@app.get('/translations/<domain>')
+def translations(domain):
+    accept_language = bottle.request.headers.get('Accept-Language') or 'default'
+    languages = sorted((
+        (
+            language.split(';')[0].strip(),
+            float(language.split(';q=')[1]) if ';q=' in language else 1.0)
+        for language in accept_language.split(',')),
+        key = lambda p: p[1],
+        reverse = True) + [('default', 0.0)]
 
+    for language, q in languages:
+        path = os.path.join('translations', domain, language + '.js')
+        if static_file.exists(path):
+            return static_file.get(path)
 
-#: The name of the file in every directory used as index unless the minified
-#: version exists
-INDEX_FILE = 'index.xhtml'
-
-
-@app.get('/')
-@app.get('/<filepath:path>')
-def static(filepath = '.'):
-    if static_file.isdir(filepath):
-        for index_file in (
-                os.path.join(filepath, INDEX_MIN_FILE),
-                os.path.join(filepath, INDEX_FILE)):
-            if static_file.exists(index_file):
-                return static_file.get(index_file)
-        return bottle.HTTPResponse(status = 404)
-    else:
-        return static_file.get(filepath)
+    return bottle.HTTPResponse(status = 404)

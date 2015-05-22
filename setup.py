@@ -20,6 +20,9 @@ sys.path.append(os.path.join(
     'lib'))
 import _build as buildlib
 
+# Make sure we can import tests
+sys.path.append(os.path.dirname(__file__))
+
 
 REQUIREMENTS = [
     'aiohttp >=0.21',
@@ -78,6 +81,7 @@ setup_arguments = dict(
     package_dir=PACKAGE_DIR,
     package_data=PACKAGE_DATA,
     zip_safe=True,
+    test_suite='tests',
 
     license='GPLv3',
     platforms=['linux', 'windows'],

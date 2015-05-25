@@ -5,4 +5,5 @@
 *.eggs/
 build/*
 dist/*
+node_modules/*
 venv/*

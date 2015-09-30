@@ -35,6 +35,7 @@ def _register_commands():
     """
     from distutils.command.build import build
     from setuptools.command.bdist_egg import bdist_egg
+    from wheel.bdist_wheel import bdist_wheel
     from setuptools.command.sdist import sdist
 
     # locals() at this point contains only the imported symbols

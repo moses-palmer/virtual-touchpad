@@ -2,6 +2,12 @@ Release Notes
 =============
 
 
+v0.12.1 - No more PIL
+---------------------
+  * Replaced dependency in *PIL* with *Pillow*. This should make it possible to
+    install from *PyPi*.
+
+
 v0.12 - Shiny Keyboard
 ----------------------
   * Support for keyboards has been added. For now only two layouts are

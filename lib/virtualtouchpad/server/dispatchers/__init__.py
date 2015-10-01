@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -27,8 +28,8 @@ def dispatcher(f):
 
     :param f:
         The function to use as a *WebSocket* command dispatcher. Any websocket
-        message, *JSON* decoded, where the ``command`` key value is equal to the
-        name of this function will be handled by this function. It will be
+        message, *JSON* decoded, where the ``command`` key value is equal to
+        the name of this function will be handled by this function. It will be
         passed the ``data`` key value parameter expanded as parameters.
     """
     global _DISPATCHERS

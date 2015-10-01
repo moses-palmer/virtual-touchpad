@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -33,7 +34,8 @@ DEFAULT_STATIC_ROOT = os.path.join(
     os.path.dirname(__file__),
     os.path.pardir,
     'html')
-STATIC_ROOT = os.getenv('VIRTUAL_TOUCHPAD_STATIC_ROOT',
+STATIC_ROOT = os.getenv(
+    'VIRTUAL_TOUCHPAD_STATIC_ROOT',
     DEFAULT_STATIC_ROOT if os.access(DEFAULT_STATIC_ROOT, os.R_OK)
     else None)
 
@@ -79,7 +81,8 @@ def list(path):
     if not STATIC_ROOT is None:
         return os.listdir(os.path.join(STATIC_ROOT, path))
 
-    return pkg_resources.resource_listdir(PKG_RESOURCES_PACKAGE,
+    return pkg_resources.resource_listdir(
+        PKG_RESOURCES_PACKAGE,
         os.path.join('html', path))
 
 
@@ -91,19 +94,19 @@ def get(path):
     """
     if not STATIC_ROOT is None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle
-        return bottle.static_file(path, root = STATIC_ROOT)
+        return bottle.static_file(path, root=STATIC_ROOT)
 
     # Otherwise, try to serve a resource from the egg
     try:
         path = pkg_resources.resource_filename(
                 PKG_RESOURCES_PACKAGE, os.path.join('html', path))
         return bottle.static_file(
-            os.path.basename(path), root = os.path.dirname(path))
+            os.path.basename(path), root=os.path.dirname(path))
     except KeyError:
         # The file does not exist; we try to serve a file that we are
         # certain does not exist to trigger a 404
         return bottle.static_file(
-            path, root = os.path.join(os.path.dirname(__file__), 'html'))
+            path, root=os.path.join(os.path.dirname(__file__), 'html'))
     except NotImplementedError:
         # pkg_resources does not support resource_filename when running from
         # a zip file
@@ -114,8 +117,9 @@ def get(path):
 
     # Open the file and get its size
     try:
-        stream = pkg_resources.resource_stream(PKG_RESOURCES_PACKAGE,
-                os.path.join('html', path))
+        stream = pkg_resources.resource_stream(
+            PKG_RESOURCES_PACKAGE,
+            os.path.join('html', path))
         stream.seek(0, os.SEEK_END)
         size = stream.tell()
         stream.seek(0, os.SEEK_SET)
@@ -142,7 +146,8 @@ def get(path):
         st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
     except OSError:
         st = os.stat(os.path.abspath(sys.argv[0]))
-    last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
+    last_modified = time.strftime(
+        '%a, %d %b %Y %H:%M:%S GMT',
         time.gmtime(st.st_mtime))
     headers['Last-Modified'] = last_modified
 
@@ -151,8 +156,9 @@ def get(path):
             'HTTP_IF_MODIFIED_SINCE').split(";")[0].strip())
         if not if_modified_since is None \
                 and if_modified_since >= int(st.st_mtime):
-            headers['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S GMT",
+            headers['Date'] = time.strftime(
+                '%a, %d %b %Y %H:%M:%S GMT',
                 time.gmtime())
-        return bottle.HTTPResponse(status = 304, **headers)
+        return bottle.HTTPResponse(status=304, **headers)
 
     return bottle.HTTPResponse(body, **headers)

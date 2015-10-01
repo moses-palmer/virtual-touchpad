@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -31,6 +32,7 @@ class ImplementationImportError(Exception):
     """
     pass
 
+
 @contextmanager
 def modules():
     """A context manager for trying to import platform dependent modules.
@@ -46,10 +48,11 @@ def modules():
 
 _package, _subpackage = __package__.split('.', 1)
 _path = _subpackage.replace('.', os.path.sep)
-__all__ = [directory
+__all__ = [
+    directory
     for directory in pkg_resources.resource_listdir(_package, _path)
     if pkg_resources.resource_isdir(_package, os.path.join(_path, directory))
-        and directory[0] != '_']
+    and directory[0] != '_']
 
 
 #: The regular expression used to match importable modules
@@ -75,7 +78,8 @@ def _package_importables(package_name):
             if _MODULE_RE.match(name):
                 yield '.'.join((package_name, name.rsplit('.', 1)[0]))
         else:
-            if any(pkg_resources.resource_exists(package,
+            if any(pkg_resources.resource_exists(
+                    package,
                     os.path.join(full, f)) for f in (
                         '__init__.py',
                         '__init__.pyc')):
@@ -97,7 +101,6 @@ def implement(globals_dict):
     """
     import importlib
     import inspect
-    import sys
 
     # Get the name of the platform and load the driver module
     package_name = globals_dict['__package__']
@@ -111,11 +114,11 @@ def implement(globals_dict):
             log.info('Not loading %s.%s: %s', package_name, candidate, str(e))
 
     if driver is None:
-        raise ImportError('Failed to locate platform driver for package %s',
+        raise ImportError(
+            'Failed to locate platform driver for package %s',
             globals_dict['__package__'])
 
     # Get symbols exported from the driver
-    symbols = {}
     for name in dir(driver):
         value = getattr(driver, name)
 
@@ -156,9 +159,9 @@ def implement(globals_dict):
         # Try to expand the documentation
         try:
             if value.__doc__:
-                value.__doc__ +=  '\n\n' + old_value.__doc__
+                value.__doc__ += '\n\n' + old_value.__doc__
             else:
-                value.__doc__ =  old_value.__doc__
+                value.__doc__ = old_value.__doc__
         except AttributeError:
             pass
 

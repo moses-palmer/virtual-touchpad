@@ -3,6 +3,7 @@ Release Notes
 
 
 v0.12.2 - Corrected imports
+---------------------------
   * Corrected imports.
 
 

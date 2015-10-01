@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -23,18 +24,19 @@ from ..util import static_file
 
 @app.get('/translations/<domain>')
 def translations(domain):
-    accept_language = bottle.request.headers.get('Accept-Language') or 'default'
+    accept_language = bottle.request.headers.get('Accept-Language') \
+        or 'default'
     languages = sorted((
         (
             language.split(';')[0].strip(),
             float(language.split(';q=')[1]) if ';q=' in language else 1.0)
         for language in accept_language.split(',')),
-        key = lambda p: p[1],
-        reverse = True) + [('default', 0.0)]
+        key=lambda p: p[1],
+        reverse=True) + [('default', 0.0)]
 
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
         if static_file.exists(path):
             return static_file.get(path)
 
-    return bottle.HTTPResponse(status = 404)
+    return bottle.HTTPResponse(status=404)

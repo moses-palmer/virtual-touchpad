@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -54,7 +55,7 @@ def mouse_scroll_cancel():
     scroll = [0, 0]
 
 
-def string_to_keysym(key, default = None):
+def string_to_keysym(key, default=None):
     """Converts a string to a keysym identifier.
 
     :param str keysym: The string to convert.

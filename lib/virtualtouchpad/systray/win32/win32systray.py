@@ -9,18 +9,16 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 import os
-import sys
 import threading
-import win32api
 import win32con
-import win32gui_struct
 
 from .. import SystemTrayIcon
 
@@ -92,19 +90,19 @@ class SystemTrayIcon(SystemTrayIcon):
         self._window = None
         self._notify_id = None
 
-        self._thread = threading.Thread(target = self._mainloop)
-        self._thread.daemon  = True
+        self._thread = threading.Thread(target=self._mainloop)
+        self._thread.daemon = True
         self._thread.start()
 
     @property
     def icon(self):
-        """The *win32* icon handle for the systray icon; the icon will be loaded
-        if has not yet been created"""
+        """The *win32* icon handle for the systray icon; the icon will be
+        loaded if has not yet been created"""
         if self._icon:
             return self._icon
 
-        # First try to load from the current EXE file, and then fall back on the
-        # build directory
+        # First try to load from the current EXE file, and then fall back on
+        # the build directory
         instance = win32gui.GetModuleHandle(None)
         try:
             self._icon = win32gui.LoadImage(
@@ -136,8 +134,8 @@ class SystemTrayIcon(SystemTrayIcon):
 
     @property
     def window(self):
-        """The *win32* window to use as systray icon; the window will be created
-        when read unless already created"""
+        """The *win32* window to use as systray icon; the window will be
+        created when read unless already created"""
         if self._window:
             return self._window
 
@@ -152,11 +150,13 @@ class SystemTrayIcon(SystemTrayIcon):
 
         # TODO: Create mapping from message to method
         window_class.lpfnWndProc = {
-            SystemTrayIcon.WM_NOTIFY: lambda wnd, msg, w, l: self._on_notify(l)}
+            SystemTrayIcon.WM_NOTIFY: lambda wnd, msg, w, l:
+                self._on_notify(l)}
         class_atom = win32gui.RegisterClass(window_class)
 
         # Create the window
-        self._window = win32gui.CreateWindow(class_atom,
+        self._window = win32gui.CreateWindow(
+            class_atom,
             self.WINDOW_CLASS_NAME,
             win32con.WS_OVERLAPPED | win32con.WS_SYSMENU, 0, 0,
             win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT, 0, 0,

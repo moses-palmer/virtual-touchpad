@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -34,8 +35,9 @@ def main(port, address, log_level):
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         address, port))
 
-    from gevent import monkey; monkey.patch_all(thread = False)
+    from gevent import monkey
+    monkey.patch_all(thread=False)
     return gevent.pywsgi.WSGIServer(
         ('0.0.0.0', port),
         app,
-        handler_class = WebSocketHandler)
+        handler_class=WebSocketHandler)

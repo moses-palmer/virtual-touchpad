@@ -120,7 +120,7 @@ def keyboard_events():
         else:
             name = None
 
-        yield (pressed, code, keysym§, symbol, name or '')
+        yield (pressed, code, keysym, symbol, name or '')
 
 
 def describe_modifiers(shift, altgr):

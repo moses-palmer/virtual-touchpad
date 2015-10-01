@@ -35,18 +35,18 @@ if CONVERT_COMMAND:
 
         :raises RuntimeError: if the conversion fails
         """
-        p = subprocess.Popen([CONVERT_COMMAND,
+        p = subprocess.Popen([
+            CONVERT_COMMAND,
             '-background', 'none',
             source,
             '-resize', 'x'.join(str(dimension) for dimension in dimensions),
             target],
-            stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         if p.returncode != 0:
             raise RuntimeError('Failed to call convert: %s', stderr)
 
         update_file_time(target, source)
-
 
     def combine(target, *icons):
         """Creates a combined *ICO* file.
@@ -55,8 +55,10 @@ if CONVERT_COMMAND:
 
         :param [str] icons: The icons to combine into one.
         """
-        p = subprocess.Popen([CONVERT_COMMAND] + list(icons) + [target],
-            stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        p = subprocess.Popen(
+            [CONVERT_COMMAND] + list(icons) + [target],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         if p.returncode != 0:
             raise RuntimeError('Failed to call convert: %s', stderr)
@@ -68,15 +70,16 @@ else:
     def convert(source, target, dimensions):
         """A no-op placeholder function.
         """
-        sys.stdout.write('Not converting %s to %s: ImageMagick is not installed'
-            % (source, target) + '\n')
-
+        sys.stdout.write(
+            'Not converting %s to %s: ImageMagick is not installed' % (
+                source, target) + '\n')
 
     def combine(target, *icons):
         """A no-op placeholder function.
         """
-        sys.stdout.write('Not combining %s to %s: ImageMagick is not installed'
-            % (', '.join(icons), target) + '\n')
+        sys.stdout.write(
+            'Not combining %s to %s: ImageMagick is not installed' % (
+                ', '.join(icons), target) + '\n')
 
 
 def app_icon(size, target_path):

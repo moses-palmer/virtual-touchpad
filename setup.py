@@ -2,6 +2,22 @@
 # coding: utf8
 
 import os
+import setuptools
+
+# Make sure we can import build
+import sys
+sys.path.append(os.path.join(
+    os.path.dirname(__file__),
+    'lib'))
+sys.path.append(os.path.join(
+    os.path.dirname(__file__),
+    'lib-setup'))
+import build
+
+try:
+    import py2exe
+except ImportError:
+    py2exe = None
 
 
 # Data for the package; this will not be evaluated until the build steps have
@@ -15,7 +31,7 @@ PACKAGE_DATA = {
         'html/js/*/*.*',
         'html/keyboard/*.*',
         'html/keyboard/*/*.*',
-        'html/translations/*/*.*',]}
+        'html/translations/*/*.*']}
 
 REQUIREMENTS = [
     'bottle >=0.11',
@@ -28,85 +44,51 @@ REQUIREMENTS = [
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-# The directory in which HTML resources are located
-HTML_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    'lib',
-    'virtualtouchpad',
-    'html')
+# Arguments passed to setup
+setup_arguments = {}
 
 
 def setup(**kwargs):
     global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
     setuptools.setup(
-        cmdclass = dict(build.cmdclass),
-        name = 'virtual-touchpad',
-        version = '.'.join(str(i) for i in INFO['version']),
-        description = ''
-            'Turns your mobile or tablet into a touchpad for your computer.',
-        long_description = README + '\n\n' + CHANGES,
+        cmdclass=dict(build.cmdclass),
+        name='virtual-touchpad',
+        version='.'.join(str(i) for i in INFO['version']),
+        description='Turns your mobile or tablet into a touchpad for your '
+        'computer.',
+        long_description=README + '\n\n' + CHANGES,
 
-        install_requires = REQUIREMENTS + platform_requirements(),
+        install_requires=REQUIREMENTS + platform_requirements(),
 
-        setup_requires = REQUIREMENTS + platform_requirements() + [
+        setup_requires=REQUIREMENTS + platform_requirements() + [
             'cssmin',
             'ply ==3.4',
             'polib >=1.0.4',
             'slimit'],
 
-        author = INFO['author'],
-        author_email = 'moses.palmer@gmail.com',
+        author=INFO['author'],
+        author_email='moses.palmer@gmail.com',
 
-        url = 'https://github.com/moses-palmer/virtual-touchpad',
+        url='https://github.com/moses-palmer/virtual-touchpad',
 
-        packages = setuptools.find_packages(
+        packages=setuptools.find_packages(
             os.path.join(
                 os.path.dirname(__file__),
-                'lib'),
-            exclude = [
-                'build']),
-        package_dir = PACKAGE_DIR,
-        package_data = PACKAGE_DATA,
-        zip_safe = True,
+                'lib')),
+        package_dir=PACKAGE_DIR,
+        package_data=PACKAGE_DATA,
+        zip_safe=True,
 
-        license = 'GPLv3',
-        platforms = ['linux', 'windows'],
-        classifiers = [],
+        license='GPLv3',
+        platforms=['linux', 'windows'],
+        classifiers=[],
 
         **kwargs)
 
 
-# Make sure we can import build
-import sys
-sys.path.append(os.path.join(
-    os.path.dirname(__file__),
-    'lib'))
-
-try:
-    import build
-except ImportError:
-    class build:
-        cmdclass = {}
-
-        @staticmethod
-        def command(c):
-            return c
-
-        @staticmethod
-        def utility(c):
-            return c
-
-import setuptools
-
-try:
-    import py2exe
-except ImportError:
-    py2exe = None
-
-
 def platform_requirements():
-    """
-    A list of PyPi packages that are dependencies only for the current platform.
+    """A list of PyPi packages that are dependencies only for the current
+    platform.
     """
     platform = ''.join(c for c in sys.platform if c.isalpha())
     result = []
@@ -156,7 +138,6 @@ try:
             'README.rst')) as f:
         README = f.read()
 
-
     # Read CHANGES
     with open(os.path.join(
             os.path.dirname(__file__),
@@ -167,19 +148,17 @@ except IOError:
     CHANGES = ''
 
 
-# Arguments passed to setup
-setup_arguments = {}
-
 @build.utility
 class xgettext(setuptools.Command):
     description = 'update the POT files'
     user_options = []
-    def initialize_options(self): pass
-    def finalize_options(self): pass
-    def run(self):
-        import subprocess
 
-        source_dir = HTML_ROOT
+    def initialize_options(self): pass
+
+    def finalize_options(self): pass
+
+    def run(self):
+        source_dir = build.HTML_ROOT
         target_dir = os.path.join(
             os.path.dirname(__file__),
             'po')
@@ -222,28 +201,31 @@ class xgettext(setuptools.Command):
 class minify_index(setuptools.Command):
     description = 'minify index.xhtml'
     user_options = []
-    def initialize_options(self): pass
-    def finalize_options(self): pass
-    def run(self):
-        global HTML_ROOT
 
+    def initialize_options(self): pass
+
+    def finalize_options(self): pass
+
+    def run(self):
         # Load index.html
         dom_context = build.xmltransform.start(
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'index.xhtml'))
 
         # Minify the index file
         build.xmltransform.minify_html(dom_context)
 
         # Add the manifest file
-        build.xmltransform.add_manifest(dom_context,
+        build.xmltransform.add_manifest(
+            dom_context,
             'virtual-touchpad.appcache')
 
         # Write index.min.xhtml
-        build.xmltransform.end(dom_context,
+        build.xmltransform.end(
+            dom_context,
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'index.min.xhtml'))
 
 
@@ -251,15 +233,16 @@ class minify_index(setuptools.Command):
 class minify_help(setuptools.Command):
     description = 'minify help/index.xhtml'
     user_options = []
-    def initialize_options(self): pass
-    def finalize_options(self): pass
-    def run(self):
-        global HTML_ROOT
 
+    def initialize_options(self): pass
+
+    def finalize_options(self): pass
+
+    def run(self):
         # Load help.xhtml
         dom_context = build.xmltransform.start(
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'help',
                 'index.xhtml'))
 
@@ -267,9 +250,10 @@ class minify_help(setuptools.Command):
         build.xmltransform.minify_html(dom_context)
 
         # Write help.min.xhtml
-        build.xmltransform.end(dom_context,
+        build.xmltransform.end(
+            dom_context,
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'help',
                 'index.min.xhtml'))
 
@@ -278,15 +262,18 @@ class minify_help(setuptools.Command):
 class generate_webapp_icons(setuptools.Command):
     description = 'generate web application icons from SVG sources'
     user_options = []
+
     def initialize_options(self): pass
+
     def finalize_options(self): pass
+
     def run(self):
         # Generate the application icons
         for size in (196, 144, 114, 96, 72, 57, 48):
             build.icons.app_icon(
                 size,
                 os.path.join(
-                    HTML_ROOT,
+                    build.HTML_ROOT,
                     'img',
                     'icon%dx%d.png' % (size, size)))
 
@@ -296,8 +283,11 @@ class generate_windows_icons(setuptools.Command):
     description = 'generate Windows icons from SVG sources'
     user_options = []
     DIMENSIONS = (128, 64, 32, 16)
+
     def initialize_options(self): pass
+
     def finalize_options(self): pass
+
     def run(self):
         target_dir = os.path.join(
             os.path.dirname(__file__),
@@ -327,8 +317,11 @@ class generate_windows_icons(setuptools.Command):
 class generate_translations(setuptools.Command):
     description = 'generate translation catalogues from PO files'
     user_options = []
+
     def initialize_options(self): pass
+
     def finalize_options(self): pass
+
     def run(self):
         import json
         import polib
@@ -358,13 +351,13 @@ class generate_translations(setuptools.Command):
 
                 # Extract interesting meta data
                 code = pofile.metadata['Language']
-                plurals = {key.strip(): value.strip()
+                plurals = {
+                    key.strip(): value.strip()
                     for (key, value) in (
                         keyvalue.split('=', 1)
                         for keyvalue in pofile.metadata[
                             'Plural-Forms'].split(';')
-                        if keyvalue)
-                    }
+                        if keyvalue)}
 
                 # Create the catalogue skeleton
                 texts = {}
@@ -403,8 +396,11 @@ if py2exe:
     class extract_local_eggs(setuptools.Command):
         description = 'extract local egg files to allow py2exe to use them'
         user_options = []
+
         def initialize_options(self): pass
+
         def finalize_options(self): pass
+
         def run(self):
             import glob
             import zipfile
@@ -457,12 +453,10 @@ if py2exe:
                     os.makedirs(os.path.dirname(full_target))
                 except OSError:
                     pass
-                name = os.path.basename(target)
                 self.copy_file(source, full_target)
                 self.compiled_files.append(target)
 
     build.cmdclass['py2exe'] = py2exe_with_resources
-
 
     setup_arguments['zipfile'] = None
     setup_arguments['options'] = {
@@ -479,11 +473,11 @@ if py2exe:
                 'virtualtouchpad.systray.win32',
                 'virtualtouchpad.systray.win32.win32systray'] + [
                     'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]
-                        for m in os.listdir(
-                            os.path.join(
-                                'lib', 'virtualtouchpad', 'server',
-                                'dispatchers'))
-                        if not m.startswith('_') and m.endswith('.py')]}}
+                    for m in os.listdir(
+                        os.path.join(
+                            'lib', 'virtualtouchpad', 'server',
+                            'dispatchers'))
+                    if not m.startswith('_') and m.endswith('.py')]}}
     setup_arguments['console'] = [
         'scripts/virtualtouchpad-console.py']
     setup_arguments['windows'] = [

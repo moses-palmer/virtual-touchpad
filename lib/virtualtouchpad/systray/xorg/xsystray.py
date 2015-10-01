@@ -271,4 +271,5 @@ class SystemTrayIcon(SystemTrayIcon):
     def destroy(self):
         """Destroys the system tray icon.
         """
-        self._window.destroy()
+        if getattr(self, '_window', None):
+            self._window.destroy()

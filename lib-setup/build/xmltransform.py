@@ -3,12 +3,29 @@ import os
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
 
-from . import LICENSE, update_file_time
+from . import LICENSE, update_file_time, HTML_ROOT
 
 #: Elements that are allowed to be self-closing in XHTML
 _VOID_ELEMENTS = [
     'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen',
     'link', 'meta', 'param', 'source', 'track', 'wbr']
+
+
+def _src_to_path(source_dir, value):
+    """Converts a ``src`` attribute value to an absolute path.
+
+    :param str source_dir: The directory in which the document that contains
+        the tag is located.
+
+    :param str value: The attribute value. If this is an absolute path, a path
+        relative to :attr:`build.HTML_ROOT` is returned.
+
+    :return: an absolute path
+    """
+    if value[0] == '/':
+        return os.path.join(HTML_ROOT, value[1:])
+    else:
+        return os.path.join(source_dir, value)
 
 
 def _recurse(e, callback, **kwargs):
@@ -46,7 +63,7 @@ def _inline_script(e, source_dir, dom, files):
         return
 
     # Read the script source and inline it
-    src_path = os.path.join(
+    src_path = _src_to_path(
         source_dir,
         e.getAttribute('src'))
     with open(src_path) as src:
@@ -70,7 +87,7 @@ def _inline_css(e, source_dir, dom, files):
         return
 
     # Read the stylesheet and inline it
-    href_path = os.path.join(
+    href_path = _src_to_path(
         source_dir,
         e.getAttribute('href'))
     with open(href_path) as href:
@@ -104,9 +121,11 @@ def _inline_include(e, source_dir, dom, files):
         return
 
     # Load the XML
-    href = os.path.join(source_dir, e.getAttribute('href'))
-    with open(href, 'rb') as f:
-        doc = parseString(f.read())
+    href_path = _src_to_path(
+        source_dir,
+        e.getAttribute('href'))
+    with open(href_path) as href:
+        doc = parseString(href.read())
 
     # Strip space
     _recurse(doc, _trim)
@@ -115,7 +134,7 @@ def _inline_include(e, source_dir, dom, files):
     e.parentNode.insertBefore(doc.documentElement, e)
     e.parentNode.removeChild(e)
 
-    files.append(href)
+    files.append(href_path)
 
 
 def _join_elements(e):

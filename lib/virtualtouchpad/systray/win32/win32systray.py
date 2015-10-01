@@ -17,11 +17,8 @@
 
 
 import os
-import sys
 import threading
-import win32api
 import win32con
-import win32gui_struct
 
 from .. import SystemTrayIcon
 

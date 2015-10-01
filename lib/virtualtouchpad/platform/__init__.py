@@ -99,7 +99,6 @@ def implement(globals_dict):
     """
     import importlib
     import inspect
-    import sys
 
     # Get the name of the platform and load the driver module
     package_name = globals_dict['__package__']
@@ -117,7 +116,6 @@ def implement(globals_dict):
             globals_dict['__package__'])
 
     # Get symbols exported from the driver
-    symbols = {}
     for name in dir(driver):
         value = getattr(driver, name)
 

@@ -2,9 +2,13 @@ Release Notes
 =============
 
 
+v0.12.2 - Corrected imports
+  * Corrected imports.
+
+
 v0.12.1 - No more PIL
 ---------------------
-  * Replaced dependency in *PIL* with *Pillow*. This should make it possible to
+  * Replaced dependency on *PIL* with *Pillow*. This should make it possible to
     install from *PyPi*.
 
 

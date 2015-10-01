@@ -45,7 +45,7 @@ def exists(path):
 
     :param str path: The path of the static file.
     """
-    if not STATIC_ROOT is None:
+    if STATIC_ROOT is not None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
         # read the file
         return os.access(os.path.join(STATIC_ROOT, path), os.R_OK)
@@ -60,7 +60,7 @@ def isdir(path):
 
     :param str path: The path of the static file.
     """
-    if not STATIC_ROOT is None:
+    if STATIC_ROOT is not None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply check whether we can
         # read the file
         return os.path.isdir(os.path.join(STATIC_ROOT, path))
@@ -78,7 +78,7 @@ def list(path):
     :return: a list of resources
     :rtype: [str]
     """
-    if not STATIC_ROOT is None:
+    if STATIC_ROOT is not None:
         return os.listdir(os.path.join(STATIC_ROOT, path))
 
     return pkg_resources.resource_listdir(
@@ -107,7 +107,7 @@ def get(path):
 
     :param str path: The path of the static file.
     """
-    if not STATIC_ROOT is None:
+    if STATIC_ROOT is not None:
         # If VIRTUAL_TOUCHPAD_STATIC_ROOT is set, simply use bottle
         return bottle.static_file(path, root=STATIC_ROOT)
 
@@ -169,7 +169,7 @@ def get(path):
     if bottle.request.environ.get('HTTP_IF_MODIFIED_SINCE'):
         if_modified_since = bottle.parse_date(bottle.request.environ.get(
             'HTTP_IF_MODIFIED_SINCE').split(";")[0].strip())
-        if not if_modified_since is None \
+        if if_modified_since is not None \
                 and if_modified_since >= int(st.st_mtime):
             headers['Date'] = time.strftime(
                 '%a, %d %b %Y %H:%M:%S GMT',

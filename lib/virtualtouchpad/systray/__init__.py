@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+from virtualtouchpad.platform import implement
+
 
 class SystemTrayIcon(object):
     """An object representing a system tray icon.
@@ -41,5 +43,4 @@ class SystemTrayIcon(object):
             self._on_click()
 
 
-from virtualtouchpad.platform import implement
 implement(globals())

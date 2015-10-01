@@ -17,13 +17,13 @@
 
 from virtualtouchpad import platform
 with platform.modules():
+    import ctypes
+    import logging
+    import unicodedata
     import win32api
+    del win32api
 
-import ctypes
-import logging
-import unicodedata
-
-from ._win32_syms import SYMS
+    from ._win32_syms import SYMS
 
 
 log = logging.getLogger(__name__)

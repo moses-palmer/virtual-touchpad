@@ -16,7 +16,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-log = logging.getLogger('virtualtouchpad')
 
 import socket
 
@@ -24,6 +23,8 @@ from argparse import ArgumentParser
 
 from virtualtouchpad import systray
 from .server import main
+
+log = logging.getLogger('virtualtouchpad')
 
 
 def _get_local_address(default=socket.gethostname()):

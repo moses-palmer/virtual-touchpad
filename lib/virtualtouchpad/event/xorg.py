@@ -24,13 +24,12 @@ with platform.modules():
     from Xlib import XK
     from Xlib.ext.xtest import fake_input
 
+    from virtualtouchpad.platform.xorg import display_manager
+
     try:
         import pyatspi
     except ImportError:
         pyatspi = None
-
-
-from virtualtouchpad.platform.xorg import display_manager
 
 
 #: The global X display

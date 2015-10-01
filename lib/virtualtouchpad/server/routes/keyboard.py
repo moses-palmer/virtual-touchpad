@@ -18,7 +18,7 @@
 import bottle
 
 from . import app
-from .. import static_file
+from ..util import static_file
 
 
 @app.get('/keyboard/layout/default')

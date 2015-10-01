@@ -72,10 +72,12 @@ class KEYBDINPUT(ctypes.Structure):
         ('time', ctypes.c_uint32),
         ('dwExtraInfo', ctypes.c_void_p)]
 
+
 class ANYINPUT(ctypes.Union):
     _fields_ = [
         ('mouse', MOUSEINPUT),
         ('keyboard', KEYBDINPUT)]
+
 
 class INPUT(ctypes.Structure):
     MOUSE = 0

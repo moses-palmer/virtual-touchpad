@@ -32,6 +32,7 @@ class ImplementationImportError(Exception):
     """
     pass
 
+
 @contextmanager
 def modules():
     """A context manager for trying to import platform dependent modules.

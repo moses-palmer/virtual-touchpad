@@ -94,7 +94,7 @@ def platform_requirements():
     result = []
 
     if platform == 'linux':
-        result.append('PIL')
+        result.append('Pillow')
         if sys.version_info.major == 3:
             result.append('python3-xlib')
         elif sys.version_info.major == 2:

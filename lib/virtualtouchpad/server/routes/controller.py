@@ -19,6 +19,8 @@ import bottle
 import geventwebsocket
 import json
 import logging
+import sys
+import traceback
 
 from . import app
 from ..dispatchers import dispatch

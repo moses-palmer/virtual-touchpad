@@ -84,6 +84,15 @@ with open(os.path.join(
         'LICENSE')) as f:
     LICENSE = f.read()
 
+#: The directory in which *HTML* resources are located
+HTML_ROOT = os.path.join(
+    os.path.dirname(__file__),
+    os.path.pardir,
+    os.path.pardir,
+    'lib',
+    'virtualtouchpad',
+    'html')
+
 
 from . import icons
 from . import translation

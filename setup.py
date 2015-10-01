@@ -44,13 +44,6 @@ REQUIREMENTS = [
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-# The directory in which HTML resources are located
-HTML_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    'lib',
-    'virtualtouchpad',
-    'html')
-
 # Arguments passed to setup
 setup_arguments = {}
 
@@ -165,7 +158,7 @@ class xgettext(setuptools.Command):
     def finalize_options(self): pass
 
     def run(self):
-        source_dir = HTML_ROOT
+        source_dir = build.HTML_ROOT
         target_dir = os.path.join(
             os.path.dirname(__file__),
             'po')
@@ -217,7 +210,7 @@ class minify_index(setuptools.Command):
         # Load index.html
         dom_context = build.xmltransform.start(
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'index.xhtml'))
 
         # Minify the index file
@@ -232,7 +225,7 @@ class minify_index(setuptools.Command):
         build.xmltransform.end(
             dom_context,
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'index.min.xhtml'))
 
 
@@ -249,7 +242,7 @@ class minify_help(setuptools.Command):
         # Load help.xhtml
         dom_context = build.xmltransform.start(
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'help',
                 'index.xhtml'))
 
@@ -260,7 +253,7 @@ class minify_help(setuptools.Command):
         build.xmltransform.end(
             dom_context,
             os.path.join(
-                HTML_ROOT,
+                build.HTML_ROOT,
                 'help',
                 'index.min.xhtml'))
 
@@ -280,7 +273,7 @@ class generate_webapp_icons(setuptools.Command):
             build.icons.app_icon(
                 size,
                 os.path.join(
-                    HTML_ROOT,
+                    build.HTML_ROOT,
                     'img',
                     'icon%dx%d.png' % (size, size)))
 

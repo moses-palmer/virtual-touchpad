@@ -156,9 +156,9 @@ def implement(globals_dict):
         # Try to expand the documentation
         try:
             if value.__doc__:
-                value.__doc__ +=  '\n\n' + old_value.__doc__
+                value.__doc__ += '\n\n' + old_value.__doc__
             else:
-                value.__doc__ =  old_value.__doc__
+                value.__doc__ = old_value.__doc__
         except AttributeError:
             pass
 

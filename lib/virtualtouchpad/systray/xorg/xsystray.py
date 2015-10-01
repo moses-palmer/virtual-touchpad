@@ -174,7 +174,7 @@ class SystemTrayIcon(SystemTrayIcon):
         self._icon_data = None
 
         self._thread = threading.Thread(target = self._mainloop)
-        self._thread.daemon  = True
+        self._thread.daemon = True
         self._thread.start()
 
     @property
@@ -252,7 +252,7 @@ class SystemTrayIcon(SystemTrayIcon):
         while True:
             # Read the next event or silently exit
             try:
-                e  = self._display.next_event()
+                e = self._display.next_event()
             except:
                 e = None
 

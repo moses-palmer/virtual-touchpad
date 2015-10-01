@@ -91,7 +91,7 @@ class SystemTrayIcon(SystemTrayIcon):
         self._notify_id = None
 
         self._thread = threading.Thread(target = self._mainloop)
-        self._thread.daemon  = True
+        self._thread.daemon = True
         self._thread.start()
 
     @property

@@ -1,9 +1,9 @@
 import os
-import sys
 
 
 cmdclass = {}
 _ignored = []
+
 
 def command(c):
     """Registers a ``Command`` class as a build subcommand that should be
@@ -17,6 +17,7 @@ def command(c):
 
     return c
 
+
 def utility(c):
     """ Registers a ``Command`` class as a build subcommand.
 
@@ -27,6 +28,7 @@ def utility(c):
     c.__build_ignore = True
 
     return c
+
 
 def _register_commands():
     """Registers overrides for built in build commands.
@@ -46,9 +48,9 @@ def _register_commands():
                 self.run_command(name)
             super(self.__class__, self).run()
 
-        # Create the command class, override run, and set __build_ignore to make
-        # sure none of these command classes invoke each other
-        this_class = command(type(name, (super_class, object), dict(run = run)))
+        # Create the command class, override run, and set __build_ignore to
+        # make sure none of these command classes invoke each other
+        this_class = command(type(name, (super_class, object), dict(run=run)))
         this_class.__build_ignore = True
 
 _register_commands()

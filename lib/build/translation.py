@@ -7,6 +7,7 @@ from xml.sax import make_parser
 
 from .xmltransform import _recurse
 
+
 def _add_entry(pofile, entry):
     """Adds a new *PO* entry to a *PO* file.
 
@@ -41,9 +42,9 @@ def _extract_x_tr(e, pofile, path):
     _add_entry(
         pofile,
         polib.POEntry(
-            comment = e.getAttribute('x-tr'),
-            msgid = ' '.join(e.firstChild.nodeValue.split()),
-            occurrences = [(path, e.parse_position[0])]))
+            comment=e.getAttribute('x-tr'),
+            msgid=' '.join(e.firstChild.nodeValue.split()),
+            occurrences=[(path, e.parse_position[0])]))
 
 
 def _extract_javascript(e, pofile, path):
@@ -59,7 +60,8 @@ def _extract_javascript(e, pofile, path):
 
     # Extract and merge messages; use the C# parser to support _('string '
     # + 'concatenation')
-    podata = subprocess.check_output(['xgettext',
+    podata = subprocess.check_output([
+        'xgettext',
         os.path.join(
             os.path.dirname(path),
             e.getAttribute('src')),
@@ -85,8 +87,8 @@ def read_translatable_strings(path):
     import polib
 
     def set_content_handler(dom_handler):
-        def start_element_ns(name, tagName , attrs):
-            orig_start_cb(name, tagName, attrs)
+        def start_element_ns(name, tag_name, attrs):
+            orig_start_cb(name, tag_name, attrs)
             cur_elem = dom_handler.elementStack[-1]
             cur_elem.parse_position = (
                 parser._parser.CurrentLineNumber,
@@ -103,21 +105,26 @@ def read_translatable_strings(path):
 
     dom = parse(path, parser)
 
-    pofile = polib.POFile(check_for_duplicates = True)
+    pofile = polib.POFile(check_for_duplicates=True)
     pofile.metadata['Content-Type'] = 'text/plain; charset=utf-8'
     pofile.metadata['Content-Transfer-Encoding'] = '8bit'
 
     # Normalise the XML
-    _recurse(dom,
+    _recurse(
+        dom,
         lambda e: e.normalize())
 
     # Extract all inlined translatable strings
-    _recurse(dom, _extract_x_tr,
-        pofile = pofile, path = path)
+    _recurse(
+        dom,
+        _extract_x_tr,
+        pofile=pofile, path=path)
 
     # Extract messages from JavaScript
-    _recurse(dom, _extract_javascript,
-        pofile = pofile, path = path)
+    _recurse(
+        dom,
+        _extract_javascript,
+        pofile=pofile, path=path)
 
     return pofile
 
@@ -129,7 +136,8 @@ def merge_catalogs(template, catalog):
 
     :param str catalog: The *PO* file path.
     """
-    subprocess.call(['msgmerge',
+    subprocess.call([
+        'msgmerge',
         '--update',
         '--sort-by-file',
         catalog,

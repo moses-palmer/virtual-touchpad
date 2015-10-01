@@ -1,10 +1,14 @@
 import os
-import sys
 
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
 
 from . import LICENSE, update_file_time
+
+#: Elements that are allowed to be self-closing in XHTML
+_VOID_ELEMENTS = [
+    'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen',
+    'link', 'meta', 'param', 'source', 'track', 'wbr']
 
 
 def _recurse(e, callback, **kwargs):
@@ -91,7 +95,6 @@ def _inline_css(e, source_dir, dom, files):
 
 def _inline_include(e, source_dir, dom, files):
     """Inlines img elements with Scalable Vector Graphics source"""
-    import subprocess
     from xml.dom.minidom import parseString
 
     # Only use img tags
@@ -101,7 +104,7 @@ def _inline_include(e, source_dir, dom, files):
         return
 
     # Load the XML
-    href = os.path.join(source_dir, e.getAttribute('href'));
+    href = os.path.join(source_dir, e.getAttribute('href'))
     with open(href, 'rb') as f:
         doc = parseString(f.read())
 
@@ -118,8 +121,7 @@ def _inline_include(e, source_dir, dom, files):
 def _join_elements(e):
     """Joins consecutive similar script and style elements"""
     # Only handle script and style tags
-    if e.nodeType != Node.ELEMENT_NODE \
-            or not e.tagName in ('script', 'style'):
+    if e.nodeType != Node.ELEMENT_NODE or e.tagName not in ('script', 'style'):
         return
 
     # Move next sibling's child nodes to this node while next sibling is
@@ -144,9 +146,10 @@ def _minify_js(e):
     for c in e.childNodes:
         if c.nodeType != Node.CDATA_SECTION_NODE:
             continue
-        c.replaceWholeText(slimit.minify(c.wholeText,
-            mangle = True,
-            mangle_toplevel = True))
+        c.replaceWholeText(slimit.minify(
+            c.wholeText,
+            mangle=True,
+            mangle_toplevel=True))
 
 
 def _minify_css(e):
@@ -165,14 +168,10 @@ def _minify_css(e):
         c.replaceWholeText(cssmin.cssmin(c.wholeText))
 
 
-_VOID_ELEMENTS = tuple(e.strip() for e in
-    'area, base, br, col, embed, hr, img, input, keygen, link, meta, param, '
-    'source, track, wbr'.split(','))
 def _remove_self_closing(e, dom):
     """Makes sure that only void elements are self closing"""
     # Only handle non-void elements
-    if e.nodeType != Node.ELEMENT_NODE \
-            or e.tagName in _VOID_ELEMENTS:
+    if e.nodeType != Node.ELEMENT_NODE or e.tagName in _VOID_ELEMENTS:
         return
 
     if len(e.childNodes) == 0:
@@ -225,49 +224,64 @@ def minify_html(context):
     _recurse(dom.documentElement, _clear_x_tr_values)
 
     # Inline script tags
-    _recurse(dom.documentElement, _inline_script,
-        source_dir = os.path.dirname(source_path),
-        dom = dom,
-        files = files)
+    _recurse(
+        dom.documentElement,
+        _inline_script,
+        source_dir=os.path.dirname(source_path),
+        dom=dom,
+        files=files)
 
     # Inline CSS tags
-    _recurse(dom.documentElement, _inline_css,
-        source_dir = os.path.dirname(source_path),
-        dom = dom,
-        files = files)
+    _recurse(
+        dom.documentElement,
+        _inline_css,
+        source_dir=os.path.dirname(source_path),
+        dom=dom,
+        files=files)
 
     # Normalise the XML
-    _recurse(dom.documentElement,
+    _recurse(
+        dom.documentElement,
         lambda e: e.normalize())
 
     # Join similar elements
-    _recurse(dom.documentElement, _join_elements)
+    _recurse(
+        dom.documentElement,
+        _join_elements)
 
     # Minify JavaScript
-    _recurse(dom.documentElement, _minify_js)
+    _recurse(
+        dom.documentElement,
+        _minify_js)
 
     # Minify CSS
-    _recurse(dom.documentElement, _minify_css)
+    _recurse(
+        dom.documentElement,
+        _minify_css)
 
     # Make sure only void elements are self-closing
-    _recurse(dom.documentElement, _remove_self_closing,
-        dom = dom)
+    _recurse(
+        dom.documentElement,
+        _remove_self_closing,
+        dom=dom)
 
     # Inline and minify SVG img elements
-    _recurse(dom.documentElement, _inline_include,
-        source_dir = os.path.dirname(source_path),
-        dom = dom,
-        files = files)
+    _recurse(
+        dom.documentElement,
+        _inline_include,
+        source_dir=os.path.dirname(source_path),
+        dom=dom,
+        files=files)
 
 
 def _add_manifest(e, manifest_file):
     """Adds an AppCache manifest to e if it is an html element"""
     # Only handle JavaScript elements
-    if e.nodeType != Node.ELEMENT_NODE \
-            or e.tagName != 'html':
+    if e.nodeType != Node.ELEMENT_NODE or e.tagName != 'html':
         return
 
     e.setAttribute('manifest', manifest_file)
+
 
 def add_manifest(context, manifest_file):
     """Adds an *AppCache* manifest file to all ``html`` elements.
@@ -280,5 +294,7 @@ def add_manifest(context, manifest_file):
     source_path, dom, files = context
 
     # Add the manifest
-    _recurse(dom.documentElement, _add_manifest,
-        manifest_file = manifest_file)
+    _recurse(
+        dom.documentElement,
+        _add_manifest,
+        manifest_file=manifest_file)

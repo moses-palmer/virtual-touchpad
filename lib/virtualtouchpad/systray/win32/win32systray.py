@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -98,13 +99,13 @@ class SystemTrayIcon(SystemTrayIcon):
 
     @property
     def icon(self):
-        """The *win32* icon handle for the systray icon; the icon will be loaded
-        if has not yet been created"""
+        """The *win32* icon handle for the systray icon; the icon will be
+        loaded if has not yet been created"""
         if self._icon:
             return self._icon
 
-        # First try to load from the current EXE file, and then fall back on the
-        # build directory
+        # First try to load from the current EXE file, and then fall back on
+        # the build directory
         instance = win32gui.GetModuleHandle(None)
         try:
             self._icon = win32gui.LoadImage(
@@ -136,8 +137,8 @@ class SystemTrayIcon(SystemTrayIcon):
 
     @property
     def window(self):
-        """The *win32* window to use as systray icon; the window will be created
-        when read unless already created"""
+        """The *win32* window to use as systray icon; the window will be
+        created when read unless already created"""
         if self._window:
             return self._window
 

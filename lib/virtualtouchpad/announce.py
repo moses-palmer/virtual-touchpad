@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -27,12 +28,13 @@ SERVICE_NAME = '_virtualtouchpad._http._tcp.local.'
 def announce(ip_address, port):
     """Announces that *Virtual Touchpad* is available on the local network.
 
-    :param str ip_address: The IP address on which *Virtual Touchpad* is reachable.
+    :param str ip_address: The IP address on which *Virtual Touchpad* is
+        reachable.
 
     :param int port: The port on which to connect to *Virtual Touchpad*.
 
-    :return: an object with the method ``unregister()``, which must be called to
-        remove the service from the system
+    :return: an object with the method ``unregister()``, which must be called
+        to remove the service from the system
     """
     import getpass
     import socket

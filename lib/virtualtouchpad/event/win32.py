@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -145,9 +146,9 @@ def key_event(name, symbol, flags):
 
 
 def key_down(name, keysym, symbol):
-    # Do we have a previous dead key? In that case, first try to combine it with
-    # the current key, and send it, and if that fails just send the dead key
-    # alone
+    # Do we have a previous dead key? In that case, first try to combine it
+    # with the current key, and send it, and if that fails just send the dead
+    # key alone
     global dead_key
 
     if not dead_key is None:

@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -125,8 +126,8 @@ class SystemTrayIcon(SystemTrayIcon):
         :param handlers: Event handler overrides. The keys are on the format
             ``'on_' + <lower case X event name>``. If a key for an event is
             missing, the corresponding method in self is called. If that does
-            not exist, the value for the key ``'on_event'`` is used, and if that
-            does not exist a default event handler is called.
+            not exist, the value for the key ``'on_event'`` is used, and if
+            that does not exist a default event handler is called.
         """
         self._display = display.Display()
 

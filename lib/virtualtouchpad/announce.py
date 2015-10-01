@@ -46,7 +46,7 @@ def announce(ip_address, port):
         '%s@%s.%s' % (getpass.getuser(), socket.gethostname(), SERVICE_NAME),
         socket.inet_aton(ip_address),
         port,
-        0, 0, # weight, priority
+        0, 0,
         {
             'version': '.'.join(str(v) for v in __version__)})
     result.register_service(info)

@@ -128,8 +128,8 @@ def key_event(name, symbol, flags):
     """
     if name and len(name) == 1:
         keyboard = KEYBDINPUT(
-            dwFlags = KEYBDINPUT.UNICODE | flags,
-            wScan = ord(name))
+            dwFlags=KEYBDINPUT.UNICODE | flags,
+            wScan=ord(name))
     else:
         try:
             vk = SYMS[symbol]
@@ -137,13 +137,14 @@ def key_event(name, symbol, flags):
             log.error('Unknown symbol: %s', symbol)
             return
         keyboard = KEYBDINPUT(
-            dwFlags = flags,
-            wVk = vk)
-    _SendInput(1,
+            dwFlags=flags,
+            wVk=vk)
+    _SendInput(
+        1,
         ctypes.byref(INPUT(
-            type = INPUT.KEYBOARD,
-            value = ANYINPUT(
-                keyboard = keyboard))),
+            type=INPUT.KEYBOARD,
+            value=ANYINPUT(
+                keyboard=keyboard))),
         ctypes.sizeof(INPUT))
 
 
@@ -179,44 +180,48 @@ def key_up(name, keysym, symbol):
 
 
 def mouse_down(button):
-    _SendInput(1,
+    _SendInput(
+        1,
         ctypes.byref(INPUT(
-            type = INPUT.MOUSE,
-            value = ANYINPUT(
-                mouse = MOUSEINPUT(
-                    dwFlags = MOUSEINPUT.BUTTON_MAPPING[button][0])))),
+            type=INPUT.MOUSE,
+            value=ANYINPUT(
+                mouse=MOUSEINPUT(
+                    dwFlags=MOUSEINPUT.BUTTON_MAPPING[button][0])))),
         ctypes.sizeof(INPUT))
 
 
 def mouse_up(button):
-    _SendInput(1,
+    _SendInput(
+        1,
         ctypes.byref(INPUT(
-            type = INPUT.MOUSE,
-            value = ANYINPUT(
-                mouse = MOUSEINPUT(
-                    dwFlags = MOUSEINPUT.BUTTON_MAPPING[button][1])))),
+            type=INPUT.MOUSE,
+            value=ANYINPUT(
+                mouse=MOUSEINPUT(
+                    dwFlags=MOUSEINPUT.BUTTON_MAPPING[button][1])))),
         ctypes.sizeof(INPUT))
 
 
 def mouse_scroll(dx, dy):
     # TODO: Support horisontal scroll
-    _SendInput(1,
+    _SendInput(
+        1,
         ctypes.byref(INPUT(
-            type = INPUT.MOUSE,
-            value = ANYINPUT(
-                mouse = MOUSEINPUT(
-                    dwFlags = MOUSEINPUT.WHEEL,
-                    mouseData = dy)))),
+            type=INPUT.MOUSE,
+            value=ANYINPUT(
+                mouse=MOUSEINPUT(
+                    dwFlags=MOUSEINPUT.WHEEL,
+                    mouseData=dy)))),
         ctypes.sizeof(INPUT))
 
 
 def mouse_move(dx, dy):
-    _SendInput(1,
+    _SendInput(
+        1,
         ctypes.byref(INPUT(
-            type = INPUT.MOUSE,
-            value = ANYINPUT(
-                mouse = MOUSEINPUT(
-                    dx = int(dx),
-                    dy = int(dy),
-                    dwFlags = MOUSEINPUT.MOVE)))),
+            type=INPUT.MOUSE,
+            value=ANYINPUT(
+                mouse=MOUSEINPUT(
+                    dx=int(dx),
+                    dy=int(dy),
+                    dwFlags=MOUSEINPUT.MOVE)))),
         ctypes.sizeof(INPUT))

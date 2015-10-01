@@ -55,7 +55,7 @@ def mouse_scroll_cancel():
     scroll = [0, 0]
 
 
-def string_to_keysym(key, default = None):
+def string_to_keysym(key, default=None):
     """Converts a string to a keysym identifier.
 
     :param str keysym: The string to convert.

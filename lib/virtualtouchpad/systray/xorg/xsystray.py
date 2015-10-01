@@ -40,7 +40,7 @@ class SystemTrayIcon(SystemTrayIcon):
     _NET_SYSTEM_TRAY_OPCODE = '_NET_SYSTEM_TRAY_OPCODE'
     SYSTEM_TRAY_REQUEST_DOCK = 0
 
-    def _send_message(self, window, message, d1 = 0, d2 = 0, d3 = 0):
+    def _send_message(self, window, message, d1=0, d2=0, d3=0):
         """Sends a generic systray message.
 
         This method does not trap ``X`` errors; that is up to the caller.
@@ -55,17 +55,20 @@ class SystemTrayIcon(SystemTrayIcon):
 
         :param int d3: Message specific data.
         """
-        self._display.send_event(self.systray_manager,
+        self._display.send_event(
+            self.systray_manager,
             display.event.ClientMessage(
-                type = X.ClientMessage,
-                client_type = self._display.intern_atom(
+                type=X.ClientMessage,
+                client_type=self._display.intern_atom(
                     self._NET_SYSTEM_TRAY_OPCODE),
-                window = window.id,
-                data = (32, (
-                    X.CurrentTime,
-                    message,
-                    d1, d2, d3))),
-            event_mask = X.NoEventMask)
+                window=window.id,
+                data=(
+                    32,
+                    (
+                        X.CurrentTime,
+                        message,
+                        d1, d2, d3))),
+            event_mask=X.NoEventMask)
 
     def _dock_window(self):
         """Docks the window in the systray.
@@ -93,7 +96,8 @@ class SystemTrayIcon(SystemTrayIcon):
             self._icon_data = PIL.Image.new(
                 'RGB',
                 (width, height))
-            self._icon_data.paste(self._icon.resize((width, height),
+            self._icon_data.paste(self._icon.resize(
+                (width, height),
                 PIL.Image.ANTIALIAS))
 
         return self._icon_data
@@ -110,13 +114,15 @@ class SystemTrayIcon(SystemTrayIcon):
 
     def on_expose(self, e):
         geometry = e.window.get_geometry()
-        self.window.put_pil_image(self._gc, 0, 0,
+        self.window.put_pil_image(
+            self._gc,
+            0, 0,
             self._get_icon_data(geometry.width, geometry.height))
 
     def on_buttonpress(self, e):
         self.on_click()
 
-    def _mainloop(self, handlers = {}):
+    def _mainloop(self, handlers={}):
         """The main ``X`` event loop.
 
         This is blocking, so it should be run in a separate thread.
@@ -146,7 +152,8 @@ class SystemTrayIcon(SystemTrayIcon):
             try:
                 handlers.get(
                     handler_name,
-                    getattr(self,
+                    getattr(
+                        self,
                         handler_name,
                         default_handler))(e)
             except StopIteration:
@@ -173,7 +180,7 @@ class SystemTrayIcon(SystemTrayIcon):
                     'html', 'img', 'icon196x196.png')))
         self._icon_data = None
 
-        self._thread = threading.Thread(target = self._mainloop)
+        self._thread = threading.Thread(target=self._mainloop)
         self._thread.daemon = True
         self._thread.start()
 
@@ -199,8 +206,8 @@ class SystemTrayIcon(SystemTrayIcon):
             screen = display.screen()
             self._window = screen.root.create_window(
                 -1, -1, 1, 1, 0, screen.root_depth,
-                event_mask = X.ExposureMask,
-                window_class = X.InputOutput)
+                event_mask=X.ExposureMask,
+                window_class=X.InputOutput)
             self._window.set_wm_class(
                 'VirtualTouchpadSystemTrayIcon',
                 'VirtualTouchpad')

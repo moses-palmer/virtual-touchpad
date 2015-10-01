@@ -31,12 +31,12 @@ def translations(domain):
             language.split(';')[0].strip(),
             float(language.split(';q=')[1]) if ';q=' in language else 1.0)
         for language in accept_language.split(',')),
-        key = lambda p: p[1],
-        reverse = True) + [('default', 0.0)]
+        key=lambda p: p[1],
+        reverse=True) + [('default', 0.0)]
 
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
         if static_file.exists(path):
             return static_file.get(path)
 
-    return bottle.HTTPResponse(status = 404)
+    return bottle.HTTPResponse(status=404)

@@ -33,17 +33,18 @@ log = logging.getLogger(__name__)
 def controller():
     # Get the actual websocket
     ws = bottle.request.environ.get('wsgi.websocket')
-    log.info('WebSocket with %s opened',
-        bottle.request.environ.get('REMOTE_ADDR'));
+    log.info(
+        'WebSocket with %s opened',
+        bottle.request.environ.get('REMOTE_ADDR'))
     if not ws:
         bottle.abort(400, 'Expected WebSocket request.')
 
     def report_error(reason, exception, tb):
         ws.send(json.dumps(dict(
-            reason = reason,
-            exception = type(exception).__name__,
-            data = str(exception),
-            tb = traceback.extract_tb(tb))))
+            reason=reason,
+            exception=type(exception).__name__,
+            data=str(exception),
+            tb=traceback.extract_tb(tb))))
 
     while True:
         try:
@@ -54,27 +55,33 @@ def controller():
             try:
                 command = json.loads(message)
             except Exception as e:
-                log.exception('An error occurred when loading JSON from %s',
+                log.exception(
+                    'An error occurred when loading JSON from %s',
                     message)
                 ex_type, ex, tb = sys.exc_info()
-                report_error('invalid_data',
+                report_error(
+                    'invalid_data',
                     e, tb)
                 continue
 
             try:
                 dispatch(command)
             except (KeyError, ValueError, TypeError) as e:
-                log.exception('Failed to dispatch command %s',
+                log.exception(
+                    'Failed to dispatch command %s',
                     command)
                 ex_type, ex, tb = sys.exc_info()
-                report_error('invalid_command',
+                report_error(
+                    'invalid_command',
                     e, tb)
                 continue
             except Exception as e:
-                log.exception('An error occurred while dispatching %s',
+                log.exception(
+                    'An error occurred while dispatching %s',
                     command)
                 ex_type, ex, tb = sys.exc_info()
-                report_error('internal_error',
+                report_error(
+                    'internal_error',
                     e, tb)
                 continue
 

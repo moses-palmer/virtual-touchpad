@@ -90,7 +90,7 @@ class SystemTrayIcon(SystemTrayIcon):
         self._window = None
         self._notify_id = None
 
-        self._thread = threading.Thread(target = self._mainloop)
+        self._thread = threading.Thread(target=self._mainloop)
         self._thread.daemon = True
         self._thread.start()
 
@@ -150,11 +150,13 @@ class SystemTrayIcon(SystemTrayIcon):
 
         # TODO: Create mapping from message to method
         window_class.lpfnWndProc = {
-            SystemTrayIcon.WM_NOTIFY: lambda wnd, msg, w, l: self._on_notify(l)}
+            SystemTrayIcon.WM_NOTIFY: lambda wnd, msg, w, l:
+                self._on_notify(l)}
         class_atom = win32gui.RegisterClass(window_class)
 
         # Create the window
-        self._window = win32gui.CreateWindow(class_atom,
+        self._window = win32gui.CreateWindow(
+            class_atom,
             self.WINDOW_CLASS_NAME,
             win32con.WS_OVERLAPPED | win32con.WS_SYSMENU, 0, 0,
             win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT, 0, 0,

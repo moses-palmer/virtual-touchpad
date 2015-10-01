@@ -33,13 +33,13 @@ INDEX_FILE = 'index.xhtml'
 
 @app.get('/')
 @app.get('/<filepath:path>')
-def static(filepath = '.'):
+def static(filepath='.'):
     if static_file.isdir(filepath):
         for index_file in (
                 os.path.join(filepath, INDEX_MIN_FILE),
                 os.path.join(filepath, INDEX_FILE)):
             if static_file.exists(index_file):
                 return static_file.get(index_file)
-        return bottle.HTTPResponse(status = 404)
+        return bottle.HTTPResponse(status=404)
     else:
         return static_file.get(filepath)

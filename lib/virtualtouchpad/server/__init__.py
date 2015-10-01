@@ -35,8 +35,9 @@ def main(port, address, log_level):
     sys.stdout.write('Starting server http://%s:%d/...\n' % (
         address, port))
 
-    from gevent import monkey; monkey.patch_all(thread = False)
+    from gevent import monkey
+    monkey.patch_all(thread=False)
     return gevent.pywsgi.WSGIServer(
         ('0.0.0.0', port),
         app,
-        handler_class = WebSocketHandler)
+        handler_class=WebSocketHandler)

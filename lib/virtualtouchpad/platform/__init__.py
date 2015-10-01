@@ -48,10 +48,11 @@ def modules():
 
 _package, _subpackage = __package__.split('.', 1)
 _path = _subpackage.replace('.', os.path.sep)
-__all__ = [directory
+__all__ = [
+    directory
     for directory in pkg_resources.resource_listdir(_package, _path)
     if pkg_resources.resource_isdir(_package, os.path.join(_path, directory))
-        and directory[0] != '_']
+    and directory[0] != '_']
 
 
 #: The regular expression used to match importable modules
@@ -77,7 +78,8 @@ def _package_importables(package_name):
             if _MODULE_RE.match(name):
                 yield '.'.join((package_name, name.rsplit('.', 1)[0]))
         else:
-            if any(pkg_resources.resource_exists(package,
+            if any(pkg_resources.resource_exists(
+                    package,
                     os.path.join(full, f)) for f in (
                         '__init__.py',
                         '__init__.pyc')):
@@ -112,7 +114,8 @@ def implement(globals_dict):
             log.info('Not loading %s.%s: %s', package_name, candidate, str(e))
 
     if driver is None:
-        raise ImportError('Failed to locate platform driver for package %s',
+        raise ImportError(
+            'Failed to locate platform driver for package %s',
             globals_dict['__package__'])
 
     # Get symbols exported from the driver

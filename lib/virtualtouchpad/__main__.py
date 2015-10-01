@@ -26,7 +26,7 @@ from virtualtouchpad import systray
 from .server import main
 
 
-def _get_local_address(default = socket.gethostname()):
+def _get_local_address(default=socket.gethostname()):
     """Returns the address for the local network.
 
     The one returned is the one most likely on a *LAN*.
@@ -44,11 +44,13 @@ def _get_local_address(default = socket.gethostname()):
         return default
 
     # Get all interfaces
-    interfaces = {interface: netifaces.ifaddresses(interface)
+    interfaces = {
+        interface: netifaces.ifaddresses(interface)
         for interface in netifaces.interfaces()}
 
     # Get all IPv4 interfaces
-    interfaces4 = {key: value[netifaces.AF_INET]
+    interfaces4 = {
+        key: value[netifaces.AF_INET]
         for key, value in interfaces.items()
         if netifaces.AF_INET in value}
 
@@ -61,7 +63,8 @@ def _get_local_address(default = socket.gethostname()):
                 continue
 
             # Count the number of non-0 in the net mask
-            current_length = len([p
+            current_length = len([
+                p
                 for p in description['netmask'].split('.')
                 if int(p)])
             if current_length < best_length:
@@ -83,25 +86,26 @@ def start():
         announce = None
 
     parser = ArgumentParser(
-        description = ''
-            'Turns your mobile or tablet into a touchpad for your computer.')
+        description='Turns your mobile or tablet into a touchpad for your '
+        'computer.')
 
-    parser.add_argument('--port',
-        type = int,
-        help = ''
-            'The port on which to listen',
-        default = 16080)
+    parser.add_argument(
+        '--port',
+        type=int,
+        help='The port on which to listen',
+        default=16080)
 
-    parser.add_argument('--log-level',
-        type = str,
-        help = 'The log level to use.',
-        choices = ['debug', 'info', 'warning', 'error', 'critical'],
-        default = 'error')
+    parser.add_argument(
+        '--log-level',
+        type=str,
+        help='The log level to use.',
+        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        default='error')
 
     args = parser.parse_args()
 
     logging.basicConfig(
-        level = getattr(logging, args.log_level.upper()))
+        level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
     icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
@@ -110,7 +114,7 @@ def start():
         if announce:
             announcer = announce.announce(address, args.port)
         try:
-            main(address = address, **vars(args)).serve_forever()
+            main(address=address, **vars(args)).serve_forever()
         except KeyboardInterrupt:
             log.info('Interrupted, terminating')
         except:

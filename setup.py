@@ -9,20 +9,10 @@ import sys
 sys.path.append(os.path.join(
     os.path.dirname(__file__),
     'lib'))
-
-try:
-    import build
-except ImportError:
-    class build:
-        cmdclass = {}
-
-        @staticmethod
-        def command(c):
-            return c
-
-        @staticmethod
-        def utility(c):
-            return c
+sys.path.append(os.path.join(
+    os.path.dirname(__file__),
+    'lib-setup'))
+import build
 
 try:
     import py2exe
@@ -91,9 +81,7 @@ def setup(**kwargs):
         packages=setuptools.find_packages(
             os.path.join(
                 os.path.dirname(__file__),
-                'lib'),
-            exclude=[
-                'build']),
+                'lib')),
         package_dir=PACKAGE_DIR,
         package_data=PACKAGE_DATA,
         zip_safe=True,

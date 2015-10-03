@@ -181,16 +181,15 @@ def make_layout(layout_file, layout_name):
         if not pressed and symbol == 'Return':
             break
 
-    layout = [
-        [
-            [''] * 4
-            for key in row]
-        for row, description in LAYOUT_DESCRIPTION]
+    layout = {}
 
     # Iterate over all values for the modifier keys
     for shift, altgr in product(*tee((False, True))):
         # The key codes for the keys pressed during this round
         codes = set()
+
+        # The index for this shift state
+        index = shift << 0 | altgr << 1
 
         # First wait for the modifiers to be pressed
         modifier_description = describe_modifiers(shift, altgr)
@@ -203,7 +202,11 @@ def make_layout(layout_file, layout_name):
             print('Press entire row of %s' % row_description)
 
             for col, key_description in enumerate(keys):
-                print('<%2d, %2d> [%s] ' % (row, col, key_description), end='')
+                # The key ID
+                keyid = 'A%c%02d' % ('EDCB'[row], col + int(row > 0))
+
+                print('<%2d, %2d, [%s]> [%s] ' % (
+                    row, col, keyid, key_description), end='')
 
                 while True:
                     pressed, code, keysym, symbol, name = next(events)
@@ -219,7 +222,11 @@ def make_layout(layout_file, layout_name):
 
                     # Now we have an actual layout key press
                     codes.add(code)
-                    layout[row][col][shift << 0 | altgr << 1] = [
+                    data = layout.get(keyid, None)
+                    if data is None:
+                        data = [''] * 4
+                        layout[keyid] = data
+                    data[index] = [
                         name, keysym, symbol]
 
                     print('= %s (%s)' % (name or '<unnamed>', symbol))

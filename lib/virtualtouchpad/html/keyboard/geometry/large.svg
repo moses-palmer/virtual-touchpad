@@ -8,54 +8,57 @@
         xml:space="preserve">
     <g class="keys">
         <!-- The normal keys defined in the layout file -->
-        <g class="key" x-row="0" x-col="1"><use xlink:href="#keyboard-key" x="34" y="4" /></g>
-        <g class="key" x-row="0" x-col="2"><use xlink:href="#keyboard-key" x="64" y="4" /></g>
-        <g class="key" x-row="0" x-col="0"><use xlink:href="#keyboard-key" x="4" y="4" /></g>
-        <g class="key" x-row="0" x-col="3"><use xlink:href="#keyboard-key" x="94" y="4" /></g>
-        <g class="key" x-row="0" x-col="4"><use xlink:href="#keyboard-key" x="124" y="4" /></g>
-        <g class="key" x-row="0" x-col="5"><use xlink:href="#keyboard-key" x="154" y="4" /></g>
-        <g class="key" x-row="0" x-col="6"><use xlink:href="#keyboard-key" x="184" y="4" /></g>
-        <g class="key" x-row="0" x-col="7"><use xlink:href="#keyboard-key" x="214" y="4" /></g>
-        <g class="key" x-row="0" x-col="8"><use xlink:href="#keyboard-key" x="244" y="4" /></g>
-        <g class="key" x-row="0" x-col="9"><use xlink:href="#keyboard-key" x="274" y="4" /></g>
-        <g class="key" x-row="0" x-col="10"><use xlink:href="#keyboard-key" x="304" y="4" /></g>
-        <g class="key" x-row="0" x-col="11"><use xlink:href="#keyboard-key" x="334" y="4" /></g>
-        <g class="key" x-row="0" x-col="12"><use xlink:href="#keyboard-key" x="364" y="4" /></g>
-        <g class="key" x-row="1" x-col="0"><use xlink:href="#keyboard-key" x="48" y="32" /></g>
-        <g class="key" x-row="1" x-col="1"><use xlink:href="#keyboard-key" x="78" y="32" /></g>
-        <g class="key" x-row="1" x-col="2"><use xlink:href="#keyboard-key" x="108" y="32" /></g>
-        <g class="key" x-row="1" x-col="3"><use xlink:href="#keyboard-key" x="138" y="32" /></g>
-        <g class="key" x-row="1" x-col="4"><use xlink:href="#keyboard-key" x="168" y="32" /></g>
-        <g class="key" x-row="1" x-col="5"><use xlink:href="#keyboard-key" x="198" y="32" /></g>
-        <g class="key" x-row="1" x-col="6"><use xlink:href="#keyboard-key" x="228" y="32" /></g>
-        <g class="key" x-row="1" x-col="7"><use xlink:href="#keyboard-key" x="258" y="32" /></g>
-        <g class="key" x-row="1" x-col="8"><use xlink:href="#keyboard-key" x="288" y="32" /></g>
-        <g class="key" x-row="1" x-col="9"><use xlink:href="#keyboard-key" x="318" y="32" /></g>
-        <g class="key" x-row="1" x-col="10"><use xlink:href="#keyboard-key" x="348" y="32" /></g>
-        <g class="key" x-row="1" x-col="11"><use xlink:href="#keyboard-key" x="378" y="32" /></g>
-        <g class="key" x-row="2" x-col="0"><use xlink:href="#keyboard-key" x="58" y="60" /></g>
-        <g class="key" x-row="2" x-col="1"><use xlink:href="#keyboard-key" x="88" y="60" /></g>
-        <g class="key" x-row="2" x-col="2"><use xlink:href="#keyboard-key" x="118" y="60" /></g>
-        <g class="key" x-row="2" x-col="3"><use xlink:href="#keyboard-key" x="148" y="60" /></g>
-        <g class="key" x-row="2" x-col="4"><use xlink:href="#keyboard-key" x="178" y="60" /></g>
-        <g class="key" x-row="2" x-col="5"><use xlink:href="#keyboard-key" x="208" y="60" /></g>
-        <g class="key" x-row="2" x-col="6"><use xlink:href="#keyboard-key" x="238" y="60" /></g>
-        <g class="key" x-row="2" x-col="7"><use xlink:href="#keyboard-key" x="268" y="60" /></g>
-        <g class="key" x-row="2" x-col="8"><use xlink:href="#keyboard-key" x="298" y="60" /></g>
-        <g class="key" x-row="2" x-col="9"><use xlink:href="#keyboard-key" x="328" y="60" /></g>
-        <g class="key" x-row="2" x-col="10"><use xlink:href="#keyboard-key" x="358" y="60" /></g>
-        <g class="key" x-row="2" x-col="11"><use xlink:href="#keyboard-key" x="388" y="60" /></g>
-        <g class="key" x-row="3" x-col="1"><use xlink:href="#keyboard-key" x="66" y="88" /></g>
-        <g class="key" x-row="3" x-col="2"><use xlink:href="#keyboard-key" x="96" y="88" /></g>
-        <g class="key" x-row="3" x-col="3"><use xlink:href="#keyboard-key" x="126" y="88" /></g>
-        <g class="key" x-row="3" x-col="5"><use xlink:href="#keyboard-key" x="186" y="88" /></g>
-        <g class="key" x-row="3" x-col="6"><use xlink:href="#keyboard-key" x="216" y="88" /></g>
-        <g class="key" x-row="3" x-col="7"><use xlink:href="#keyboard-key" x="246" y="88" /></g>
-        <g class="key" x-row="3" x-col="8"><use xlink:href="#keyboard-key" x="276" y="88" /></g>
-        <g class="key" x-row="3" x-col="9"><use xlink:href="#keyboard-key" x="306" y="88" /></g>
-        <g class="key" x-row="3" x-col="10"><use xlink:href="#keyboard-key" x="336" y="88" /></g>
-        <g class="key" x-row="3" x-col="4"><use xlink:href="#keyboard-key" x="156" y="88" /></g>
-        <g class="key" x-row="3" x-col="0"><use xlink:href="#keyboard-key" x="36" y="88" /></g>
+        <g class="key" x-id="AE00"><use xlink:href="#keyboard-key" x="4" y="4" /></g>
+        <g class="key" x-id="AE01"><use xlink:href="#keyboard-key" x="34" y="4" /></g>
+        <g class="key" x-id="AE02"><use xlink:href="#keyboard-key" x="64" y="4" /></g>
+        <g class="key" x-id="AE03"><use xlink:href="#keyboard-key" x="94" y="4" /></g>
+        <g class="key" x-id="AE04"><use xlink:href="#keyboard-key" x="124" y="4" /></g>
+        <g class="key" x-id="AE05"><use xlink:href="#keyboard-key" x="154" y="4" /></g>
+        <g class="key" x-id="AE06"><use xlink:href="#keyboard-key" x="184" y="4" /></g>
+        <g class="key" x-id="AE07"><use xlink:href="#keyboard-key" x="214" y="4" /></g>
+        <g class="key" x-id="AE08"><use xlink:href="#keyboard-key" x="244" y="4" /></g>
+        <g class="key" x-id="AE09"><use xlink:href="#keyboard-key" x="274" y="4" /></g>
+        <g class="key" x-id="AE10"><use xlink:href="#keyboard-key" x="304" y="4" /></g>
+        <g class="key" x-id="AE11"><use xlink:href="#keyboard-key" x="334" y="4" /></g>
+        <g class="key" x-id="AE12"><use xlink:href="#keyboard-key" x="364" y="4" /></g>
+
+        <g class="key" x-id="AD01"><use xlink:href="#keyboard-key" x="48" y="32" /></g>
+        <g class="key" x-id="AD02"><use xlink:href="#keyboard-key" x="78" y="32" /></g>
+        <g class="key" x-id="AD03"><use xlink:href="#keyboard-key" x="108" y="32" /></g>
+        <g class="key" x-id="AD04"><use xlink:href="#keyboard-key" x="138" y="32" /></g>
+        <g class="key" x-id="AD05"><use xlink:href="#keyboard-key" x="168" y="32" /></g>
+        <g class="key" x-id="AD06"><use xlink:href="#keyboard-key" x="198" y="32" /></g>
+        <g class="key" x-id="AD07"><use xlink:href="#keyboard-key" x="228" y="32" /></g>
+        <g class="key" x-id="AD08"><use xlink:href="#keyboard-key" x="258" y="32" /></g>
+        <g class="key" x-id="AD09"><use xlink:href="#keyboard-key" x="288" y="32" /></g>
+        <g class="key" x-id="AD10"><use xlink:href="#keyboard-key" x="318" y="32" /></g>
+        <g class="key" x-id="AD11"><use xlink:href="#keyboard-key" x="348" y="32" /></g>
+        <g class="key" x-id="AD12"><use xlink:href="#keyboard-key" x="378" y="32" /></g>
+
+        <g class="key" x-id="AC01"><use xlink:href="#keyboard-key" x="58" y="60" /></g>
+        <g class="key" x-id="AC02"><use xlink:href="#keyboard-key" x="88" y="60" /></g>
+        <g class="key" x-id="AC03"><use xlink:href="#keyboard-key" x="118" y="60" /></g>
+        <g class="key" x-id="AC04"><use xlink:href="#keyboard-key" x="148" y="60" /></g>
+        <g class="key" x-id="AC05"><use xlink:href="#keyboard-key" x="178" y="60" /></g>
+        <g class="key" x-id="AC06"><use xlink:href="#keyboard-key" x="208" y="60" /></g>
+        <g class="key" x-id="AC07"><use xlink:href="#keyboard-key" x="238" y="60" /></g>
+        <g class="key" x-id="AC08"><use xlink:href="#keyboard-key" x="268" y="60" /></g>
+        <g class="key" x-id="AC09"><use xlink:href="#keyboard-key" x="298" y="60" /></g>
+        <g class="key" x-id="AC10"><use xlink:href="#keyboard-key" x="328" y="60" /></g>
+        <g class="key" x-id="AC11"><use xlink:href="#keyboard-key" x="358" y="60" /></g>
+        <g class="key" x-id="AC12"><use xlink:href="#keyboard-key" x="388" y="60" /></g>
+
+        <g class="key" x-id="AB01"><use xlink:href="#keyboard-key" x="36" y="88" /></g>
+        <g class="key" x-id="AB02"><use xlink:href="#keyboard-key" x="66" y="88" /></g>
+        <g class="key" x-id="AB03"><use xlink:href="#keyboard-key" x="96" y="88" /></g>
+        <g class="key" x-id="AB04"><use xlink:href="#keyboard-key" x="126" y="88" /></g>
+        <g class="key" x-id="AB05"><use xlink:href="#keyboard-key" x="156" y="88" /></g>
+        <g class="key" x-id="AB06"><use xlink:href="#keyboard-key" x="186" y="88" /></g>
+        <g class="key" x-id="AB07"><use xlink:href="#keyboard-key" x="216" y="88" /></g>
+        <g class="key" x-id="AB08"><use xlink:href="#keyboard-key" x="246" y="88" /></g>
+        <g class="key" x-id="AB09"><use xlink:href="#keyboard-key" x="276" y="88" /></g>
+        <g class="key" x-id="AB10"><use xlink:href="#keyboard-key" x="306" y="88" /></g>
+        <g class="key" x-id="AB11"><use xlink:href="#keyboard-key" x="336" y="88" /></g>
 
         <!-- Special keys -->
         <g class="key" x-symbol="BackSpace"><use xlink:href="#keyboard-backspace" x="394" y="4" /></g>

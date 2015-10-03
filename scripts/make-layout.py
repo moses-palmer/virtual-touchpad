@@ -72,7 +72,8 @@ def event_strings():
     except Exception as e:
         raise RuntimeError('failed to launch xev: %s', str(e))
 
-    # This is the current block to which we add lines until we find the end line
+    # This is the current block to which we add lines until we find the end
+    # line
     block = ''
 
     # Wrap the output to disable buffering; we want events when they occur
@@ -94,9 +95,9 @@ def keyboard_events():
 
     A keyboard event is the tuple ``(pressed, code, keysym, symbol, name)``,
     where ``pressed`` is a ``bool`` indicating whether this was a key press
-    event, ``code`` a key code corresponding to the physical location of the key,
-    ``keysym`` the integer value of the key symbol, ``symbol`` the *X* symbol
-    name of the key and ``name`` the display name of the key.
+    event, ``code`` a key code corresponding to the physical location of the
+    key, ``keysym`` the integer value of the key symbol, ``symbol`` the *X*
+    symbol name of the key and ``name`` the display name of the key.
     """
     for event_string in event_strings():
         # Try to extract information from the block
@@ -140,7 +141,7 @@ def describe_modifiers(shift, altgr):
     return ' and '.join(modifier_descriptions)
 
 
-def wait_for_modifiers(events, shift_value, altgr_value, release = False):
+def wait_for_modifiers(events, shift_value, altgr_value, release=False):
     """Waits for a specific modifier state.
 
     :param events: A generator compatible with what :func:`keyboard_events`
@@ -243,16 +244,17 @@ def make_layout(layout_file, layout_name):
 
 if __name__ == '__main__':
     import argparse
-    import os
 
     parser = argparse.ArgumentParser(
         description='Generates layout files for Virtual Touchpad')
 
-    parser.add_argument('layout_file',
+    parser.add_argument(
+        'layout_file',
         type=argparse.FileType('w'),
         help='The layout file to generate')
 
-    parser.add_argument('layout_name',
+    parser.add_argument(
+        'layout_name',
         type=str,
         help='The display name of the layout')
 

@@ -130,16 +130,17 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             </button>
         </div>
 
+        <!-- The keyboard -->
         <x-include href="/keyboard/buttons.svg" />
         <keyboard
             id="keyboard"
             src="/keyboard/geometry/large.svg"
-            layout="keyboard/layout/default"
+            layout="/keyboard/layout/default"
             onpress="app.keyboard.onPress.apply(null, event.detail);"
             onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>
         <keyboard
             id="keyboard-func"
-            src="keyboard/geometry/function-keys.svg"
+            src="/keyboard/geometry/function-keys.svg"
             onpress="app.keyboard.onPress.apply(null, event.detail);"
             onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>
     </body>

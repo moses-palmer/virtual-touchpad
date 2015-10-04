@@ -316,5 +316,27 @@
                 xlink:href="#keyboard-alternatives"
                 transform="translate(14,12)" />
         </g>
+
+        <g id="keyboard-layout">
+            <rect
+                class="keyboard background layout"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2"/>
+            <rect
+                class="keyboard overlay layout"
+                width="28"
+                height="24"
+                rx="2"
+                ry="2" />
+            <text
+                    class="keyboard small"
+                    text-anchor="middle"
+                    x="14"
+                    y="16">
+                🌐
+            </text>
+        </g>
     </defs>
 </svg>

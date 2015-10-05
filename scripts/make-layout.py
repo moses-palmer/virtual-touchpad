@@ -72,7 +72,8 @@ def event_strings():
     except Exception as e:
         raise RuntimeError('failed to launch xev: %s', str(e))
 
-    # This is the current block to which we add lines until we find the end line
+    # This is the current block to which we add lines until we find the end
+    # line
     block = ''
 
     # Wrap the output to disable buffering; we want events when they occur
@@ -94,9 +95,9 @@ def keyboard_events():
 
     A keyboard event is the tuple ``(pressed, code, keysym, symbol, name)``,
     where ``pressed`` is a ``bool`` indicating whether this was a key press
-    event, ``code`` a key code corresponding to the physical location of the key,
-    ``keysym`` the integer value of the key symbol, ``symbol`` the *X* symbol
-    name of the key and ``name`` the display name of the key.
+    event, ``code`` a key code corresponding to the physical location of the
+    key, ``keysym`` the integer value of the key symbol, ``symbol`` the *X*
+    symbol name of the key and ``name`` the display name of the key.
     """
     for event_string in event_strings():
         # Try to extract information from the block
@@ -140,7 +141,7 @@ def describe_modifiers(shift, altgr):
     return ' and '.join(modifier_descriptions)
 
 
-def wait_for_modifiers(events, shift_value, altgr_value, release = False):
+def wait_for_modifiers(events, shift_value, altgr_value, release=False):
     """Waits for a specific modifier state.
 
     :param events: A generator compatible with what :func:`keyboard_events`
@@ -180,16 +181,15 @@ def make_layout(layout_file, layout_name):
         if not pressed and symbol == 'Return':
             break
 
-    layout = [
-        [
-            [''] * 4
-            for key in row]
-        for row, description in LAYOUT_DESCRIPTION]
+    layout = {}
 
     # Iterate over all values for the modifier keys
     for shift, altgr in product(*tee((False, True))):
         # The key codes for the keys pressed during this round
         codes = set()
+
+        # The index for this shift state
+        index = shift << 0 | altgr << 1
 
         # First wait for the modifiers to be pressed
         modifier_description = describe_modifiers(shift, altgr)
@@ -202,7 +202,11 @@ def make_layout(layout_file, layout_name):
             print('Press entire row of %s' % row_description)
 
             for col, key_description in enumerate(keys):
-                print('<%2d, %2d> [%s] ' % (row, col, key_description), end='')
+                # The key ID
+                keyid = 'A%c%02d' % ('EDCB'[row], col + int(row > 0))
+
+                print('<%2d, %2d, [%s]> [%s] ' % (
+                    row, col, keyid, key_description), end='')
 
                 while True:
                     pressed, code, keysym, symbol, name = next(events)
@@ -218,7 +222,11 @@ def make_layout(layout_file, layout_name):
 
                     # Now we have an actual layout key press
                     codes.add(code)
-                    layout[row][col][shift << 0 | altgr << 1] = [
+                    data = layout.get(keyid, None)
+                    if data is None:
+                        data = [''] * 4
+                        layout[keyid] = data
+                    data[index] = [
                         name, keysym, symbol]
 
                     print('= %s (%s)' % (name or '<unnamed>', symbol))
@@ -243,16 +251,17 @@ def make_layout(layout_file, layout_name):
 
 if __name__ == '__main__':
     import argparse
-    import os
 
     parser = argparse.ArgumentParser(
         description='Generates layout files for Virtual Touchpad')
 
-    parser.add_argument('layout_file',
+    parser.add_argument(
+        'layout_file',
         type=argparse.FileType('w'),
         help='The layout file to generate')
 
-    parser.add_argument('layout_name',
+    parser.add_argument(
+        'layout_name',
         type=str,
         help='The display name of the layout')
 

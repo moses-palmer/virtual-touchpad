@@ -21,13 +21,17 @@ from . import app
 from ..util import static_file
 
 
+#: The root path for layouts
+ROOT = 'keyboard/layout'
+
+
 @app.get('/keyboard/layout/default')
 def default_layout():
     """Returns the default keyboard layout.
     """
-    geometry_files = static_file.list('keyboard/layout')
-    if not geometry_files:
+    layout_files = static_file.list(ROOT)
+    if not layout_files:
         return bottle.HTTPResponse(status=404)
 
     # TODO: Select the one used by the current system
-    return static_file.get('keyboard/layout/' + geometry_files[0])
+    return static_file.get('%s/%s' % (ROOT, layout_files[0]))

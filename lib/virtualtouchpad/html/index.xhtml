@@ -84,10 +84,10 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         <!-- The control that is used as touchpad -->
         <touchpad id="touchpad"
-            onbuttondown="app.touchpad.onButtonDown(event.detail);"
-            onbuttonup="app.touchpad.onButtonUp(event.detail);"
-            onmove="app.touchpad.onMove(event.detail[0], event.detail[1]);"
-            onscroll="app.touchpad.onScroll(event.detail[0], event.detail[1]);">
+            onbuttondown="app.touchpad.onButtonDown.apply(this, event.detail);"
+            onbuttonup="app.touchpad.onButtonUp.apply(this, event.detail);"
+            onmove="app.touchpad.onMove.apply(this, event.detail);"
+            onscroll="app.touchpad.onScroll.apply(this, event.detail);">
         </touchpad>
 
         <!-- The settings container -->
@@ -130,18 +130,19 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             </button>
         </div>
 
+        <!-- The keyboard -->
         <x-include href="/keyboard/buttons.svg" />
         <keyboard
             id="keyboard"
             src="/keyboard/geometry/large.svg"
-            layout="keyboard/layout/default"
-            onpress="app.keyboard.onPress.apply(null, event.detail);"
-            onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>
+            layout="/keyboard/layout/default"
+            onpress="app.keyboard.onPress.apply(this, event.detail);"
+            onrelease="app.keyboard.onRelease.apply(this, event.detail);"/>
         <keyboard
             id="keyboard-func"
-            src="keyboard/geometry/function-keys.svg"
-            onpress="app.keyboard.onPress.apply(null, event.detail);"
-            onrelease="app.keyboard.onRelease.apply(null, event.detail);"/>
+            src="/keyboard/geometry/function-keys.svg"
+            onpress="app.keyboard.onPress.apply(this, event.detail);"
+            onrelease="app.keyboard.onRelease.apply(this, event.detail);"/>
     </body>
 </html>
 

@@ -84,8 +84,8 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         <!-- The control that is used as touchpad -->
         <touchpad id="touchpad"
-            onbuttondown="app.touchpad.onButtonDown(event.detail);"
-            onbuttonup="app.touchpad.onButtonUp(event.detail);"
+            onbuttondown="app.touchpad.onButtonDown(event.detail[0]);"
+            onbuttonup="app.touchpad.onButtonUp(event.detail[0]);"
             onmove="app.touchpad.onMove(event.detail[0], event.detail[1]);"
             onscroll="app.touchpad.onScroll(event.detail[0], event.detail[1]);">
         </touchpad>

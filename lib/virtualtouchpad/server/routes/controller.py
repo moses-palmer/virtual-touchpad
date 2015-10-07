@@ -47,8 +47,7 @@ def controller():
             tb=traceback.extract_tb(tb))))
 
     dispatch = Dispatcher(
-        key_down=keyboard.key_down,
-        key_up=keyboard.key_up,
+        key=keyboard.Handler(),
         mouse=mouse.Handler())
 
     while True:

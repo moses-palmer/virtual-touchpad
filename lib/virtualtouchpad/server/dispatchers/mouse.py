@@ -15,12 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
 from virtualtouchpad import event
-
-
-log = logging.getLogger(__name__)
 
 
 class Handler(object):
@@ -31,30 +26,14 @@ class Handler(object):
 
         :param int button: The button index.
         """
-        try:
-            event.mouse_down(int(button))
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to press button %d: %s' % (
-                button, detail))
+        event.mouse_down(int(button))
 
     def up(self, button=1):
         """Triggers a a mouse release event.
 
         :param int button: The button index.
         """
-        try:
-            event.mouse_up(int(button))
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to release button %d: %s' % (
-                button, detail))
+        event.mouse_up(int(button))
 
     def scroll(self, dx=0, dy=0):
         """Triggers a mouse scroll event.
@@ -63,15 +42,7 @@ class Handler(object):
 
         :param int dy: The vertical offset to scroll.
         """
-        try:
-            event.mouse_scroll(int(dx), int(dy))
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to scroll (%d, %d): %s' % (
-                int(dx), int(dy), detail))
+        event.mouse_scroll(int(dx), int(dy))
 
     def move(self, dx=0, dy=0):
         """Triggers a mouse move event.
@@ -80,12 +51,4 @@ class Handler(object):
 
         :param int dy: The vertical offset to move.
         """
-        try:
-            event.mouse_move(int(dx), int(dy))
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to move (%d, %d): %s' % (
-                int(dx), int(dy), detail))
+        event.mouse_move(int(dx), int(dy))

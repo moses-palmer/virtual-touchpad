@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
+log = logging.getLogger(__name__)
+
 
 class Dispatcher(object):
     """A class used to dispatch events to event handlers.
@@ -42,4 +46,15 @@ class Dispatcher(object):
         except ValueError:
             handler = self._handlers[command]
 
-        return handler(**data)
+        try:
+            return handler(**data)
+        except Exception as e:
+            try:
+                detail = e.args[0] % e.args[1:]
+            except:
+                detail = str(e)
+            log.error(
+                'Failed to handle %s(%s): %s' % (
+                    command,
+                    ', '.join('%s=%s' % i for i in data.items()),
+                    detail))

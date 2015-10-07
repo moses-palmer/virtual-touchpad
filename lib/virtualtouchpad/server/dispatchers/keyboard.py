@@ -15,13 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-import logging
-
 from virtualtouchpad import event
-
-
-log = logging.getLogger(__name__)
 
 
 class Handler(object):
@@ -40,15 +34,7 @@ class Handler(object):
         :param str symbol: The symbol name of the key that is being pressed.
             This value will be passed directly to :func:`event.key_down`.
         """
-        try:
-            event.key_down(name, keysym, symbol)
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to press key %s (%s): %s' % (
-                symbol, keysym, detail))
+        event.key_down(name, keysym, symbol)
 
     def up(self, name, keysym, symbol):
         """Triggers a key up event.
@@ -65,12 +51,4 @@ class Handler(object):
         :param str symbol: The symbol name of the key that is being released.
             This value will be passed directly to :func:`event.key_up`.
         """
-        try:
-            event.key_up(name, keysym, symbol)
-        except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error('Failed to release key %s (%s): %s' % (
-                symbol, keysym, detail))
+        event.key_up(name, keysym, symbol)

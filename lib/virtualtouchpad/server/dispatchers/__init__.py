@@ -37,38 +37,3 @@ class Dispatcher(object):
         :raises KeyError: if ``command`` is an unknown handler
         """
         return self._handlers[command](**data)
-
-
-#: A mapping from dispatcher name to dispatcher callback.
-#:
-#: This dict is populated by the @dispatcher decorator; do not modify it
-#: directly.
-_DISPATCHERS = {}
-
-
-def dispatcher(f):
-    """Marks a function as a dispatcher for *WebSocket* commands.
-
-    :param f:
-        The function to use as a *WebSocket* command dispatcher. Any websocket
-        message, *JSON* decoded, where the ``command`` key value is equal to
-        the name of this function will be handled by this function. It will be
-        passed the ``data`` key value parameter expanded as parameters.
-    """
-    global _DISPATCHERS
-    _DISPATCHERS[f.__name__] = f
-    return f
-
-
-def dispatch(command):
-    """Dispatches a *WebSocket* command.
-
-    :param dict command: The command to dispatch.
-
-    :raises TypeError: If command contains invalid keys.
-    """
-    d = Dispatcher(**_DISPATCHERS)
-    return d(**command)
-
-
-from . import keyboard, mouse

@@ -23,7 +23,7 @@ import sys
 import traceback
 
 from . import app
-from ..dispatchers import dispatch
+from ..dispatchers import Dispatcher, keyboard, mouse
 
 
 log = logging.getLogger(__name__)
@@ -46,6 +46,14 @@ def controller():
             data=str(exception),
             tb=traceback.extract_tb(tb))))
 
+    dispatch = Dispatcher(
+        key_down=keyboard.key_down,
+        key_up=keyboard.key_up,
+        mouse_down=mouse.mouse_down,
+        mouse_up=mouse.mouse_up,
+        mouse_move=mouse.mouse_move,
+        mouse_scroll=mouse.mouse_scroll)
+
     while True:
         try:
             message = ws.receive()
@@ -65,7 +73,7 @@ def controller():
                 continue
 
             try:
-                dispatch(command)
+                dispatch(**command)
             except TypeError as e:
                 log.exception(
                     'Failed to dispatch command %s',

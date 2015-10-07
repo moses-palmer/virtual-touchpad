@@ -17,15 +17,12 @@
 
 import logging
 
-from . import dispatcher
-
 from virtualtouchpad import event
 
 
 log = logging.getLogger(__name__)
 
 
-@dispatcher
 def mouse_down(button=1):
     """Triggers a a mouse press event.
 
@@ -42,7 +39,6 @@ def mouse_down(button=1):
             button, detail))
 
 
-@dispatcher
 def mouse_up(button=1):
     """Triggers a a mouse release event.
 
@@ -59,7 +55,6 @@ def mouse_up(button=1):
             button, detail))
 
 
-@dispatcher
 def mouse_scroll(dx=0, dy=0):
     """Triggers a mouse scroll event.
 
@@ -78,7 +73,6 @@ def mouse_scroll(dx=0, dy=0):
             int(dx), int(dy), detail))
 
 
-@dispatcher
 def mouse_move(dx=0, dy=0):
     """Triggers a mouse move event.
 

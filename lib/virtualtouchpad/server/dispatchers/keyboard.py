@@ -18,15 +18,12 @@
 
 import logging
 
-from . import dispatcher
-
 from virtualtouchpad import event
 
 
 log = logging.getLogger(__name__)
 
 
-@dispatcher
 def key_down(name, keysym, symbol):
     """Triggers a key down event.
 
@@ -52,7 +49,6 @@ def key_down(name, keysym, symbol):
             symbol, keysym, detail))
 
 
-@dispatcher
 def key_up(name, keysym, symbol):
     """Triggers a key up event.
 

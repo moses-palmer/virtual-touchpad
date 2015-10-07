@@ -23,7 +23,7 @@ import sys
 import traceback
 
 from . import app
-from ..dispatchers import dispatch
+from ..dispatchers import Dispatcher, keyboard, mouse
 
 
 log = logging.getLogger(__name__)
@@ -46,6 +46,10 @@ def controller():
             data=str(exception),
             tb=traceback.extract_tb(tb))))
 
+    dispatch = Dispatcher(
+        key=keyboard.Handler(),
+        mouse=mouse.Handler())
+
     while True:
         try:
             message = ws.receive()
@@ -65,8 +69,8 @@ def controller():
                 continue
 
             try:
-                dispatch(command)
-            except (KeyError, ValueError, TypeError) as e:
+                dispatch(**command)
+            except TypeError as e:
                 log.exception(
                     'Failed to dispatch command %s',
                     command)

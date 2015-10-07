@@ -15,83 +15,40 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
-from . import dispatcher
-
 from virtualtouchpad import event
 
 
-log = logging.getLogger(__name__)
-
-
-@dispatcher
-def mouse_down(button=1):
-    """Triggers a a mouse press event.
-
-    :param int button: The button index.
+class Handler(object):
+    """A handler for mouse events.
     """
-    try:
+    def down(self, button=1):
+        """Triggers a a mouse press event.
+
+        :param int button: The button index.
+        """
         event.mouse_down(int(button))
-    except Exception as e:
-        try:
-            detail = e.args[0] % e.args[1:]
-        except:
-            detail = str(e)
-        log.error('Failed to press button %d: %s' % (
-            button, detail))
 
+    def up(self, button=1):
+        """Triggers a a mouse release event.
 
-@dispatcher
-def mouse_up(button=1):
-    """Triggers a a mouse release event.
-
-    :param int button: The button index.
-    """
-    try:
+        :param int button: The button index.
+        """
         event.mouse_up(int(button))
-    except Exception as e:
-        try:
-            detail = e.args[0] % e.args[1:]
-        except:
-            detail = str(e)
-        log.error('Failed to release button %d: %s' % (
-            button, detail))
 
+    def scroll(self, dx=0, dy=0):
+        """Triggers a mouse scroll event.
 
-@dispatcher
-def mouse_scroll(dx=0, dy=0):
-    """Triggers a mouse scroll event.
+        :param int dx: The horisontal offset to scroll.
 
-    :param int dx: The horisontal offset to scroll.
-
-    :param int dy: The vertical offset to scroll.
-    """
-    try:
+        :param int dy: The vertical offset to scroll.
+        """
         event.mouse_scroll(int(dx), int(dy))
-    except Exception as e:
-        try:
-            detail = e.args[0] % e.args[1:]
-        except:
-            detail = str(e)
-        log.error('Failed to scroll (%d, %d): %s' % (
-            int(dx), int(dy), detail))
 
+    def move(self, dx=0, dy=0):
+        """Triggers a mouse move event.
 
-@dispatcher
-def mouse_move(dx=0, dy=0):
-    """Triggers a mouse move event.
+        :param int dx: The horisontal offset to move.
 
-    :param int dx: The horisontal offset to move.
-
-    :param int dy: The vertical offset to move.
-    """
-    try:
+        :param int dy: The vertical offset to move.
+        """
         event.mouse_move(int(dx), int(dy))
-    except Exception as e:
-        try:
-            detail = e.args[0] % e.args[1:]
-        except:
-            detail = str(e)
-        log.error('Failed to move (%d, %d): %s' % (
-            int(dx), int(dy), detail))

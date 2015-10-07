@@ -219,9 +219,7 @@ def end(context, target_path):
     global LICENSE
     source_path, dom, files = context
     with open(target_path, 'w') as target:
-        target.write('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>')
-        target.write('<!--\n' + LICENSE.strip() + '\n-->')
-        dom.documentElement.writexml(target)
+        target.write(dom.toxml(encoding='utf-8'))
 
     update_file_time(target_path, *files)
 

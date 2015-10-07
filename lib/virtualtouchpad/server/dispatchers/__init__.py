@@ -16,6 +16,29 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+class Dispatcher(object):
+    """A class used to dispatch events to event handlers.
+    """
+    def __init__(self, **handlers):
+        """Creates a dispatcher for a collection of handlers.
+
+        :param handlers: The handlers to register. These must be callable, and
+            they will be registered as the key names.
+        """
+        self._handlers = handlers
+
+    def __call__(self, command, data):
+        """Dispatches a command.
+
+        :param str command: The command to dispatch.
+
+        :param dict data: The arguments.
+
+        :raises KeyError: if ``command`` is an unknown handler
+        """
+        return self._handlers[command](**data)
+
+
 #: A mapping from dispatcher name to dispatcher callback.
 #:
 #: This dict is populated by the @dispatcher decorator; do not modify it
@@ -42,20 +65,10 @@ def dispatch(command):
 
     :param dict command: The command to dispatch.
 
-    :raises KeyError: if the ``command`` key is not a known dispatcher
-
-    :raises ValueError: if either ``command`` or ``data`` is missing from
-        ``command``
+    :raises TypeError: If command contains invalid keys.
     """
-    global _DISPATCHERS
-
-    try:
-        command_name = command['command']
-        command_data = command['data']
-    except KeyError:
-        raise ValueError(command)
-
-    return _DISPATCHERS[command_name](**command_data)
+    d = Dispatcher(**_DISPATCHERS)
+    return d(**command)
 
 
 from . import keyboard, mouse

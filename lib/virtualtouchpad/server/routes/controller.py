@@ -66,7 +66,7 @@ def controller():
 
             try:
                 dispatch(command)
-            except (KeyError, ValueError, TypeError) as e:
+            except TypeError as e:
                 log.exception(
                     'Failed to dispatch command %s',
                     command)

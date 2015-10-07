@@ -49,10 +49,7 @@ def controller():
     dispatch = Dispatcher(
         key_down=keyboard.key_down,
         key_up=keyboard.key_up,
-        mouse_down=mouse.mouse_down,
-        mouse_up=mouse.mouse_up,
-        mouse_move=mouse.mouse_move,
-        mouse_scroll=mouse.mouse_scroll)
+        mouse=mouse.Handler())
 
     while True:
         try:

@@ -17,13 +17,13 @@
 
 from virtualtouchpad import platform
 with platform.modules():
+    import ctypes
+    import logging
+    import unicodedata
     import win32api
+    del win32api
 
-import ctypes
-import logging
-import unicodedata
-
-from ._win32_syms import SYMS
+    from ._win32_syms import SYMS
 
 
 log = logging.getLogger(__name__)
@@ -154,7 +154,7 @@ def key_down(name, keysym, symbol):
     # key alone
     global dead_key
 
-    if not dead_key is None:
+    if dead_key is not None:
         previous_name, combining = dead_key
         set_dead_key(None)
         if name and len(name) == 1:

@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+from virtualtouchpad.platform import implement
+
 
 def key_down(name, keysym, symbol):
     """Sends a key down event.
@@ -83,5 +85,4 @@ def mouse_move(dx, dy):
     raise NotImplementedError()
 
 
-from virtualtouchpad.platform import implement
 implement(globals())

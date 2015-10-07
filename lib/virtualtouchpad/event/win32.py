@@ -31,9 +31,6 @@ log = logging.getLogger(__name__)
 
 _SendInput = ctypes.windll.user32.SendInput
 
-#: The last dead key; TODO: Set this per connection
-dead_key = None
-
 
 class MOUSEINPUT(ctypes.Structure):
     MOVE = 0x0001
@@ -99,21 +96,21 @@ def is_dead(symbol):
     return symbol and symbol.startswith('dead_')
 
 
-def set_dead_key(name):
-    """Sets the current dead key.
+def to_dead_key(name):
+    """Converts a name to a dead key.
 
     :param str name: The name of the key. This should be the actual character
         representing the dead key, such as ``~`` for *TILDE*.
 
     :raises KeyError: if the dead cannot be converted to a combining character
-    """
-    # TODO: Use a per connection store
-    global dead_key
 
+    :return: a dead key state
+    :rtype: tuple(name, character) or None
+    """
     if name is None:
-        dead_key = None
+        return None
     else:
-        dead_key = (
+        return (
             name,
             unicodedata.lookup('COMBINING ' + unicodedata.name(name)))
 
@@ -124,7 +121,8 @@ def key_event(name, symbol, flags):
     If the length of ``name`` is ``1``, it is assumed to be a *unicode*
     character and the corresponding character will be sent.
 
-    Otherwise, symbol is mapped
+    Otherwise, symbol is mapped through :attr:`._win32_syms.SYMS` to a virtual
+    key code.
     """
     if name and len(name) == 1:
         keyboard = KEYBDINPUT(
@@ -148,38 +146,37 @@ def key_event(name, symbol, flags):
         ctypes.sizeof(INPUT))
 
 
-def key_down(name, keysym, symbol):
+def key_down(state, name, keysym, symbol):
     # Do we have a previous dead key? In that case, first try to combine it
     # with the current key, and send it, and if that fails just send the dead
     # key alone
-    global dead_key
-
-    if dead_key is not None:
-        previous_name, combining = dead_key
-        set_dead_key(None)
+    if state is not None:
+        previous_name, combining = state
         if name and len(name) == 1:
             combined = unicodedata.normalize('NFC', name + combining)
             if len(combined) == 1:
                 key_event(combined, None, 0)
-                return
+                return None
         key_event(previous_name, None, 0)
 
     # If the current key is a dead key, save it for later
     if is_dead(symbol):
         try:
-            set_dead_key(name)
-            return
+            return to_dead_key(name)
         except Exception as e:
             log.error('Failed to set dead key: %s', str(e))
 
     key_event(name, symbol, 0)
 
+    return None
 
-def key_up(name, keysym, symbol):
+
+def key_up(state, name, keysym, symbol):
     key_event(name, symbol, KEYBDINPUT.KEYUP)
+    return state
 
 
-def mouse_down(button):
+def mouse_down(state, button):
     _SendInput(
         1,
         ctypes.byref(INPUT(
@@ -190,7 +187,7 @@ def mouse_down(button):
         ctypes.sizeof(INPUT))
 
 
-def mouse_up(button):
+def mouse_up(state, button):
     _SendInput(
         1,
         ctypes.byref(INPUT(
@@ -201,7 +198,7 @@ def mouse_up(button):
         ctypes.sizeof(INPUT))
 
 
-def mouse_scroll(dx, dy):
+def mouse_scroll(state, dx, dy):
     # TODO: Support horisontal scroll
     _SendInput(
         1,
@@ -214,7 +211,7 @@ def mouse_scroll(dx, dy):
         ctypes.sizeof(INPUT))
 
 
-def mouse_move(dx, dy):
+def mouse_move(state, dx, dy):
     _SendInput(
         1,
         ctypes.byref(INPUT(

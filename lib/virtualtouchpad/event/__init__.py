@@ -18,9 +18,12 @@
 from virtualtouchpad.platform import implement
 
 
-def key_down(name, keysym, symbol):
+def key_down(state, name, keysym, symbol):
     """Sends a key down event.
 
+    :param state: The current keyboard state. This is an opaque value used by
+        the backend.
+
     :param str name: The name of the key. This should typically be the actual
         character requested, or ``None``.
 
@@ -30,13 +33,18 @@ def key_down(name, keysym, symbol):
         just like :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and
         ``'a'`` will trigger a press of the ``'A'`` key. ``'Space'`` and
         ``'space'`` will trigger space.
+
+    :return: the new state
     """
     raise NotImplementedError()
 
 
-def key_up(name, keysym, symbol):
+def key_up(state, name, keysym, symbol):
     """Sends a key up event.
 
+    :param state: The current keyboard state. This is an opaque value used by
+        the backend.
+
     :param str name: The name of the key. This should typically be the actual
         character requested, or ``None``.
 
@@ -46,41 +54,64 @@ def key_up(name, keysym, symbol):
         just like :func:`Xlib.XK.string_to_keysym` would. Thus, ``'A'`` and
         ``'a'`` will trigger a press of the ``'A'`` key. ``'Space'`` and
         ``'space'`` will trigger space.
+
+    :return: the new state
     """
     raise NotImplementedError()
 
 
-def mouse_down(button):
+def mouse_down(state, button):
     """Presses a mouse button.
 
+    :param state: The current mouse state. This is an opaque value used by the
+        backend.
+
     :param int button: The button index.
+
+    :return: the new state
     """
     raise NotImplementedError()
 
 
-def mouse_up(button):
+def mouse_up(state, button):
     """Releases a mouse button.
 
+    :param state: The current mouse state. This is an opaque value used by the
+        backend.
+
     :param int button: The button index.
+
+    :return: the new state
     """
     raise NotImplementedError()
 
 
-def mouse_scroll(dx, dy):
+def mouse_scroll(state, dx, dy):
     """Scrolls the mouse wheel.
+
+    :param state: The current mouse state. This is an opaque value used by the
+        backend.
 
     :param int dx: The horisontal offset to scroll.
 
     :param int dy: The vertical offset to scroll.
+
+    :return: the new state
     """
     raise NotImplementedError()
 
 
-def mouse_move(dx, dy):
+def mouse_move(state, dx, dy):
     """Moves the mouse pointer.
 
+    :param state: The current mouse state. This is an opaque value used by the
+        backend.
+
     :param int dx: The horisontal offset to move.
+
     :param int dy: The vertical offset to move.
+
+    :return: the new state
     """
     raise NotImplementedError()
 

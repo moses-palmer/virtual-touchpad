@@ -43,16 +43,6 @@ SCROLL_THRESHOLD = 10
 SHRT_MAX = 32767
 SHRT_MIN = -SHRT_MAX - 1
 
-# The accumulated scrolling
-scroll = [0, 0]
-
-
-def mouse_scroll_cancel():
-    """Cancels any scrolling in progress.
-    """
-    global scroll
-    scroll = [0, 0]
-
 
 def string_to_keysym(key, default=None):
     """Converts a string to a keysym identifier.
@@ -72,7 +62,7 @@ def string_to_keysym(key, default=None):
     return keysym
 
 
-def key_down(name, keysym, symbol):
+def key_down(state, name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 
@@ -82,7 +72,7 @@ def key_down(name, keysym, symbol):
         fake_input(display, X.KeyPress, keycode)
 
 
-def key_up(name, keysym, symbol):
+def key_up(state, name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 
@@ -92,32 +82,27 @@ def key_up(name, keysym, symbol):
         fake_input(display, X.KeyRelease, keycode)
 
 
-def mouse_down(button):
+def mouse_down(state, button):
     with display_manager(DISPLAY) as display:
-        mouse_scroll_cancel()
-
-        # Press the button
         fake_input(display, X.ButtonPress, button)
 
+    return [0, 0]
 
-def mouse_up(button):
+
+def mouse_up(state, button):
     with display_manager(DISPLAY) as display:
-        mouse_scroll_cancel()
-
-        # Press the button
         fake_input(display, X.ButtonRelease, button)
 
+    return [0, 0]
 
-def mouse_scroll(dx, dy):
-    global SCROLL_THRESHOLD
-    global scroll
 
-    scroll[0] += dx
-    scroll[1] += dy
+def mouse_scroll(state, dx, dy):
+    state[0] += dx
+    state[1] += dy
 
     with display_manager(DISPLAY) as display:
         # Vertical scroll
-        vscroll = scroll[1] // SCROLL_THRESHOLD
+        vscroll = state[1] // SCROLL_THRESHOLD
         if vscroll > 0:
             vbutton = X.Button5
         elif vscroll < 0:
@@ -125,10 +110,10 @@ def mouse_scroll(dx, dy):
         for i in range(abs(vscroll)):
             fake_input(display, X.ButtonPress, vbutton)
             fake_input(display, X.ButtonRelease, vbutton)
-        scroll[1] -= vscroll * SCROLL_THRESHOLD
+        state[1] -= vscroll * SCROLL_THRESHOLD
 
         # Horizontal scroll
-        hscroll = scroll[0] // SCROLL_THRESHOLD
+        hscroll = state[0] // SCROLL_THRESHOLD
         if hscroll > 0:
             hbutton = 7
         elif hscroll < 0:
@@ -136,13 +121,13 @@ def mouse_scroll(dx, dy):
         for i in range(abs(hscroll)):
             fake_input(display, X.ButtonPress, hbutton)
             fake_input(display, X.ButtonRelease, hbutton)
-        scroll[0] -= hscroll * SCROLL_THRESHOLD
+        state[0] -= hscroll * SCROLL_THRESHOLD
+
+    return state
 
 
-def mouse_move(dx, dy):
+def mouse_move(state, dx, dy):
     with display_manager(DISPLAY) as display:
-        mouse_scroll_cancel()
-
         # The movement is a short
         dx = max(min(dx, SHRT_MAX), SHRT_MIN)
         dy = max(min(dy, SHRT_MAX), SHRT_MIN)
@@ -151,3 +136,5 @@ def mouse_move(dx, dy):
             pyatspi.Registry.generateMouseEvent(dx, dy, 'rel')
         else:
             display.warp_pointer(dx, dy)
+
+    return [0, 0]

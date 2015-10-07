@@ -19,6 +19,9 @@ from virtualtouchpad import event
 
 
 class Handler(object):
+    def __init__(self):
+        self.state = None
+
     def down(self, name, keysym, symbol):
         """Triggers a key down event.
 
@@ -34,7 +37,7 @@ class Handler(object):
         :param str symbol: The symbol name of the key that is being pressed.
             This value will be passed directly to :func:`event.key_down`.
         """
-        event.key_down(name, keysym, symbol)
+        self.state = event.key_down(self.state, name, keysym, symbol)
 
     def up(self, name, keysym, symbol):
         """Triggers a key up event.
@@ -51,4 +54,4 @@ class Handler(object):
         :param str symbol: The symbol name of the key that is being released.
             This value will be passed directly to :func:`event.key_up`.
         """
-        event.key_up(name, keysym, symbol)
+        self.state = event.key_up(self.state, name, keysym, symbol)

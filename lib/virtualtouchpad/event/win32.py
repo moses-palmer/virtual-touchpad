@@ -148,7 +148,7 @@ def key_event(name, symbol, flags):
         ctypes.sizeof(INPUT))
 
 
-def key_down(name, keysym, symbol):
+def key_down(state, name, keysym, symbol):
     # Do we have a previous dead key? In that case, first try to combine it
     # with the current key, and send it, and if that fails just send the dead
     # key alone
@@ -175,11 +175,11 @@ def key_down(name, keysym, symbol):
     key_event(name, symbol, 0)
 
 
-def key_up(name, keysym, symbol):
+def key_up(state, name, keysym, symbol):
     key_event(name, symbol, KEYBDINPUT.KEYUP)
 
 
-def mouse_down(button):
+def mouse_down(state, button):
     _SendInput(
         1,
         ctypes.byref(INPUT(
@@ -190,7 +190,7 @@ def mouse_down(button):
         ctypes.sizeof(INPUT))
 
 
-def mouse_up(button):
+def mouse_up(state, button):
     _SendInput(
         1,
         ctypes.byref(INPUT(
@@ -201,7 +201,7 @@ def mouse_up(button):
         ctypes.sizeof(INPUT))
 
 
-def mouse_scroll(dx, dy):
+def mouse_scroll(state, dx, dy):
     # TODO: Support horisontal scroll
     _SendInput(
         1,
@@ -214,7 +214,7 @@ def mouse_scroll(dx, dy):
         ctypes.sizeof(INPUT))
 
 
-def mouse_move(dx, dy):
+def mouse_move(state, dx, dy):
     _SendInput(
         1,
         ctypes.byref(INPUT(

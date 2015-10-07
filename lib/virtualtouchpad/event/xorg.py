@@ -72,7 +72,7 @@ def string_to_keysym(key, default=None):
     return keysym
 
 
-def key_down(name, keysym, symbol):
+def key_down(state, name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 
@@ -82,7 +82,7 @@ def key_down(name, keysym, symbol):
         fake_input(display, X.KeyPress, keycode)
 
 
-def key_up(name, keysym, symbol):
+def key_up(state, name, keysym, symbol):
     # Convert the symbol name to an identifier
     keysym = string_to_keysym(symbol, keysym)
 
@@ -92,7 +92,7 @@ def key_up(name, keysym, symbol):
         fake_input(display, X.KeyRelease, keycode)
 
 
-def mouse_down(button):
+def mouse_down(state, button):
     with display_manager(DISPLAY) as display:
         mouse_scroll_cancel()
 
@@ -100,7 +100,7 @@ def mouse_down(button):
         fake_input(display, X.ButtonPress, button)
 
 
-def mouse_up(button):
+def mouse_up(state, button):
     with display_manager(DISPLAY) as display:
         mouse_scroll_cancel()
 
@@ -108,7 +108,7 @@ def mouse_up(button):
         fake_input(display, X.ButtonRelease, button)
 
 
-def mouse_scroll(dx, dy):
+def mouse_scroll(state, dx, dy):
     global SCROLL_THRESHOLD
     global scroll
 
@@ -139,7 +139,7 @@ def mouse_scroll(dx, dy):
         scroll[0] -= hscroll * SCROLL_THRESHOLD
 
 
-def mouse_move(dx, dy):
+def mouse_move(state, dx, dy):
     with display_manager(DISPLAY) as display:
         mouse_scroll_cancel()
 

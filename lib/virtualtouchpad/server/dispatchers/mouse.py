@@ -21,19 +21,22 @@ from virtualtouchpad import event
 class Handler(object):
     """A handler for mouse events.
     """
+    def __init__(self):
+        self.state = None
+
     def down(self, button=1):
         """Triggers a a mouse press event.
 
         :param int button: The button index.
         """
-        event.mouse_down(int(button))
+        self.state = event.mouse_down(self.state, int(button))
 
     def up(self, button=1):
         """Triggers a a mouse release event.
 
         :param int button: The button index.
         """
-        event.mouse_up(int(button))
+        self.state = event.mouse_up(self.state, int(button))
 
     def scroll(self, dx=0, dy=0):
         """Triggers a mouse scroll event.
@@ -42,7 +45,7 @@ class Handler(object):
 
         :param int dy: The vertical offset to scroll.
         """
-        event.mouse_scroll(int(dx), int(dy))
+        self.state = event.mouse_scroll(self.state, int(dx), int(dy))
 
     def move(self, dx=0, dy=0):
         """Triggers a mouse move event.
@@ -51,4 +54,4 @@ class Handler(object):
 
         :param int dy: The vertical offset to move.
         """
-        event.mouse_move(int(dx), int(dy))
+        self.state = event.mouse_move(self.state, int(dx), int(dy))

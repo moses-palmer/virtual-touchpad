@@ -86,6 +86,21 @@ def list(path):
         os.path.join('html', path))
 
 
+def open_stream(path):
+    """Opens a file.
+
+    :param str path: The path of the static file.
+
+    :return: a file-like object
+    """
+    if STATIC_ROOT is not None:
+        return open(os.path.join(STATIC_ROOT, path))
+    else:
+        return pkg_resources.resource_stream(
+            PKG_RESOURCES_PACKAGE,
+            os.path.join('html', path))
+
+
 def get(path):
     """Returns a :class:`bottle.HTTPResponse` or :class:`bottle.HTTPError`
     containing either the file requested or an error message.

@@ -66,7 +66,7 @@
         <g class="key" x-symbol="Return"><use xlink:href="#keyboard-enter" x="408" y="32" /></g>
         <g class="key" x-symbol="Super_L"><use xlink:href="#keyboard-super" x="36" y="116" /></g>
         <g class="key" x-symbol="space"><use xlink:href="#keyboard-space" x="100" y="116" /></g>
-        <g class="key" x-symbol="Super_R"><use xlink:href="#keyboard-super" x="352" y="116" /></g>
+        <g class="key" x-action="layout"><use xlink:href="#keyboard-layout" x="352" y="116" /></g>
         <g class="key" x-symbol="Menu"><use xlink:href="#keyboard-menu" x="384" y="116" /></g>
 
         <!-- Toggle keys -->

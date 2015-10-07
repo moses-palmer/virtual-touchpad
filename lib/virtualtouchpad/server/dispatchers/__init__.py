@@ -36,4 +36,10 @@ class Dispatcher(object):
 
         :raises KeyError: if ``command`` is an unknown handler
         """
-        return self._handlers[command](**data)
+        try:
+            name, method = command.split('.', 1)
+            handler = getattr(self._handlers[name], method)
+        except ValueError:
+            handler = self._handlers[command]
+
+        return handler(**data)

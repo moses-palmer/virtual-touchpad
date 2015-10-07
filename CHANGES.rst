@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+v0.12.3 - Corrected clicks
+--------------------------
+  * Corrected touch pad clicks.
+
 
 v0.12.2 - Corrected imports
 ---------------------------

@@ -217,7 +217,6 @@ def upload_to_pypi():
         [
             'python',
             os.path.join(os.path.dirname(__file__), os.pardir, 'setup.py'),
-            'sdist',
             'bdist_wheel',
             'upload'],
         stdout=subprocess.PIPE,

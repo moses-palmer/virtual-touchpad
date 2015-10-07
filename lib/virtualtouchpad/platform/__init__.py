@@ -140,7 +140,7 @@ def implement(globals_dict):
         if inspect.isclass(value):
             callable_value = value.__init__
             old_callable_value = old_value.__init__
-        elif inspect.isfunction:
+        elif inspect.isfunction(value):
             callable_value = value
             old_callable_value = old_value
         else:

@@ -15,28 +15,35 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-from virtualtouchpad import event
+from pynput.mouse import Button, Controller
 
 
 class Handler(object):
     """A handler for mouse events.
     """
-    def __init__(self):
-        self.state = None
+    #: The scroll threshold required to actually perform scrolling
+    SCROLL_THRESHOLD = 10
 
-    def down(self, button=1):
+    def __init__(self):
+        self.d = Controller()
+        self.ax = 0
+        self.ay = 0
+
+    def down(self, button='left'):
         """Triggers a a mouse press event.
 
-        :param int button: The button index.
+        :param str button: The button name. This must be one of the values
+            defined for :class:`pynput.mouse.Button`.
         """
-        self.state = event.mouse_down(self.state, int(button))
+        self.d.press(Button[button])
 
-    def up(self, button=1):
+    def up(self, button='left'):
         """Triggers a a mouse release event.
 
-        :param int button: The button index.
+        :param str button: The button name. This must be one of the values
+            defined for :class:`pynput.mouse.Button`.
         """
-        self.state = event.mouse_up(self.state, int(button))
+        self.d.release(Button[button])
 
     def scroll(self, dx=0, dy=0):
         """Triggers a mouse scroll event.
@@ -45,7 +52,21 @@ class Handler(object):
 
         :param int dy: The vertical offset to scroll.
         """
-        self.state = event.mouse_scroll(self.state, int(dx), int(dy))
+        self.ax += dx
+        self.ay += dy
+
+        # Vertical scroll
+        xscroll = int(self.ax // self.SCROLL_THRESHOLD)
+        self.ax -= xscroll * self.SCROLL_THRESHOLD
+
+        # Horizontal scroll
+        yscroll = int(self.ay // self.SCROLL_THRESHOLD)
+        self.ay -= yscroll * self.SCROLL_THRESHOLD
+
+        if xscroll or yscroll:
+            self.d.scroll(
+                xscroll,
+                yscroll)
 
     def move(self, dx=0, dy=0):
         """Triggers a mouse move event.
@@ -54,4 +75,4 @@ class Handler(object):
 
         :param int dy: The vertical offset to move.
         """
-        self.state = event.mouse_move(self.state, int(dx), int(dy))
+        self.d.move(dx, dy)

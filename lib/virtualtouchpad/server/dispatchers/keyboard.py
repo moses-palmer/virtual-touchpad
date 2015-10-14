@@ -15,43 +15,55 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-from virtualtouchpad import event
+from pynput.keyboard import KeyCode, Key, Controller
 
 
 class Handler(object):
     def __init__(self):
-        self.state = None
+        self.d = Controller()
 
-    def down(self, name, keysym, symbol):
+    def keycode(self, name, is_dead):
+        """Resolves a key description to a value that can be passed to
+        :meth:`pynput.keyboard.Controller.press` and
+        :meth:`~pynput.keyboard.Controller.release`.
+
+        :param str name: The name of the key. This should typically be the
+            actual character requested. If it starts with ``'<'`` and ends with
+            ``'>'``, the key value is looked up in
+            :class:`pynput.keyboard.Key`, otherwise it is passed straight to
+            :meth:`pynput.keyboard.Controller.press`.
+
+        :return: a key value
+        """
+        if is_dead:
+            return KeyCode.from_dead(name)
+        elif name[0] == '<' and name[-1] == '>':
+            return Key[name[1:-1]]
+        else:
+            return name
+
+    def down(self, name, is_dead=False):
         """Triggers a key down event.
 
-        :param str name: The name of the key. This should typically be the
-            actual character requested, or ``None``.
+        :param str name: The name of the key. This is passed to
+            :meth:`keycode`.
 
-        :param int keysym: The keysym identifier of the key that is being
-            pressed. This value will be passed directly to
-            :func:`event.key_down`.
-
-            If ``symbol`` is a valid value, this parameter will be ignored.
-
-        :param str symbol: The symbol name of the key that is being pressed.
-            This value will be passed directly to :func:`event.key_down`.
+        :param bool is_dead: Whether a dead key press is requested. In that
+            case, ``name`` must be a unicode character with a corresponding
+            combining codepoint, and the key will be combined with the next
+            character typed.
         """
-        self.state = event.key_down(self.state, name, keysym, symbol)
+        self.d.press(self.keycode(name, is_dead))
 
-    def up(self, name, keysym, symbol):
+    def up(self, name, is_dead=False):
         """Triggers a key up event.
 
-        :param str name: The name of the key. This should typically be the
-            actual character requested, or ``None``.
+        :param str name: The name of the key. This is passed to
+            :meth:`keycode`.
 
-        :param int keysym: The keysym identifier of the key that is being
-            released. This value will be passed directly to
-            :func:`event.key_up`.
-
-            If ``symbol`` is a valid value, this parameter will be ignored.
-
-        :param str symbol: The symbol name of the key that is being released.
-            This value will be passed directly to :func:`event.key_up`.
+        :param bool is_dead: Whether a dead key press is requested. In that
+            case, ``name`` must be a unicode character with a corresponding
+            combining codepoint, and the key will be combined with the next
+            character typed.
         """
-        self.state = event.key_up(self.state, name, keysym, symbol)
+        self.d.release(self.keycode(name, is_dead))

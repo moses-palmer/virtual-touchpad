@@ -61,21 +61,21 @@
         <g class="key" x-id="AB11"><use xlink:href="#keyboard-key" x="336" y="88" /></g>
 
         <!-- Special keys -->
-        <g class="key" x-symbol="BackSpace"><use xlink:href="#keyboard-backspace" x="394" y="4" /></g>
-        <g class="key" x-symbol="Tab"><use xlink:href="#keyboard-tab" x="4" y="32" /></g>
-        <g class="key" x-symbol="Return"><use xlink:href="#keyboard-enter" x="408" y="32" /></g>
-        <g class="key" x-symbol="Super_L"><use xlink:href="#keyboard-super" x="36" y="116" /></g>
-        <g class="key" x-symbol="space"><use xlink:href="#keyboard-space" x="100" y="116" /></g>
+        <g class="key" x-name="backspace"><use xlink:href="#keyboard-backspace" x="394" y="4" /></g>
+        <g class="key" x-name="tab"><use xlink:href="#keyboard-tab" x="4" y="32" /></g>
+        <g class="key" x-name="enter"><use xlink:href="#keyboard-enter" x="408" y="32" /></g>
+        <g class="key" x-name="cmd"><use xlink:href="#keyboard-super" x="36" y="116" /></g>
+        <g class="key" x-name="space"><use xlink:href="#keyboard-space" x="100" y="116" /></g>
         <g class="key" x-action="layout"><use xlink:href="#keyboard-layout" x="352" y="116" /></g>
-        <g class="key" x-symbol="Menu"><use xlink:href="#keyboard-menu" x="384" y="116" /></g>
+        <g class="key" x-name="menu"><use xlink:href="#keyboard-menu" x="384" y="116" /></g>
 
         <!-- Toggle keys -->
-        <g class="key toggle caps" x-symbol="Caps_Lock"><use xlink:href="#keyboard-caps" x="4" y="60" /></g>
-        <g class="key toggle lshift" x-symbol="Shift_L"><use xlink:href="#keyboard-lshift" x="4" y="88" /></g>
-        <g class="key toggle rshift" x-symbol="Shift_R"><use xlink:href="#keyboard-rshift" x="366" y="88" /></g>
-        <g class="key toggle lctrl" x-symbol="Control_L"><use xlink:href="#keyboard-ctrl" x="4" y="116" /></g>
-        <g class="key toggle alt" x-symbol="Alt_L"><use xlink:href="#keyboard-alt" x="68" y="116" /></g>
-        <g class="key toggle altgr" x-symbol="ISO_Level3_Shift"><use xlink:href="#keyboard-altgr" x="320" y="116" /></g>
-        <g class="key toggle rctrl" x-symbol="Control_R"><use xlink:href="#keyboard-ctrl" x="416" y="116" /></g>
+        <g class="key toggle caps" x-name="caps_lock"><use xlink:href="#keyboard-caps" x="4" y="60" /></g>
+        <g class="key toggle lshift" x-name="shift_l"><use xlink:href="#keyboard-lshift" x="4" y="88" /></g>
+        <g class="key toggle rshift" x-name="shift_r"><use xlink:href="#keyboard-rshift" x="366" y="88" /></g>
+        <g class="key toggle lctrl" x-name="ctrl_l"><use xlink:href="#keyboard-ctrl" x="4" y="116" /></g>
+        <g class="key toggle alt" x-name="alt_l"><use xlink:href="#keyboard-alt" x="68" y="116" /></g>
+        <g class="key toggle altgr" x-name="alt_gr"><use xlink:href="#keyboard-altgr" x="320" y="116" /></g>
+        <g class="key toggle rctrl" x-name="ctrl_r"><use xlink:href="#keyboard-ctrl" x="416" y="116" /></g>
     </g>
 </svg>

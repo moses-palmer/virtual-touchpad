@@ -25,7 +25,7 @@ NAME_RE = re.compile(
     r'XLookupString gives [0-9]+ bytes: \(.+\) "(.*?)"\s')
 
 #: The regular expression that matches dead keys
-DEAD_RE = re.compile(r'dead_.*')
+DEAD_RE = re.compile(r'dead_(.*)')
 
 
 #: The characters written on the actual keyboard; `?` indicates unknown values
@@ -118,6 +118,14 @@ def keyboard_events():
         code = int(symbol_match.group(1))
         keysym = int(symbol_match.group(2), 16)
         symbol = symbol_match.group(3)
+
+        # Check whether this was a dead key
+        dead_match = DEAD_RE.match(symbol)
+        if dead_match:
+            is_dead = True
+            symbol = dead_match.group(1)
+        else:
+            is_dead = False
 
         # Get the name of the key; this is not required
         name_match = NAME_RE.search(event_string)
@@ -234,11 +242,12 @@ def make_layout(layout_file, layout_name):
                         data = [''] * 4
                         layout[keyid] = data
                     data[index] = [
-                        event.name, event.keysym, event.symbol]
+                        event.name, event.is_dead]
 
-                    print('= %s (%s)' % (
+                    print('= %s (%s, %s key)' % (
                         event.name or '<unnamed>',
-                        event.symbol))
+                        event.symbol,
+                        'dead' if event.is_dead else 'normal'))
 
                     break
 

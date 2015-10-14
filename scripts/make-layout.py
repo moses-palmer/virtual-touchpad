@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import collections
 import re
 
 from itertools import product, tee
@@ -181,7 +182,7 @@ def make_layout(layout_file, layout_name):
         if not pressed and symbol == 'Return':
             break
 
-    layout = {}
+    layout = collections.OrderedDict()
 
     # Iterate over all values for the modifier keys
     for shift, altgr in product(*tee((False, True))):
@@ -241,10 +242,11 @@ def make_layout(layout_file, layout_name):
         wait_for_modifiers(events, shift, altgr, release=True)
         print()
 
-    json.dump({
-        'meta': {
-            'name': layout_name},
-        'layout': layout},
+    json.dump(
+        collections.OrderedDict((
+            ('meta', collections.OrderedDict((
+                ('name', layout_name),))),
+            ('layout', layout))),
         layout_file,
         indent=4)
 

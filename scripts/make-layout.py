@@ -184,8 +184,10 @@ def make_layout(layout_file, layout_name):
 
     layout = collections.OrderedDict()
 
+    modifier_combinations = product(*tee((False, True)))
+
     # Iterate over all values for the modifier keys
-    for shift, altgr in product(*tee((False, True))):
+    for shift, altgr in modifier_combinations:
         # The key codes for the keys pressed during this round
         codes = set()
 

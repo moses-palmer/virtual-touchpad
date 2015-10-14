@@ -456,7 +456,6 @@ if py2exe:
                 'greenlet',
                 'gevent.select',
                 'virtualtouchpad.platform.win32',
-                'virtualtouchpad.event.win32',
                 'virtualtouchpad.systray.win32',
                 'virtualtouchpad.systray.win32.win32systray'] + [
                     'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]

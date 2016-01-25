@@ -17,3 +17,6 @@
 
 #: The resource ID of the main icon
 IDI_MAINICON = 1001
+
+#: The pkg_resources name of the main icon stream
+PATH_MAINICON = ('virtualtouchpad', 'html/favicon.ico')

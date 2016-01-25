@@ -257,8 +257,8 @@ class generate_webapp_icons(setuptools.Command):
 
 
 @build.command
-class generate_windows_icons(setuptools.Command):
-    description = 'generate Windows icons from SVG sources'
+class generate_favicon(setuptools.Command):
+    description = 'generate a favicon from SVG sources'
     user_options = []
     DIMENSIONS = (128, 64, 32, 16)
 
@@ -283,8 +283,8 @@ class generate_windows_icons(setuptools.Command):
                     'icon%dx%d.ico' % (size, size)))
         build.icons.combine(
             os.path.join(
-                    target_dir,
-                    'icon-all.ico'),
+                    build.HTML_ROOT,
+                    'favicon.ico'),
             *(os.path.join(
                     target_dir,
                     'icon%dx%d.ico' % (size, size))
@@ -461,7 +461,10 @@ if py2exe:
     setup_arguments['windows'] = [
         {
             'script': 'scripts/virtualtouchpad.py',
-            'icon_resources': [(win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
+            'icon_resources': [
+                (
+                    win.IDI_MAINICON,
+                    os.path.join(build.HTML_ROOT, 'favicon.ico'))]}]
 
 
 setup(**setup_arguments)

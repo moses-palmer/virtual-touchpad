@@ -40,6 +40,12 @@ REQUIREMENTS = [
     'netifaces >=0.8',
     'zeroconf >=0.17']
 
+EXTRAS_REQUIRE = {
+    ':sys_platform == "linux2"': [
+        'Pillow'],
+    ':sys_platform == "win32"': [
+        'pywin32']}
+
 BUILD_REQUIREMENTS = [
     'cssmin',
     'polib >=1.0.4',
@@ -63,10 +69,9 @@ def setup(**kwargs):
         'computer.',
         long_description=README + '\n\n' + CHANGES,
 
-        install_requires=REQUIREMENTS + platform_requirements(),
-
-        setup_requires=REQUIREMENTS + platform_requirements()
-        + BUILD_REQUIREMENTS,
+        install_requires=REQUIREMENTS,
+        extras_require=EXTRAS_REQUIRE,
+        setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
 
         author=INFO['author'],
         author_email='moses.palmer@gmail.com',
@@ -86,35 +91,6 @@ def setup(**kwargs):
         classifiers=[],
 
         **kwargs)
-
-
-def platform_requirements():
-    """A list of PyPi packages that are dependencies only for the current
-    platform.
-    """
-    platform = ''.join(c for c in sys.platform if c.isalpha())
-    result = []
-
-    if platform == 'linux':
-        result.append('Pillow')
-        if sys.version_info.major == 3:
-            result.append('python3-xlib')
-        elif sys.version_info.major == 2:
-            result.append('python-xlib')
-        else:
-            raise NotImplementedError(
-                'This python major version (%d) is not supported',
-                sys.version_info.major)
-
-    elif platform == 'win' or platform == 'cygwin':
-        result.append('pywin32')
-
-    else:
-        raise NotImplementedError(
-            'This platform (%s) is not supported',
-            sys.platform)
-
-    return result
 
 
 # Read globals from virtualtouchpad._info without loading it

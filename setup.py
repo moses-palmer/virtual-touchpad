@@ -40,6 +40,12 @@ REQUIREMENTS = [
     'netifaces >=0.8',
     'zeroconf >=0.17']
 
+BUILD_REQUIREMENTS = [
+    'cssmin',
+    'ply ==3.4',
+    'polib >=1.0.4',
+    'slimit']
+
 # The directories in which the packages can be found
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
@@ -60,11 +66,8 @@ def setup(**kwargs):
 
         install_requires=REQUIREMENTS + platform_requirements(),
 
-        setup_requires=REQUIREMENTS + platform_requirements() + [
-            'cssmin',
-            'ply ==3.4',
-            'polib >=1.0.4',
-            'slimit'],
+        setup_requires=REQUIREMENTS + platform_requirements()
+        + BUILD_REQUIREMENTS,
 
         author=INFO['author'],
         author_email='moses.palmer@gmail.com',

@@ -17,6 +17,8 @@
 
 
 import os
+import pkg_resources
+import tempfile
 import threading
 import win32con
 
@@ -86,7 +88,6 @@ class SystemTrayIcon(SystemTrayIcon):
         """
         super(SystemTrayIcon, self).__init__(description, on_click)
 
-        self._icon = None
         self._window = None
         self._notify_id = None
 
@@ -98,14 +99,23 @@ class SystemTrayIcon(SystemTrayIcon):
     def icon(self):
         """The *win32* icon handle for the systray icon; the icon will be
         loaded if has not yet been created"""
-        if self._icon:
+        if hasattr(self, '_icon'):
             return self._icon
 
-        # First try to load from the current EXE file, and then fall back on
-        # the build directory
+        self._icon = (
+            self._icon_from_app() or
+            self._icon_from_pkg_resources() or
+            self._icon_from_fs())
+        return self._icon
+
+    def _icon_from_app(self):
+        """Loads the icon as a resource from the currently running application.
+
+        This works only if the application has been packaged with *py2exe*.
+        """
         instance = win32gui.GetModuleHandle(None)
         try:
-            self._icon = win32gui.LoadImage(
+            return win32gui.LoadImage(
                 instance,
                 win.IDI_MAINICON,
                 win32con.IMAGE_ICON,
@@ -113,24 +123,73 @@ class SystemTrayIcon(SystemTrayIcon):
                 0,
                 win32con.LR_DEFAULTSIZE)
         except:
-            icon_path = os.path.join(
-                os.path.dirname(__file__),
-                os.path.pardir,
-                os.path.pardir,
-                os.path.pardir,
-                os.path.pardir,
-                os.path.pardir,
-                'build',
-                'icos',
-                'icon-all.ico')
-            self._icon = win32gui.LoadImage(
+            pass
+
+    def _icon_from_pkg_resources(self):
+        """Loads the icon icon data stream using ``pkg_resources``, writes it
+        to a temporary file and then loads it as an icon.
+
+        The temporary file is removed afterwards.
+        """
+        icon_path = os.path.join(
+            os.path.dirname(__file__),
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            'build',
+            'icos',
+            'icon-all.ico')
+        instance = win32gui.GetModuleHandle(None)
+        try:
+            with pkg_resources.resource_stream(*win.PATH_MAINICON) as f:
+                data = f.read()
+            fd, icon_path = tempfile.mkstemp()
+            try:
+                with os.fdopen(fd, 'wb') as f:
+                    f.write(data)
+                return win32gui.LoadImage(
+                    instance,
+                    icon_path,
+                    win32con.IMAGE_ICON,
+                    0,
+                    0,
+                    win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
+            finally:
+                try:
+                    os.unlink(icon_path)
+                except:
+                    pass
+        except:
+            pass
+
+    def _icon_from_fs(self):
+        """Loads the icon from the build directory in the file system.
+
+        This works only if the icon is actually available in the file system.
+        """
+        icon_path = os.path.join(
+            os.path.dirname(__file__),
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            'build',
+            'icos',
+            'icon-all.ico')
+        instance = win32gui.GetModuleHandle(None)
+        try:
+            return win32gui.LoadImage(
                 instance,
                 icon_path,
                 win32con.IMAGE_ICON,
                 0,
                 0,
                 win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
-        return self._icon
+        except:
+            pass
 
     @property
     def window(self):

@@ -1,19 +1,20 @@
 Virtual Touchpad
 ================
 
-This application allows you to use a mobile phone or tablet as a touchpad for
-your computer.
+This application allows you to use a mobile phone or tablet as a touchpad and
+keyboard for your computer.
 
 No software needs to be installed on the device.
 
 
-How does it work?
------------------
+Quick Start
+-----------
 
-A simple HTTP server is started on the computer, and the device connects by
-simply opening a URL in a browser.
+On *Windows*, you can use the pre-packaged binary ``virtualtouchpad.exe``. When
+you run it, an icon will appear in the notification area. Hovering over this
+icon reveals the URL to use on your phone or tablet.
 
-To manually start the HTTP server, run the following command:
+If no pre-built executable exists for your platform, launch it from a terminal:
 
     python -m virtualtouchpad
 
@@ -21,19 +22,19 @@ This will start an HTTP server. It will print the line
 
     Starting server http://<computer name>:<port>/...
 
-Open this URL on your device to start controlling your computer.
+Connect to the URL displayed.
 
 
 Installation
 ------------
 
-Install this application by running the following command as root:
+Install this application by running the following command:
 
     pip install virtual-touchpad
 
 If you want to have access to pre-release versions, you can clone the *git*
 repository available from the linked *home page* below. Install by running this
-command as root:
+command:
 
     cd $VIRTUAL_TOUCHPAD_REPO
     python setup.py install

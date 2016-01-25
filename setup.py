@@ -40,6 +40,17 @@ REQUIREMENTS = [
     'netifaces >=0.8',
     'zeroconf >=0.17']
 
+EXTRAS_REQUIRE = {
+    ':sys_platform == "linux2"': [
+        'Pillow'],
+    ':sys_platform == "win32"': [
+        'pywin32']}
+
+BUILD_REQUIREMENTS = [
+    'cssmin',
+    'polib >=1.0.4',
+    'slimit']
+
 # The directories in which the packages can be found
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
@@ -54,17 +65,13 @@ def setup(**kwargs):
         cmdclass=dict(build.cmdclass),
         name='virtual-touchpad',
         version='.'.join(str(i) for i in INFO['version']),
-        description='Turns your mobile or tablet into a touchpad for your '
-        'computer.',
+        description='Turns your mobile or tablet into a touchpad and keyboard '
+        'for your computer.',
         long_description=README + '\n\n' + CHANGES,
 
-        install_requires=REQUIREMENTS + platform_requirements(),
-
-        setup_requires=REQUIREMENTS + platform_requirements() + [
-            'cssmin',
-            'ply ==3.4',
-            'polib >=1.0.4',
-            'slimit'],
+        install_requires=REQUIREMENTS,
+        extras_require=EXTRAS_REQUIRE,
+        setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
 
         author=INFO['author'],
         author_email='moses.palmer@gmail.com',
@@ -81,38 +88,17 @@ def setup(**kwargs):
 
         license='GPLv3',
         platforms=['linux', 'windows'],
-        classifiers=[],
+        keywords='control mouse, control keyboard',
+        classifiers=[
+            'Development Status :: 4 - Beta',
+            'Intended Audience :: End Users/Desktop',
+            'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+            'Operating System :: Microsoft :: Windows :: Windows NT/2000',
+            'Operating System :: POSIX',
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 2.7'],
 
         **kwargs)
-
-
-def platform_requirements():
-    """A list of PyPi packages that are dependencies only for the current
-    platform.
-    """
-    platform = ''.join(c for c in sys.platform if c.isalpha())
-    result = []
-
-    if platform == 'linux':
-        result.append('Pillow')
-        if sys.version_info.major == 3:
-            result.append('python3-xlib')
-        elif sys.version_info.major == 2:
-            result.append('python-xlib')
-        else:
-            raise NotImplementedError(
-                'This python major version (%d) is not supported',
-                sys.version_info.major)
-
-    elif platform == 'win' or platform == 'cygwin':
-        result.append('pywin32')
-
-    else:
-        raise NotImplementedError(
-            'This platform (%s) is not supported',
-            sys.platform)
-
-    return result
 
 
 # Read globals from virtualtouchpad._info without loading it
@@ -279,8 +265,8 @@ class generate_webapp_icons(setuptools.Command):
 
 
 @build.command
-class generate_windows_icons(setuptools.Command):
-    description = 'generate Windows icons from SVG sources'
+class generate_favicon(setuptools.Command):
+    description = 'generate a favicon from SVG sources'
     user_options = []
     DIMENSIONS = (128, 64, 32, 16)
 
@@ -305,8 +291,8 @@ class generate_windows_icons(setuptools.Command):
                     'icon%dx%d.ico' % (size, size)))
         build.icons.combine(
             os.path.join(
-                    target_dir,
-                    'icon-all.ico'),
+                    build.HTML_ROOT,
+                    'favicon.ico'),
             *(os.path.join(
                     target_dir,
                     'icon%dx%d.ico' % (size, size))
@@ -483,7 +469,10 @@ if py2exe:
     setup_arguments['windows'] = [
         {
             'script': 'scripts/virtualtouchpad.py',
-            'icon_resources': [(win.IDI_MAINICON, 'build/icos/icon-all.ico')]}]
+            'icon_resources': [
+                (
+                    win.IDI_MAINICON,
+                    os.path.join(build.HTML_ROOT, 'favicon.ico'))]}]
 
 
 setup(**setup_arguments)

@@ -17,6 +17,8 @@
 
 
 import os
+import pkg_resources
+import tempfile
 import threading
 import win32con
 
@@ -100,7 +102,10 @@ class SystemTrayIcon(SystemTrayIcon):
         if hasattr(self, '_icon'):
             return self._icon
 
-        self._icon = self._icon_from_app() or self._icon_from_fs()
+        self._icon = (
+            self._icon_from_app() or
+            self._icon_from_pkg_resources() or
+            self._icon_from_fs())
         return self._icon
 
     def _icon_from_app(self):
@@ -117,6 +122,45 @@ class SystemTrayIcon(SystemTrayIcon):
                 0,
                 0,
                 win32con.LR_DEFAULTSIZE)
+        except:
+            pass
+
+    def _icon_from_pkg_resources(self):
+        """Loads the icon icon data stream using ``pkg_resources``, writes it
+        to a temporary file and then loads it as an icon.
+
+        The temporary file is removed afterwards.
+        """
+        icon_path = os.path.join(
+            os.path.dirname(__file__),
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            os.path.pardir,
+            'build',
+            'icos',
+            'icon-all.ico')
+        instance = win32gui.GetModuleHandle(None)
+        try:
+            with pkg_resources.resource_stream(*win.PATH_MAINICON) as f:
+                data = f.read()
+            fd, icon_path = tempfile.mkstemp()
+            try:
+                with os.fdopen(fd, 'wb') as f:
+                    f.write(data)
+                return win32gui.LoadImage(
+                    instance,
+                    icon_path,
+                    win32con.IMAGE_ICON,
+                    0,
+                    0,
+                    win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
+            finally:
+                try:
+                    os.unlink(icon_path)
+                except:
+                    pass
         except:
             pass
 

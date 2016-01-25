@@ -1,6 +1,12 @@
 Release Notes
 =============
 
+v0.12.4 - Corrected packaging
+-----------------------------
+  * Ensure that only dependencies for the current platform are required.
+  * Allow loading the *systray icon* for *Windows* when running from a wheel.
+
+
 v0.12.3 - Corrected clicks
 --------------------------
   * Corrected touch pad clicks.

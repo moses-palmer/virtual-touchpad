@@ -49,12 +49,8 @@ class Dispatcher(object):
         try:
             return handler(**data)
         except Exception as e:
-            try:
-                detail = e.args[0] % e.args[1:]
-            except:
-                detail = str(e)
-            log.error(
+            log.exception(
                 'Failed to handle %s(%s): %s' % (
                     command,
                     ', '.join('%s=%s' % i for i in data.items()),
-                    detail))
+                    str(e)))

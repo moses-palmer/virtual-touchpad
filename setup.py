@@ -38,6 +38,7 @@ REQUIREMENTS = [
     'gevent >=0.13',
     'gevent-websocket >=0.9',
     'netifaces >=0.8',
+    'pynput >=0.6',
     'zeroconf >=0.17']
 
 EXTRAS_REQUIRE = {
@@ -455,7 +456,6 @@ if py2exe:
                 'greenlet',
                 'gevent.select',
                 'virtualtouchpad.platform.win32',
-                'virtualtouchpad.event.win32',
                 'virtualtouchpad.systray.win32',
                 'virtualtouchpad.systray.win32.win32systray'] + [
                     'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]

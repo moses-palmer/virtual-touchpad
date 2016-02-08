@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import collections
 import re
 
 from itertools import product, tee
@@ -24,7 +25,7 @@ NAME_RE = re.compile(
     r'XLookupString gives [0-9]+ bytes: \(.+\) "(.*?)"\s')
 
 #: The regular expression that matches dead keys
-DEAD_RE = re.compile(r'dead_.*')
+DEAD_RE = re.compile(r'dead_(.*)')
 
 
 #: The characters written on the actual keyboard; `?` indicates unknown values
@@ -90,14 +91,18 @@ def event_strings():
         yield block
 
 
+class Event(object):
+    """A keyboard event.
+    """
+    def __init__(self, **attributes):
+        for name, value in attributes.items():
+            setattr(self, name, value)
+
+
 def keyboard_events():
     """Yields keyboard events by invoking ``xev`` and reading its output.
 
-    A keyboard event is the tuple ``(pressed, code, keysym, symbol, name)``,
-    where ``pressed`` is a ``bool`` indicating whether this was a key press
-    event, ``code`` a key code corresponding to the physical location of the
-    key, ``keysym`` the integer value of the key symbol, ``symbol`` the *X*
-    symbol name of the key and ``name`` the display name of the key.
+    Please see the code below for the attributes available.
     """
     for event_string in event_strings():
         # Try to extract information from the block
@@ -114,14 +119,22 @@ def keyboard_events():
         keysym = int(symbol_match.group(2), 16)
         symbol = symbol_match.group(3)
 
+        # Check whether this was a dead key
+        dead_match = DEAD_RE.match(symbol)
+        if dead_match:
+            is_dead = True
+            symbol = dead_match.group(1)
+        else:
+            is_dead = False
+
         # Get the name of the key; this is not required
         name_match = NAME_RE.search(event_string)
         if name_match:
             name = name_match.group(1)
         else:
-            name = None
+            name = ''
 
-        yield (pressed, code, keysym, symbol, name or '')
+        yield Event(**locals())
 
 
 def describe_modifiers(shift, altgr):
@@ -163,11 +176,11 @@ def wait_for_modifiers(events, shift_value, altgr_value, release=False):
         if shift == shift_value and altgr == altgr_value:
             return
 
-        pressed, code, keysym, symbol, name = next(events)
-        if is_shift(symbol):
-            shift = pressed != release
-        elif is_altgr(symbol):
-            altgr = pressed != release
+        event = next(events)
+        if is_shift(event.symbol):
+            shift = event.pressed != release
+        elif is_altgr(event.symbol):
+            altgr = event.pressed != release
 
 
 def make_layout(layout_file, layout_name):
@@ -177,14 +190,16 @@ def make_layout(layout_file, layout_name):
     events = keyboard_events()
 
     print('Press return to begin...')
-    for pressed, code, keysym, symbol, name in events:
-        if not pressed and symbol == 'Return':
+    for event in events:
+        if not event.pressed and event.symbol == 'Return':
             break
 
-    layout = {}
+    layout = collections.OrderedDict()
+
+    modifier_combinations = product(*tee((False, True)))
 
     # Iterate over all values for the modifier keys
-    for shift, altgr in product(*tee((False, True))):
+    for shift, altgr in modifier_combinations:
         # The key codes for the keys pressed during this round
         codes = set()
 
@@ -209,27 +224,30 @@ def make_layout(layout_file, layout_name):
                     row, col, keyid, key_description), end='')
 
                 while True:
-                    pressed, code, keysym, symbol, name = next(events)
+                    event = next(events)
 
                     # Make sure no modifier is changed
-                    if is_shift(symbol) or is_altgr(symbol):
+                    if is_shift(event.symbol) or is_altgr(event.symbol):
                         raise RuntimeError(
                             'shift or altgr must not be modified')
 
                     # Ignore keypress events and already used keys
-                    if pressed or code in codes:
+                    if event.pressed or event.code in codes:
                         continue
 
                     # Now we have an actual layout key press
-                    codes.add(code)
+                    codes.add(event.code)
                     data = layout.get(keyid, None)
                     if data is None:
                         data = [''] * 4
                         layout[keyid] = data
                     data[index] = [
-                        name, keysym, symbol]
+                        event.name, event.is_dead]
 
-                    print('= %s (%s)' % (name or '<unnamed>', symbol))
+                    print('= %s (%s, %s key)' % (
+                        event.name or '<unnamed>',
+                        event.symbol,
+                        'dead' if event.is_dead else 'normal'))
 
                     break
 
@@ -241,10 +259,11 @@ def make_layout(layout_file, layout_name):
         wait_for_modifiers(events, shift, altgr, release=True)
         print()
 
-    json.dump({
-        'meta': {
-            'name': layout_name},
-        'layout': layout},
+    json.dump(
+        collections.OrderedDict((
+            ('meta', collections.OrderedDict((
+                ('name', layout_name),))),
+            ('layout', layout))),
         layout_file,
         indent=4)
 

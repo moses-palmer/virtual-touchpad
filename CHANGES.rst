@@ -1,6 +1,14 @@
 Release Notes
 =============
 
+v0.13 - Mac OSX Support
+-----------------------
+  * Added support for *Mac OSX* by replacing internal keyboard and mouse
+    handling with pynput_ and, for now, making the systray icon optional.
+
+.. _pynput: https://pypi.python.org/pypi/pynput
+
+
 v0.12.4 - Corrected packaging
 -----------------------------
   * Ensure that only dependencies for the current platform are required.

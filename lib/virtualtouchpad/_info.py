@@ -1,5 +1,5 @@
 # coding=utf8
 
-__version__ = (0, 12, 4)
+__version__ = (0, 13)
 
 __author__ = 'Moses Palmér'

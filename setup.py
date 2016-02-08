@@ -94,6 +94,7 @@ def setup(**kwargs):
             'Development Status :: 4 - Beta',
             'Intended Audience :: End Users/Desktop',
             'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+            'Operating System :: MacOS :: MacOS X',
             'Operating System :: Microsoft :: Windows :: Windows NT/2000',
             'Operating System :: POSIX',
             'Programming Language :: Python',

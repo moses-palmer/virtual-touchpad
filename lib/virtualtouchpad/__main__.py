@@ -21,7 +21,10 @@ import socket
 
 from argparse import ArgumentParser
 
-from virtualtouchpad import systray
+try:
+    from virtualtouchpad import systray
+except ImportError:
+    systray = None
 from .server import main
 
 log = logging.getLogger('virtualtouchpad')
@@ -109,8 +112,11 @@ def start():
         level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
-    icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
-        address, args.port), lambda: None)
+    if systray:
+        icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
+            address, args.port), lambda: None)
+    else:
+        icon = None
     try:
         if announce:
             announcer = announce.announce(address, args.port)
@@ -124,7 +130,8 @@ def start():
             if announce:
                 announcer.unregister()
     finally:
-        icon.destroy()
+        if icon:
+            icon.destroy()
 
 if __name__ == '__main__':
     try:

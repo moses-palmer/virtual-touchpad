@@ -14,11 +14,6 @@ sys.path.append(os.path.join(
     'lib-setup'))
 import build
 
-try:
-    import py2exe
-except ImportError:
-    py2exe = None
-
 
 # Data for the package; this will not be evaluated until the build steps have
 # completed
@@ -377,105 +372,6 @@ class generate_translations(setuptools.Command):
                         code + '.js'), 'w') as f:
                     f.write('exports.translation.catalog=')
                     json.dump(catalog, f)
-
-
-if py2exe:
-    import virtualtouchpad.platform.win32 as win
-
-    @build.command
-    class extract_local_eggs(setuptools.Command):
-        description = 'extract local egg files to allow py2exe to use them'
-        user_options = []
-
-        def initialize_options(self): pass
-
-        def finalize_options(self): pass
-
-        def run(self):
-            import glob
-            import zipfile
-
-            for path in glob.glob('*.egg') + glob.glob('.*/*.egg'):
-                # If it is not a ZIP file, this is not an egg module
-                try:
-                    zf = zipfile.ZipFile(path, 'r')
-                except:
-                    continue
-
-                try:
-                    # Create a temporary target directory and unzip the egg
-                    target = path + '.tmp'
-                    if not os.path.isdir(target):
-                        os.mkdir(target)
-                    zf.extractall(target)
-                finally:
-                    zf.close()
-
-                # Rename the files
-                os.rename(path, path + '.bak')
-                os.rename(target, path)
-
-    # Construct the data_files argument to setup from the package_data argument
-    # value; py2exe does not support data files
-    class py2exe_with_resources(py2exe.build_exe.py2exe):
-        def copy_extensions(self, extensions):
-            py2exe.build_exe.py2exe.copy_extensions(self, extensions)
-
-            from glob import glob
-
-            # Collect all package data files
-            files = []
-            for package, package_dir in PACKAGE_DIR.items():
-                for pattern in PACKAGE_DATA.get(package, []):
-                    files.extend((
-                            f,
-                            os.path.join(
-                                package,
-                                os.path.relpath(f, package_dir)))
-                        for f in glob(os.path.join(package_dir, pattern)))
-
-            # Copy the data files to the collection directory, and add the
-            # copied files to the list of compiled files to ensure that they
-            # will be included in the zip file
-            for source, target in files:
-                full_target = os.path.join(self.collect_dir, target)
-                try:
-                    os.makedirs(os.path.dirname(full_target))
-                except OSError:
-                    pass
-                self.copy_file(source, full_target)
-                self.compiled_files.append(target)
-
-    build.cmdclass['py2exe'] = py2exe_with_resources
-
-    setup_arguments['zipfile'] = None
-    setup_arguments['options'] = {
-        'py2exe': {
-            'bundle_files': 1,
-            'excludes': [
-                'netifaces',
-                'zeroconf'],
-            'includes': [
-                'greenlet',
-                'gevent.select',
-                'virtualtouchpad.platform.win32',
-                'virtualtouchpad.systray.win32',
-                'virtualtouchpad.systray.win32.win32systray'] + [
-                    'virtualtouchpad.server.dispatchers.%s' % m.rsplit('.')[0]
-                    for m in os.listdir(
-                        os.path.join(
-                            'lib', 'virtualtouchpad', 'server',
-                            'dispatchers'))
-                    if not m.startswith('_') and m.endswith('.py')]}}
-    setup_arguments['console'] = [
-        'scripts/virtualtouchpad-console.py']
-    setup_arguments['windows'] = [
-        {
-            'script': 'scripts/virtualtouchpad.py',
-            'icon_resources': [
-                (
-                    win.IDI_MAINICON,
-                    os.path.join(build.HTML_ROOT, 'favicon.ico'))]}]
 
 
 setup(**setup_arguments)

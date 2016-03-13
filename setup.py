@@ -53,53 +53,6 @@ EXTRA_PACKAGES = {
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-# Arguments passed to setup
-setup_arguments = {}
-
-
-def setup(**kwargs):
-    setuptools.setup(
-        cmdclass=dict(build.cmdclass),
-        name='virtual-touchpad',
-        version='.'.join(str(i) for i in INFO['version']),
-        description='Turns your mobile or tablet into a touchpad and keyboard '
-        'for your computer.',
-        long_description=README + '\n\n' + CHANGES,
-
-        install_requires=REQUIREMENTS,
-        setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
-        extras_require=EXTRA_PACKAGES,
-
-        author=INFO['author'],
-        author_email='moses.palmer@gmail.com',
-
-        url='https://github.com/moses-palmer/virtual-touchpad',
-
-        packages=setuptools.find_packages(
-            os.path.join(
-                os.path.dirname(__file__),
-                'lib')),
-        package_dir=PACKAGE_DIR,
-        package_data=PACKAGE_DATA,
-        zip_safe=True,
-
-        license='GPLv3',
-        platforms=['linux', 'windows'],
-        keywords='control mouse, control keyboard',
-        classifiers=[
-            'Development Status :: 4 - Beta',
-            'Intended Audience :: End Users/Desktop',
-            'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-            'Operating System :: MacOS :: MacOS X',
-            'Operating System :: Microsoft :: Windows :: Windows NT/2000',
-            'Operating System :: POSIX',
-            'Programming Language :: Python',
-            'Programming Language :: Python :: 2.7',
-            'Programming Language :: Python :: 3.4'],
-
-        **kwargs)
-
-
 # Read globals from virtualtouchpad._info without loading it
 INFO = {}
 with open(os.path.join(
@@ -374,4 +327,41 @@ class generate_translations(setuptools.Command):
                     json.dump(catalog, f)
 
 
-setup(**setup_arguments)
+setuptools.setup(
+    cmdclass=dict(build.cmdclass),
+    name='virtual-touchpad',
+    version='.'.join(str(i) for i in INFO['version']),
+    description='Turns your mobile or tablet into a touchpad and keyboard '
+    'for your computer.',
+    long_description=README + '\n\n' + CHANGES,
+
+    install_requires=REQUIREMENTS,
+    setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
+    extras_require=EXTRA_PACKAGES,
+
+    author=INFO['author'],
+    author_email='moses.palmer@gmail.com',
+
+    url='https://github.com/moses-palmer/virtual-touchpad',
+
+    packages=setuptools.find_packages(
+        os.path.join(
+            os.path.dirname(__file__),
+            'lib')),
+    package_dir=PACKAGE_DIR,
+    package_data=PACKAGE_DATA,
+    zip_safe=True,
+
+    license='GPLv3',
+    platforms=['linux', 'windows'],
+    keywords='control mouse, control keyboard',
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: End Users/Desktop',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows :: Windows NT/2000',
+        'Operating System :: POSIX',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4'])

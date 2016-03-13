@@ -86,7 +86,33 @@ except IOError:
     CHANGES = ''
 
 
-@build.utility
+#: The mapping from command name to custom build commands
+cmdclass = {}
+
+
+def build_command(cls):
+    """Registers a class as a build command.
+
+    :param cls: The command class.
+    """
+    cmdclass[cls.__name__] = cls
+
+    return cls
+
+
+def build_helper(cls):
+    """Registers a class as a helper command to run when invoking ``build``.
+
+    :param cls: The command class.
+    """
+    import distutils.command.build
+
+    distutils.command.build.build.sub_commands.append((cls.__name__, None))
+
+    return build_command(cls)
+
+
+@build_command
 class xgettext(setuptools.Command):
     description = 'update the POT files'
     user_options = []
@@ -135,7 +161,7 @@ class xgettext(setuptools.Command):
                 build.translation.merge_catalogs(potfile, pofile)
 
 
-@build.command
+@build_helper
 class minify_index(setuptools.Command):
     description = 'minify index.xhtml'
     user_options = []
@@ -167,7 +193,7 @@ class minify_index(setuptools.Command):
                 'index.min.xhtml'))
 
 
-@build.command
+@build_helper
 class minify_help(setuptools.Command):
     description = 'minify help/index.xhtml'
     user_options = []
@@ -196,7 +222,7 @@ class minify_help(setuptools.Command):
                 'index.min.xhtml'))
 
 
-@build.command
+@build_helper
 class generate_webapp_icons(setuptools.Command):
     description = 'generate web application icons from SVG sources'
     user_options = []
@@ -216,7 +242,7 @@ class generate_webapp_icons(setuptools.Command):
                     'icon%dx%d.png' % (size, size)))
 
 
-@build.command
+@build_helper
 class generate_favicon(setuptools.Command):
     description = 'generate a favicon from SVG sources'
     user_options = []
@@ -251,7 +277,7 @@ class generate_favicon(setuptools.Command):
                 for size in self.DIMENSIONS))
 
 
-@build.command
+@build_helper
 class generate_translations(setuptools.Command):
     description = 'generate translation catalogues from PO files'
     user_options = []
@@ -328,7 +354,7 @@ class generate_translations(setuptools.Command):
 
 
 setuptools.setup(
-    cmdclass=dict(build.cmdclass),
+    cmdclass=cmdclass,
     name='virtual-touchpad',
     version='.'.join(str(i) for i in INFO['version']),
     description='Turns your mobile or tablet into a touchpad and keyboard '

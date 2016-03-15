@@ -26,15 +26,41 @@ from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 log = logging.getLogger(__name__)
 
 
-# Set a default value for STATIC_ROOT only if it is accessible
-DEFAULT_STATIC_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    os.path.pardir,
-    'html')
-STATIC_ROOT = os.getenv(
-    'VIRTUAL_TOUCHPAD_STATIC_ROOT',
-    DEFAULT_STATIC_ROOT if os.access(DEFAULT_STATIC_ROOT, os.R_OK)
-    else None)
+def __get_static_root():
+    # First use the environment variables
+    try:
+        root_from_env = os.environ['VIRTUAL_TOUCHPAD_STATIC_ROOT']
+        if os.path.isdir(root_from_env):
+            return root_from_env
+
+    except KeyError:
+        # The environment variable is not set, ignore
+        pass
+
+    # Then handle frozen applications; expect them to put data alongside the
+    # executable
+    try:
+        if sys.frozen:
+            root_from_exe = os.path.join(
+                os.path.dirname(sys.executable),
+                'virtualtouchpad', 'html')
+            if os.path.isdir(root_from_exe):
+                return root_from_exe
+
+    except AttributeError:
+        # The application is not frozen, ignore
+        pass
+
+    # If we can acces the root directory of the package, fall back on that
+    import virtualtouchpad
+    root_from_package = os.path.join(
+        os.path.dirname(virtualtouchpad.__file__),
+        'html')
+    if os.path.isdir(root_from_package):
+        return root_from_package
+
+
+STATIC_ROOT = __get_static_root()
 
 
 def exists(path):

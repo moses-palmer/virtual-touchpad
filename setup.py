@@ -348,16 +348,12 @@ with open(os.path.join(
         os.path.dirname(__file__),
         'lib',
         'virtualtouchpad',
-        '_info.py')) as f:
-    for line in f:
-        try:
-            name, value = (i.strip() for i in line.split('='))
-            if name.startswith('__') and name.endswith('__'):
-                INFO[name[2:-2]] = eval(value)
-        except ValueError:
-            pass
-setup_arguments['author'] = INFO['author']
-setup_arguments['version'] = '.'.join(str(i) for i in INFO['version']),
+        '_info.py'), 'rb') as f:
+    data = f.read().decode('utf-8') if sys.version_info.major >= 3 else f.read()
+    code = compile(data, '_info.py', 'exec')
+    exec(code, {}, INFO)
+setup_arguments['author'] = INFO['__author__']
+setup_arguments['version'] = '.'.join(str(v) for v in INFO['__version__'])
 
 
 # Read long description from several files

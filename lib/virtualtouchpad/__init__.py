@@ -17,5 +17,3 @@
 
 
 from ._info import *
-
-from . import platform

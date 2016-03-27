@@ -16,15 +16,16 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-
+import os
+import pkg_resources
 import socket
+
+import PIL.Image
+import pystray
 
 from argparse import ArgumentParser
 
-try:
-    from virtualtouchpad import systray
-except ImportError:
-    systray = None
+from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 from .server import main
 
 log = logging.getLogger('virtualtouchpad')
@@ -112,26 +113,28 @@ def start():
         level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
-    if systray:
-        icon = systray.SystemTrayIcon('Virtual Touchpad - http://%s:%d' % (
-            address, args.port), lambda: None)
-    else:
-        icon = None
+    icon = pystray.Icon(__name__,
+        title='Virtual Touchpad - http://%s:%d' % (
+            address, args.port),
+        icon=PIL.Image.open(
+            pkg_resources.resource_stream(
+                PKG_RESOURCES_PACKAGE,
+                os.path.join(
+                    'html', 'img', 'icon196x196.png'))))
+    if announce:
+        announcer = announce.announce(address, args.port)
     try:
-        if announce:
-            announcer = announce.announce(address, args.port)
-        try:
+        def setup(icon):
+            icon.visible = True
             main(address=address, **vars(args)).serve_forever()
-        except KeyboardInterrupt:
-            log.info('Interrupted, terminating')
-        except:
-            log.exception('An unhandler exception occurred in main')
-        finally:
-            if announce:
-                announcer.unregister()
+        icon.run(setup)
+    except KeyboardInterrupt:
+        log.info('Interrupted, terminating')
+    except:
+        log.exception('An unhandler exception occurred in main')
     finally:
-        if icon:
-            icon.destroy()
+        if announce:
+            announcer.unregister()
 
 if __name__ == '__main__':
     try:

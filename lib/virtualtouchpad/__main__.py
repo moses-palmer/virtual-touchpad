@@ -113,7 +113,8 @@ def start():
         level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
-    icon = pystray.Icon(__name__,
+    icon = pystray.Icon(
+        __name__,
         title='Virtual Touchpad - http://%s:%d' % (
             address, args.port),
         icon=PIL.Image.open(

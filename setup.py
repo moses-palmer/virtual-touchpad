@@ -39,6 +39,7 @@ REQUIREMENTS = [
     'gevent-websocket >=0.9',
     'netifaces >=0.8',
     'pynput >=1.0',
+    'pystray >=0.2',
     'zeroconf >=0.17']
 
 EXTRAS_REQUIRE = {

@@ -1,6 +1,14 @@
 Release Notes
 =============
 
+v0.14 - System tray icon on Mac OSX
+-----------------------------------
+  * Added support for system tray icon on Mac OSX by replacing internal system
+    tray icon handling with pystray_.
+
+.. _pystray: https://pypi.python.org/pypi/pystray
+
+
 v0.13 - Mac OSX Support
 -----------------------
   * Added support for *Mac OSX* by replacing internal keyboard and mouse

@@ -28,7 +28,10 @@ from argparse import ArgumentParser
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 from ._info import __version__
-from .server import main
+from .server import app
+
+# Importing this module will attach routes to app
+from .server import routes
 
 
 # The name of the Virtual Touchpad service
@@ -130,6 +133,36 @@ def _announcer(ip_address, port):
         zc.close()
 
 
+def _server(app, port, address):
+    """Creates the actual server instance.
+
+    :param app: The main *bottle* app.
+
+    :param int port: The port on which to listen.
+
+    :param address: The address on which to listen.
+
+    :return: a *WSGI* server
+    """
+    import gevent.pywsgi
+    import sys
+
+    try:
+        from geventwebsocket.handler import WebSocketHandler
+    except ImportError:
+        from geventwebsocket import WebSocketHandler
+
+    sys.stdout.write('Starting server http://%s:%d/...\n' % (
+        address, port))
+
+    from gevent import monkey
+    monkey.patch_all(thread=False)
+    return gevent.pywsgi.WSGIServer(
+        ('0.0.0.0', port),
+        app,
+        handler_class=WebSocketHandler)
+
+
 def start():
     parser = ArgumentParser(
         description='Turns your mobile or tablet into a touchpad for your '
@@ -166,8 +199,9 @@ def start():
 
     try:
         def setup(icon):
+            server = _server(app, args.port, address)
             icon.visible = True
-            main(address=address, **vars(args)).serve_forever()
+            server.serve_forever()
 
         with _announcer(address, args.port):
             icon.run(setup)

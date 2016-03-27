@@ -38,6 +38,7 @@ REQUIREMENTS = [
     'gevent >=0.13',
     'gevent-websocket >=0.9',
     'netifaces >=0.8',
+    'Pillow >=1.1.7',
     'pynput >=1.0',
     'pystray >=0.2',
     'zeroconf >=0.17']

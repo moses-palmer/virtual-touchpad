@@ -20,6 +20,7 @@ import json
 import logging
 
 from . import app
+from .static import static
 from ..util import static_file
 
 
@@ -39,7 +40,7 @@ def default_layout():
         return bottle.HTTPResponse(status=404)
 
     # TODO: Select the one used by the current system
-    return static_file.get('%s/%s' % (ROOT, layout_files[0]))
+    return static('%s/%s' % (ROOT, layout_files[0]))
 
 
 @app.get('/keyboard/layout/')

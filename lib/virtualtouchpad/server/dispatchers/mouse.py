@@ -75,4 +75,4 @@ class Handler(object):
 
         :param int dy: The vertical offset to move.
         """
-        self.d.move(dx, dy)
+        self.d.move(int(dx), int(dy))

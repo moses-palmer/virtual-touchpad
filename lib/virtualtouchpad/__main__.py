@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import contextlib
 import logging
 import os
 import pkg_resources
@@ -26,7 +27,15 @@ import pystray
 from argparse import ArgumentParser
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
-from .server import main
+from ._info import __version__
+from .server import app
+
+# Importing this module will attach routes to app
+from .server import routes
+
+
+# The name of the Virtual Touchpad service
+SERVICE_NAME = '_virtualtouchpad._http._tcp.local.'
 
 log = logging.getLogger('virtualtouchpad')
 
@@ -84,12 +93,77 @@ def _get_local_address(default=socket.gethostname()):
         return default
 
 
-def start():
-    try:
-        from . import announce
-    except ImportError:
-        announce = None
+@contextlib.contextmanager
+def _announcer(ip_address, port):
+    """Announces that *Virtual Touchpad* is available on the local network.
 
+    This function works as a context manager that unregisters the service upon
+    exit.
+
+    :param str ip_address: The IP address on which *Virtual Touchpad* is
+        reachable.
+
+    :param int port: The port on which to connect to *Virtual Touchpad*.
+    """
+    import getpass
+    import socket
+    import types
+
+    try:
+        import zeroconf
+    except:
+        yield
+        return
+
+    zc = zeroconf.Zeroconf()
+    info = zeroconf.ServiceInfo(
+        SERVICE_NAME,
+        '%s@%s.%s' % (getpass.getuser(), socket.gethostname(), SERVICE_NAME),
+        socket.inet_aton(ip_address),
+        port,
+        0, 0,
+        {
+            'version': '.'.join(str(v) for v in __version__)})
+    zc.register_service(info)
+
+    try:
+        yield
+    finally:
+        zc.unregister_service(info)
+        zc.close()
+
+
+def _server(app, port, address):
+    """Creates the actual server instance.
+
+    :param app: The main *bottle* app.
+
+    :param int port: The port on which to listen.
+
+    :param address: The address on which to listen.
+
+    :return: a *WSGI* server
+    """
+    import gevent.pywsgi
+    import sys
+
+    try:
+        from geventwebsocket.handler import WebSocketHandler
+    except ImportError:
+        from geventwebsocket import WebSocketHandler
+
+    sys.stdout.write('Starting server http://%s:%d/...\n' % (
+        address, port))
+
+    from gevent import monkey
+    monkey.patch_all(thread=False)
+    return gevent.pywsgi.WSGIServer(
+        ('0.0.0.0', port),
+        app,
+        handler_class=WebSocketHandler)
+
+
+def start():
     parser = ArgumentParser(
         description='Turns your mobile or tablet into a touchpad for your '
         'computer.')
@@ -113,7 +187,8 @@ def start():
         level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
-    icon = pystray.Icon(__name__,
+    icon = pystray.Icon(
+        __name__,
         title='Virtual Touchpad - http://%s:%d' % (
             address, args.port),
         icon=PIL.Image.open(
@@ -121,20 +196,19 @@ def start():
                 PKG_RESOURCES_PACKAGE,
                 os.path.join(
                     'html', 'img', 'icon196x196.png'))))
-    if announce:
-        announcer = announce.announce(address, args.port)
+
     try:
         def setup(icon):
+            server = _server(app, args.port, address)
             icon.visible = True
-            main(address=address, **vars(args)).serve_forever()
-        icon.run(setup)
+            server.serve_forever()
+
+        with _announcer(address, args.port):
+            icon.run(setup)
     except KeyboardInterrupt:
         log.info('Interrupted, terminating')
     except:
         log.exception('An unhandler exception occurred in main')
-    finally:
-        if announce:
-            announcer.unregister()
 
 if __name__ == '__main__':
     try:

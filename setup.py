@@ -57,7 +57,6 @@ setup_arguments = {}
 
 
 def setup(**kwargs):
-    global INFO, README, CHANGES, PACKAGE_DATA, PACKAGE_DIR
     setuptools.setup(
         cmdclass=dict(build.cmdclass),
         name='virtual-touchpad',

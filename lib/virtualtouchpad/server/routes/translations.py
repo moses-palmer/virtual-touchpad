@@ -19,6 +19,7 @@ import bottle
 import os
 
 from . import app
+from .static import static
 from ..util import static_file
 
 
@@ -37,6 +38,6 @@ def translations(domain):
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
         if static_file.exists(path):
-            return static_file.get(path)
+            return static(path)
 
     return bottle.HTTPResponse(status=404)

@@ -19,7 +19,7 @@ import bottle
 import json
 import logging
 
-from virtualtouchpad.util import static_file
+import virtualtouchpad.resource as resource
 
 from . import app
 from .static import static
@@ -36,7 +36,7 @@ ROOT = 'keyboard/layout'
 def default_layout():
     """Returns the default keyboard layout.
     """
-    layout_files = static_file.list(ROOT)
+    layout_files = resource.list(ROOT)
     if not layout_files:
         return bottle.HTTPResponse(status=404)
 
@@ -48,7 +48,7 @@ def default_layout():
 def list_layouts():
     """Returns a list of all keyboard layouts.
     """
-    layout_files = static_file.list(ROOT)
+    layout_files = resource.list(ROOT)
     if not layout_files:
         return bottle.HTTPResponse(status=404)
 
@@ -56,7 +56,7 @@ def list_layouts():
     for layout_file in layout_files:
         path = '%s/%s' % (ROOT, layout_file)
         try:
-            with static_file.open_stream(path) as f:
+            with resource.open_stream(path) as f:
                 layout = json.load(f)
                 layouts.append({
                     'url': '/%s' % path,

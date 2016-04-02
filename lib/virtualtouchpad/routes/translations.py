@@ -18,7 +18,7 @@
 import bottle
 import os
 
-from virtualtouchpad.util import static_file
+import virtualtouchpad.resource as resource
 
 from . import app
 from .static import static
@@ -38,7 +38,7 @@ def translations(domain):
 
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
-        if static_file.exists(path):
+        if resource.exists(path):
             return static(path)
 
     return bottle.HTTPResponse(status=404)

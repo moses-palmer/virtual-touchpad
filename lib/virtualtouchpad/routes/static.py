@@ -22,7 +22,7 @@ import os
 import sys
 import time
 
-from virtualtouchpad.util import static_file
+import virtualtouchpad.resource as resource
 
 from . import app
 
@@ -42,17 +42,17 @@ INDEX_FILE = 'index.xhtml'
 @app.get('/')
 @app.get('/<filepath:path>')
 def static(filepath='.'):
-    if static_file.isdir(filepath):
+    if resource.isdir(filepath):
         for index_file in (
                 os.path.join(filepath, INDEX_MIN_FILE),
                 os.path.join(filepath, INDEX_FILE)):
-            if static_file.exists(index_file):
+            if resource.exists(index_file):
                 return static(index_file)
         return bottle.HTTPResponse(status=404)
 
     # Open the file and get its size
     try:
-        stream = static_file.open_stream(filepath)
+        stream = resource.open_stream(filepath)
         stream.seek(0, os.SEEK_END)
         size = stream.tell()
         stream.seek(0, os.SEEK_SET)

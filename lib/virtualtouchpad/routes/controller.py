@@ -15,81 +15,47 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import bottle
-import geventwebsocket
 import json
 import logging
 import sys
-import traceback
 
 from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 
-from . import app
+from . import websocket
 
 
-log = logging.getLogger(__name__)
-
-
-@app.route('/controller')
-def controller():
-    # Get the actual websocket
-    ws = bottle.request.environ.get('wsgi.websocket')
-    log.info(
-        'WebSocket with %s opened',
-        bottle.request.environ.get('REMOTE_ADDR'))
-    if not ws:
-        bottle.abort(400, 'Expected WebSocket request.')
-
-    def report_error(reason, exception, tb):
-        ws.send(json.dumps(dict(
-            reason=reason,
-            exception=type(exception).__name__,
-            data=str(exception),
-            tb=traceback.extract_tb(tb))))
-
+@websocket('/controller')
+def controller(report_error):
+    log = logging.getLogger(__name__)
     dispatch = Dispatcher(
         key=keyboard.Handler(),
         mouse=mouse.Handler())
 
     while True:
+        message = yield
+        if not message:
+            continue
+
         try:
-            message = ws.receive()
-            if message is None:
-                break
+            command = json.loads(message)
+        except Exception as e:
+            log.exception(
+                'An error occurred when loading JSON from %s',
+                message)
+            ex_type, ex, tb = sys.exc_info()
+            report_error(
+                'invalid_data',
+                e, tb)
+            continue
 
-            try:
-                command = json.loads(message)
-            except Exception as e:
-                log.exception(
-                    'An error occurred when loading JSON from %s',
-                    message)
-                ex_type, ex, tb = sys.exc_info()
-                report_error(
-                    'invalid_data',
-                    e, tb)
-                continue
-
-            try:
-                dispatch(**command)
-            except TypeError as e:
-                log.exception(
-                    'Failed to dispatch command %s',
-                    command)
-                ex_type, ex, tb = sys.exc_info()
-                report_error(
-                    'invalid_command',
-                    e, tb)
-                continue
-            except Exception as e:
-                log.exception(
-                    'An error occurred while dispatching %s',
-                    command)
-                ex_type, ex, tb = sys.exc_info()
-                report_error(
-                    'internal_error',
-                    e, tb)
-                continue
-
-        except geventwebsocket.WebSocketError:
-            log.exception('Failed to read WebSocket data')
-            break
+        try:
+            dispatch(**command)
+        except TypeError as e:
+            log.exception(
+                'Failed to dispatch command %s',
+                command)
+            ex_type, ex, tb = sys.exc_info()
+            report_error(
+                'invalid_command',
+                e, tb)
+            continue

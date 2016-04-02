@@ -15,13 +15,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import bottle
 import json
 import logging
 
-from . import app
+import virtualtouchpad.resource as resource
+
+from . import get, HTTPResponse
 from .static import static
-from ..util import static_file
 
 
 log = logging.getLogger(__name__)
@@ -31,31 +31,31 @@ log = logging.getLogger(__name__)
 ROOT = 'keyboard/layout'
 
 
-@app.get('/keyboard/layout/default')
-def default_layout():
+@get('/keyboard/layout/default')
+def default_layout(headers):
     """Returns the default keyboard layout.
     """
-    layout_files = static_file.list(ROOT)
+    layout_files = resource.list(ROOT)
     if not layout_files:
-        return bottle.HTTPResponse(status=404)
+        return HTTPResponse(404)
 
     # TODO: Select the one used by the current system
-    return static('%s/%s' % (ROOT, layout_files[0]))
+    return static(headers, '%s/%s' % (ROOT, layout_files[0]))
 
 
-@app.get('/keyboard/layout/')
-def list_layouts():
+@get('/keyboard/layout/')
+def list_layouts(headers):
     """Returns a list of all keyboard layouts.
     """
-    layout_files = static_file.list(ROOT)
+    layout_files = resource.list(ROOT)
     if not layout_files:
-        return bottle.HTTPResponse(status=404)
+        return HTTPResponse(404)
 
     layouts = []
     for layout_file in layout_files:
         path = '%s/%s' % (ROOT, layout_file)
         try:
-            with static_file.open_stream(path) as f:
+            with resource.open_stream(path) as f:
                 layout = json.load(f)
                 layouts.append({
                     'url': '/%s' % path,

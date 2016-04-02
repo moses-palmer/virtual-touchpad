@@ -22,8 +22,9 @@ import os
 import sys
 import time
 
+from virtualtouchpad.util import static_file
+
 from . import app
-from ..util import static_file
 
 
 log = logging.getLogger(__name__)

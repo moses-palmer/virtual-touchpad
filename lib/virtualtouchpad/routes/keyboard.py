@@ -19,9 +19,10 @@ import bottle
 import json
 import logging
 
+from virtualtouchpad.util import static_file
+
 from . import app
 from .static import static
-from ..util import static_file
 
 
 log = logging.getLogger(__name__)

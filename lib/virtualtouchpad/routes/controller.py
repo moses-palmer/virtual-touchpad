@@ -22,8 +22,9 @@ import logging
 import sys
 import traceback
 
+from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
+
 from . import app
-from ..dispatchers import Dispatcher, keyboard, mouse
 
 
 log = logging.getLogger(__name__)

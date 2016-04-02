@@ -28,10 +28,9 @@ from argparse import ArgumentParser
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
 from ._info import __version__
-from .server.routes import app
 
 # Importing this module will attach routes to app
-from .server import routes
+from .routes import app
 
 
 # The name of the Virtual Touchpad service

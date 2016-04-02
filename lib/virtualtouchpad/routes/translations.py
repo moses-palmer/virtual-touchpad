@@ -18,9 +18,10 @@
 import bottle
 import os
 
+from virtualtouchpad.util import static_file
+
 from . import app
 from .static import static
-from ..util import static_file
 
 
 @app.get('/translations/<domain>')

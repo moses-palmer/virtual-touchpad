@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-from .. import app
+import bottle
+
+app = bottle.Bottle()
 
 # Importing these modules will attach routes to app
 from . import controller

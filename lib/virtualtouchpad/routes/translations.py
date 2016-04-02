@@ -15,19 +15,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import bottle
 import os
 
 import virtualtouchpad.resource as resource
 
-from . import app
+from . import get, HTTPResponse
 from .static import static
 
 
-@app.get('/translations/<domain>')
-def translations(domain):
-    accept_language = bottle.request.headers.get('Accept-Language') \
-        or 'default'
+@get('/translations/<domain>')
+def translations(headers, domain):
+    accept_language = headers.get('accept-language', 'default')
     languages = sorted((
         (
             language.split(';')[0].strip(),
@@ -39,6 +37,6 @@ def translations(domain):
     for language, q in languages:
         path = os.path.join('translations', domain, language + '.js')
         if resource.exists(path):
-            return static(path)
+            return static(headers, path)
 
-    return bottle.HTTPResponse(status=404)
+    return HTTPResponse(404)

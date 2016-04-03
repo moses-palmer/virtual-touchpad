@@ -24,7 +24,7 @@ import types
 import bottle
 import geventwebsocket
 
-app = bottle.Bottle()
+from virtualtouchpad._server_bottle import app
 
 
 class HTTPResponse(object):

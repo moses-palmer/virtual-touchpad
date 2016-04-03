@@ -15,8 +15,26 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+import bottle
+import gevent.monkey
+import gevent.pywsgi
+import geventwebsocket.handler
 
 
-if sys.version_info.major < 3:
-    from ._server_bottle import server
+app = bottle.Bottle()
+
+
+def server(port, address):
+    """Creates the actual server instance.
+
+    :param int port: The port on which to listen.
+
+    :param address: The address on which to listen.
+
+    :return: a server instance
+    """
+    gevent.monkey.patch_all(thread=False)
+    return gevent.pywsgi.WSGIServer(
+        ('0.0.0.0', port),
+        app,
+        handler_class=geventwebsocket.handler.WebSocketHandler)

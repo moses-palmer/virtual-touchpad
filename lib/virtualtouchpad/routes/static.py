@@ -18,7 +18,7 @@
 import logging
 import mimetypes
 import os
-import rfc822
+import email.utils
 import sys
 import time
 
@@ -73,11 +73,11 @@ def static(headers, filepath='.'):
         st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
     except OSError:
         st = os.stat(os.path.abspath(sys.argv[0]))
-    response_headers['Last-Modified'] = rfc822.formatdate(st.st_mtime)
+    response_headers['Last-Modified'] = email.utils.formatdate(st.st_mtime)
 
     if headers.get('if-modified-since'):
-        if_modified_since = rfc822.parsedate(
-            headers.get('if-modified-since').split(";")[0].strip())
+        if_modified_since = time.mktime(email.utils.parsedate(
+            headers.get('if-modified-since').split(";")[0].strip()))
         if if_modified_since is not None \
                 and if_modified_since >= int(st.st_mtime):
             response_headers['Date'] = time.strftime(

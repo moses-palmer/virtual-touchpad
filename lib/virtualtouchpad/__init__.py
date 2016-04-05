@@ -20,3 +20,5 @@ import sys
 
 if sys.version_info.major < 3:
     from ._server_bottle import server
+else:
+    from ._server_aiohttp import server

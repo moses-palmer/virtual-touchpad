@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.15 - Python 3 Support
+------------------------
+  * Added support for Python 3.
+
+
 v0.14 - System tray icon on Mac OSX
 -----------------------------------
   * Added support for system tray icon on Mac OSX by replacing internal system

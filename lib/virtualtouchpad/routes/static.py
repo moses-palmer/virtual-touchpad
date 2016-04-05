@@ -78,7 +78,6 @@ def static(headers, filepath='.'):
     if headers.get('if-modified-since'):
         if_modified_since = rfc822.parsedate(
             headers.get('if-modified-since').split(";")[0].strip())
-        print if_modified_since
         if if_modified_since is not None \
                 and if_modified_since >= int(st.st_mtime):
             response_headers['Date'] = time.strftime(

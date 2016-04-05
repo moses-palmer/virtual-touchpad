@@ -34,19 +34,25 @@ PACKAGE_DATA = {
         'html/translations/*/*.*']}
 
 REQUIREMENTS = [
-    'bottle >=0.11',
-    'gevent >=0.13',
-    'gevent-websocket >=0.9',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
-    'pynput >=1.0',
-    'pystray >=0.2',
+    'pynput >=1.0.3',
+    'pystray >=0.3',
     'zeroconf >=0.17']
 
 BUILD_REQUIREMENTS = [
     'cssmin',
     'polib >=1.0.4',
     'slimit']
+
+#: Packages requires for different environments
+EXTRA_PACKAGES = {
+    ':python_version <= "2.7"': [
+        'bottle >=0.11',
+        'gevent >=0.13',
+        'gevent-websocket >=0.9'],
+    ':python_version >= "3.3"': [
+        'aiohttp >=0.21']}
 
 # The directories in which the packages can be found
 PACKAGE_DIR = {
@@ -67,6 +73,7 @@ def setup(**kwargs):
 
         install_requires=REQUIREMENTS,
         setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
+        extras_require=EXTRA_PACKAGES,
 
         author=INFO['author'],
         author_email='moses.palmer@gmail.com',
@@ -92,7 +99,8 @@ def setup(**kwargs):
             'Operating System :: Microsoft :: Windows :: Windows NT/2000',
             'Operating System :: POSIX',
             'Programming Language :: Python',
-            'Programming Language :: Python :: 2.7'],
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3.4'],
 
         **kwargs)
 

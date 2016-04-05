@@ -15,27 +15,26 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
-if sys.version_info.major < 3:
-    from ._routes_bottle import get, websocket
-else:
-    from ._routes_aiohttp import get, websocket
+import bottle
+import gevent.monkey
+import gevent.pywsgi
+import geventwebsocket.handler
 
 
-class HTTPResponse(object):
-    """A lightweight class to represent an HTTP response.
+app = bottle.Bottle()
+
+
+def server(port, address):
+    """Creates the actual server instance.
+
+    :param int port: The port on which to listen.
+
+    :param address: The address on which to listen.
+
+    :return: a server instance
     """
-    def __init__(self, status, body=None, headers=None):
-        self.status = status
-        self.body = body or b''
-        self.headers = headers or {}
-
-
-# Importing these modules will attach routes to app
-from . import controller
-from . import keyboard
-from . import translations
-
-# Import static last since it is the catch-all route
-from . import static
+    gevent.monkey.patch_all(thread=False)
+    return gevent.pywsgi.WSGIServer(
+        ('0.0.0.0', port),
+        app,
+        handler_class=geventwebsocket.handler.WebSocketHandler)

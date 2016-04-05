@@ -25,6 +25,8 @@ import sys
 import PIL.Image
 import pystray
 
+import virtualtouchpad.routes
+
 from argparse import ArgumentParser
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE, server

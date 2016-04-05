@@ -114,7 +114,7 @@ def open_stream(path):
     :return: a file-like object
     """
     if STATIC_ROOT is not None:
-        return open(os.path.join(STATIC_ROOT, path))
+        return open(os.path.join(STATIC_ROOT, path), 'rb')
 
     else:
         return pkg_resources.resource_stream(

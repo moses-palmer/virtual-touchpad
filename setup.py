@@ -50,7 +50,9 @@ EXTRA_PACKAGES = {
     ':python_version <= "2.7"': [
         'bottle >=0.11',
         'gevent >=0.13',
-        'gevent-websocket >=0.9']}
+        'gevent-websocket >=0.9'],
+    ':python_version >= "3.3"': [
+        'aiohttp >=0.21']}
 
 # The directories in which the packages can be found
 PACKAGE_DIR = {

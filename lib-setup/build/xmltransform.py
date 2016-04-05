@@ -218,7 +218,7 @@ def end(context, target_path):
     """
     global LICENSE
     source_path, dom, files = context
-    with open(target_path, 'w') as target:
+    with open(target_path, 'wb') as target:
         target.write(dom.toxml(encoding='utf-8'))
 
     update_file_time(target_path, *files)

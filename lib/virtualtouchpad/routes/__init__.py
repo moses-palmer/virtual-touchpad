@@ -26,7 +26,7 @@ class HTTPResponse(object):
     """
     def __init__(self, status, body=None, headers=None):
         self.status = status
-        self.body = body or ''
+        self.body = body or b''
         self.headers = headers or {}
 
 

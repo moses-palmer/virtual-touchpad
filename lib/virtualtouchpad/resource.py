@@ -15,15 +15,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import pkg_resources
 import os
 import sys
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
-
-
-log = logging.getLogger(__name__)
 
 
 def __get_static_root():

@@ -55,6 +55,10 @@ def __get_static_root():
     if os.path.isdir(root_from_package):
         return root_from_package
 
+    # If we have no root directory, we are probably running from an egg, and
+    # we return None to make the functions below use pkg_resources
+    return None
+
 
 STATIC_ROOT = __get_static_root()
 

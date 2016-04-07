@@ -15,15 +15,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import pkg_resources
 import os
 import sys
 
 from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
-
-
-log = logging.getLogger(__name__)
 
 
 def __get_static_root():
@@ -51,13 +47,17 @@ def __get_static_root():
         # The application is not frozen, ignore
         pass
 
-    # If we can acces the root directory of the package, fall back on that
+    # If we can access the root directory of the package, fall back on that
     import virtualtouchpad
     root_from_package = os.path.join(
         os.path.dirname(virtualtouchpad.__file__),
         'html')
     if os.path.isdir(root_from_package):
         return root_from_package
+
+    # If we have no root directory, we are probably running from an egg, and
+    # we return None to make the functions below use pkg_resources
+    return None
 
 
 STATIC_ROOT = __get_static_root()

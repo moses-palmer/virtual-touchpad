@@ -26,10 +26,11 @@ import PIL.Image
 import pystray
 
 import virtualtouchpad.routes
+import virtualtouchpad.resource as resource
 
 from argparse import ArgumentParser
 
-from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE, server
+from virtualtouchpad import server
 from ._info import __version__
 
 
@@ -161,10 +162,9 @@ def start():
         title='Virtual Touchpad - http://%s:%d' % (
             address, args.port),
         icon=PIL.Image.open(
-            pkg_resources.resource_stream(
-                PKG_RESOURCES_PACKAGE,
+            resource.open_stream(
                 os.path.join(
-                    'html', 'img', 'icon196x196.png'))))
+                    'img', 'icon196x196.png'))))
 
     try:
         def setup(icon):

@@ -14,7 +14,7 @@ def _locate_convert():
     for path in os.getenv('PATH').split(os.pathsep):
         try:
             full = os.path.join(path, 'convert')
-            if 'ImageMagick' in subprocess.check_output([full, '--version']):
+            if b'ImageMagick' in subprocess.check_output([full, '--version']):
                 return full
         except:
             pass

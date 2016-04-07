@@ -47,7 +47,7 @@ def __get_static_root():
         # The application is not frozen, ignore
         pass
 
-    # If we can acces the root directory of the package, fall back on that
+    # If we can access the root directory of the package, fall back on that
     import virtualtouchpad
     root_from_package = os.path.join(
         os.path.dirname(virtualtouchpad.__file__),

@@ -217,3 +217,7 @@ table.stack td:nth-child(2) {
 *:-webkit-full-screen #toolbar > button.fullscreen {
     display: none;
 }
+
+.fullscreen-disabled #toolbar > button.fullscreen {
+     display: none;
+}

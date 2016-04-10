@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+v0.15.1 - Fixes for iOS
+-----------------------
+  * Do not require the browser to support *HTML5 Fullscreen*, since this is
+    not supported on *iOS*.
+  * Allow the application to run unpackaged again.
+
+
 v0.15 - Python 3 Support
 ------------------------
   * Added support for Python 3.

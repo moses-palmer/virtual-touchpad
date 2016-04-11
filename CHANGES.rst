@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.15.2 - Fixes for Windows
+---------------------------
+  * Reenabled clicking and scrolling for *Windows*.
+
+
 v0.15.1 - Fixes for iOS
 -----------------------
   * Do not require the browser to support *HTML5 Fullscreen*, since this is

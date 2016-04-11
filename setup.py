@@ -36,7 +36,7 @@ PACKAGE_DATA = {
 REQUIREMENTS = [
     'netifaces >=0.8',
     'Pillow >=1.1.7',
-    'pynput >=1.0.3',
+    'pynput >=1.0.4',
     'pystray >=0.3',
     'zeroconf >=0.17']
 

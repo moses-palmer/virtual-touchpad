@@ -6,6 +6,8 @@ import distutils.command.build
 import os
 import setuptools
 
+from setuptools import setup
+
 # Make sure we can import build
 import sys
 sys.path.append(os.path.join(
@@ -372,4 +374,4 @@ setup_arguments['long_description'] = '\n\n'.join(
 
 
 if __name__ == '__main__':
-    setuptools.setup(**setup_arguments)
+    setup(**setup_arguments)

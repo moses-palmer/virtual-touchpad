@@ -1,6 +1,12 @@
 Release Notes
 =============
 
+v0.15.3 - Fixes for OSX
+---------------------------
+*  Enabled dragging on *OSX*.
+*  Increased scrolling speed on *OSX*.
+
+
 v0.15.2 - Fixes for Windows
 ---------------------------
 *  Reenabled clicking and scrolling for *Windows*.

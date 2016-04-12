@@ -53,52 +53,18 @@ EXTRA_PACKAGES = {
 PACKAGE_DIR = {
     'virtualtouchpad': 'lib/virtualtouchpad'}
 
-# Read globals from virtualtouchpad._info without loading it
-INFO = {}
-with open(os.path.join(
-        os.path.dirname(__file__),
-        'lib',
-        'virtualtouchpad',
-        '_info.py')) as f:
-    for line in f:
-        try:
-            name, value = (i.strip() for i in line.split('='))
-            if name.startswith('__') and name.endswith('__'):
-                INFO[name[2:-2]] = eval(value)
-        except ValueError:
-            pass
-
-
-try:
-    # Read README
-    with open(os.path.join(
-            os.path.dirname(__file__),
-            'README.rst')) as f:
-        README = f.read()
-
-    # Read CHANGES
-    with open(os.path.join(
-            os.path.dirname(__file__),
-            'CHANGES.rst')) as f:
-        CHANGES = f.read()
-except IOError:
-    README = ''
-    CHANGES = ''
-
-
+# These are the arguments passed to setuptools.setup; they are further modified
+# below
 setup_arguments = dict(
     cmdclass={},
     name='virtual-touchpad',
-    version='.'.join(str(i) for i in INFO['version']),
     description='Turns your mobile or tablet into a touchpad and keyboard '
     'for your computer.',
-    long_description=README + '\n\n' + CHANGES,
 
     install_requires=REQUIREMENTS,
     setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
     extras_require=EXTRA_PACKAGES,
 
-    author=INFO['author'],
     author_email='moses.palmer@gmail.com',
 
     url='https://github.com/moses-palmer/virtual-touchpad',
@@ -387,6 +353,39 @@ class generate_translations(setuptools.Command):
                         code + '.js'), 'w') as f:
                     f.write('exports.translation.catalog=')
                     json.dump(catalog, f)
+
+
+# Read globals from virtualtouchpad._info without loading it
+INFO = {}
+with open(os.path.join(
+        os.path.dirname(__file__),
+        'lib',
+        'virtualtouchpad',
+        '_info.py')) as f:
+    for line in f:
+        try:
+            name, value = (i.strip() for i in line.split('='))
+            if name.startswith('__') and name.endswith('__'):
+                INFO[name[2:-2]] = eval(value)
+        except ValueError:
+            pass
+setup_arguments['author'] = INFO['author']
+setup_arguments['version'] = '.'.join(str(i) for i in INFO['version']),
+
+
+# Read long description from several files
+def read(name):
+    try:
+        with open(os.path.join(
+                os.path.dirname(__file__),
+                os.pardir,
+                name)) as f:
+            return f.read()
+    except IOError:
+        return ''
+setup_arguments['long_description'] = '\n\n'.join(
+    read(name)
+    for name in ('README.rst', 'CHANGES.rst'))
 
 
 setuptools.setup(**setup_arguments)

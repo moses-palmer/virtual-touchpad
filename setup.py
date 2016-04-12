@@ -9,10 +9,7 @@ import sys
 sys.path.append(os.path.join(
     os.path.dirname(__file__),
     'lib'))
-sys.path.append(os.path.join(
-    os.path.dirname(__file__),
-    'lib-setup'))
-import build
+import _build as buildlib
 
 
 # Data for the package; this will not be evaluated until the build steps have
@@ -72,7 +69,9 @@ setup_arguments = dict(
     packages=setuptools.find_packages(
         os.path.join(
             os.path.dirname(__file__),
-            'lib')),
+            'lib'),
+        exclude=[
+            '_build']),
     package_dir=PACKAGE_DIR,
     package_data=PACKAGE_DATA,
     zip_safe=True,
@@ -124,7 +123,7 @@ class xgettext(setuptools.Command):
     def finalize_options(self): pass
 
     def run(self):
-        source_dir = build.HTML_ROOT
+        source_dir = buildlib.HTML_ROOT
         target_dir = os.path.join(
             os.path.dirname(__file__),
             'po')
@@ -144,7 +143,7 @@ class xgettext(setuptools.Command):
 
             # Extract the messages and save the POT file
             full_path = os.path.join(source_dir, path)
-            messages = build.translation.read_translatable_strings(full_path)
+            messages = buildlib.translation.read_translatable_strings(full_path)
             messages.save(potfile)
 
             # Make sure that the translation directory exists
@@ -160,7 +159,7 @@ class xgettext(setuptools.Command):
 
                 pofile = os.path.join(target_dir, domain, f)
 
-                build.translation.merge_catalogs(potfile, pofile)
+                buildlib.translation.merge_catalogs(potfile, pofile)
 
 
 @build_helper
@@ -174,24 +173,24 @@ class minify_index(setuptools.Command):
 
     def run(self):
         # Load index.html
-        dom_context = build.xmltransform.start(
+        dom_context = buildlib.xmltransform.start(
             os.path.join(
-                build.HTML_ROOT,
+                buildlib.HTML_ROOT,
                 'index.xhtml'))
 
         # Minify the index file
-        build.xmltransform.minify_html(dom_context)
+        buildlib.xmltransform.minify_html(dom_context)
 
         # Add the manifest file
-        build.xmltransform.add_manifest(
+        buildlib.xmltransform.add_manifest(
             dom_context,
             'virtual-touchpad.appcache')
 
         # Write index.min.xhtml
-        build.xmltransform.end(
+        buildlib.xmltransform.end(
             dom_context,
             os.path.join(
-                build.HTML_ROOT,
+                buildlib.HTML_ROOT,
                 'index.min.xhtml'))
 
 
@@ -206,20 +205,20 @@ class minify_help(setuptools.Command):
 
     def run(self):
         # Load help.xhtml
-        dom_context = build.xmltransform.start(
+        dom_context = buildlib.xmltransform.start(
             os.path.join(
-                build.HTML_ROOT,
+                buildlib.HTML_ROOT,
                 'help',
                 'index.xhtml'))
 
         # Minify the index file
-        build.xmltransform.minify_html(dom_context)
+        buildlib.xmltransform.minify_html(dom_context)
 
         # Write help.min.xhtml
-        build.xmltransform.end(
+        buildlib.xmltransform.end(
             dom_context,
             os.path.join(
-                build.HTML_ROOT,
+                buildlib.HTML_ROOT,
                 'help',
                 'index.min.xhtml'))
 
@@ -236,10 +235,10 @@ class generate_webapp_icons(setuptools.Command):
     def run(self):
         # Generate the application icons
         for size in (196, 144, 114, 96, 72, 57, 48):
-            build.icons.app_icon(
+            buildlib.icons.app_icon(
                 size,
                 os.path.join(
-                    build.HTML_ROOT,
+                    buildlib.HTML_ROOT,
                     'img',
                     'icon%dx%d.png' % (size, size)))
 
@@ -264,14 +263,14 @@ class generate_favicon(setuptools.Command):
 
         # Generate the application icons
         for size in self.DIMENSIONS:
-            build.icons.app_icon(
+            buildlib.icons.app_icon(
                 size,
                 os.path.join(
                     target_dir,
                     'icon%dx%d.ico' % (size, size)))
-        build.icons.combine(
+        buildlib.icons.combine(
             os.path.join(
-                    build.HTML_ROOT,
+                    buildlib.HTML_ROOT,
                     'favicon.ico'),
             *(os.path.join(
                     target_dir,

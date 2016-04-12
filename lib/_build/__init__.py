@@ -25,15 +25,13 @@ with open(os.path.join(
         os.path.dirname(__file__),
         os.pardir,
         os.pardir,
-        'LICENSE')) as f:
-    LICENSE = f.read()
+        'LICENSE'), 'rb') as f:
+    LICENSE = f.read().decode('utf-8')
 
 #: The directory in which *HTML* resources are located
 HTML_ROOT = os.path.join(
     os.path.dirname(__file__),
     os.path.pardir,
-    os.path.pardir,
-    'lib',
     'virtualtouchpad',
     'html')
 

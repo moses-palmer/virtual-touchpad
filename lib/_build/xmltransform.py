@@ -66,9 +66,9 @@ def _inline_script(e, source_dir, dom, files):
     src_path = _src_to_path(
         source_dir,
         e.getAttribute('src'))
-    with open(src_path) as src:
+    with open(src_path, 'rb') as src:
         cdata = CDATASection()
-        cdata.replaceWholeText(src.read())
+        cdata.replaceWholeText(src.read().decode('utf-8'))
         e.appendChild(cdata)
 
     # Make sure to remove the src attribute
@@ -90,9 +90,9 @@ def _inline_css(e, source_dir, dom, files):
     href_path = _src_to_path(
         source_dir,
         e.getAttribute('href'))
-    with open(href_path) as href:
+    with open(href_path, 'rb') as href:
         cdata = CDATASection()
-        cdata.replaceWholeText(href.read())
+        cdata.replaceWholeText(href.read().decode('utf-8'))
         e.appendChild(cdata)
 
     # Remove all attributes except for type
@@ -124,8 +124,8 @@ def _inline_include(e, source_dir, dom, files):
     href_path = _src_to_path(
         source_dir,
         e.getAttribute('href'))
-    with open(href_path) as href:
-        doc = parseString(href.read())
+    with open(href_path, 'rb') as href:
+        doc = parseString(href.read().decode('utf-8'))
 
     # Strip space
     _recurse(doc, _trim)

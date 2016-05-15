@@ -44,7 +44,8 @@ if CONVERT_COMMAND:
             CONVERT_COMMAND,
             '-background', 'none',
             source,
-            '-resize', 'x'.join(str(dimension) for dimension in dimensions),
+            '-resize', '%s!' % 'x'.join(
+                str(dimension) for dimension in dimensions),
             target],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()

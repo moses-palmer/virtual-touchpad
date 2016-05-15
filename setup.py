@@ -168,58 +168,64 @@ class minify_html(Command):
 class generate_icons(Command):
     description = 'generates all icons'
     sub_commands = [
-        ('generate_webapp_icons', None),
         ('generate_favicon', None)]
 
 
 @build_command
-class generate_webapp_icons(Command):
-    description = 'generate web application icons from SVG sources'
+class generate_raster_icons(Command):
+    description = 'generates raster icons'
+
+    BASE = 'icon%dx%d.png'
+
+    DIR = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), 'build', 'icons'))
+
+    TARGET = os.path.join(DIR, BASE)
 
     # The icon dimensions to generate
-    DIMENSIONS = (196, 144, 114, 96, 72, 57, 48)
+    DIMENSIONS = (
+        1024, 512, 256, 196, 144, 128, 114, 96, 72, 64, 57, 48, 32, 16)
 
     def run(self):
-        # Generate the application icons
+        if not os.path.isdir(self.DIR):
+            os.makedirs(self.DIR)
+
+        source_path = buildlib.icons.APP_ICON
+        source_stat = os.stat(source_path)
+
+        # Generate icons only for modified files
         for size in self.DIMENSIONS:
-            buildlib.icons.app_icon(
-                size,
-                os.path.join(
-                    buildlib.HTML_ROOT,
-                    'img',
-                    'icon%dx%d.png' % (size, size)))
+            target_path = self.TARGET % (size, size)
+            try:
+                target_stat = os.stat(target_path)
+                if not (source_stat.st_mtime > target_stat.st_mtime) :
+                    continue
+            except:
+                pass
+            buildlib.icons.convert(source_path, target_path, (size, size))
 
 
 @build_command
 class generate_favicon(Command):
     description = 'generate a favicon from SVG sources'
+    sub_commands = [
+        ('generate_raster_icons', None)]
 
-    # The icon dimensions to generate
+    BASE = 'favicon.ico'
+
+    DIR = os.path.abspath(os.path.join(
+        buildlib.HTML_ROOT))
+
+    TARGET = os.path.join(DIR, BASE)
+
     DIMENSIONS = (128, 64, 32, 16)
 
     def run(self):
-        target_dir = os.path.join(
-            os.path.dirname(__file__),
-            'build',
-            'icos')
-        if not os.path.isdir(target_dir):
-            os.makedirs(target_dir)
-
-        # Generate the application icons
-        for size in self.DIMENSIONS:
-            buildlib.icons.app_icon(
-                size,
-                os.path.join(
-                    target_dir,
-                    'icon%dx%d.ico' % (size, size)))
-        # Create the composite icon
+        Command.run(self)
         buildlib.icons.combine(
-            os.path.join(
-                    buildlib.HTML_ROOT,
-                    'favicon.ico'),
-            *(os.path.join(
-                    target_dir,
-                    'icon%dx%d.ico' % (size, size))
+            self.TARGET,
+            *(
+                generate_raster_icons.TARGET % (size, size)
                 for size in self.DIMENSIONS))
 
 

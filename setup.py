@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # coding: utf8
 
+import contextlib
 import distutils
 import distutils.command.build
 import os
 import setuptools
+import shutil
+import subprocess
+import tempfile
 
 from setuptools import setup
 
@@ -168,58 +172,205 @@ class minify_html(Command):
 class generate_icons(Command):
     description = 'generates all icons'
     sub_commands = [
-        ('generate_webapp_icons', None),
-        ('generate_favicon', None)]
+        ('generate_favicon', None),
+        ('generate_appicon', None)]
 
 
 @build_command
-class generate_webapp_icons(Command):
-    description = 'generate web application icons from SVG sources'
+class generate_raster_icons(Command):
+    description = 'generates raster icons'
+
+    BASE = 'icon%dx%d.png'
+
+    DIR = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), 'build', 'icons'))
+
+    TARGET = os.path.join(DIR, BASE)
 
     # The icon dimensions to generate
-    DIMENSIONS = (196, 144, 114, 96, 72, 57, 48)
+    DIMENSIONS = (
+        1024, 512, 256, 196, 144, 128, 114, 96, 72, 64, 57, 48, 32, 16)
 
     def run(self):
-        # Generate the application icons
+        if not os.path.isdir(self.DIR):
+            os.makedirs(self.DIR)
+
+        source_path = buildlib.icons.APP_ICON
+        source_stat = os.stat(source_path)
+
+        # Generate icons only for modified files
         for size in self.DIMENSIONS:
-            buildlib.icons.app_icon(
-                size,
-                os.path.join(
-                    buildlib.HTML_ROOT,
-                    'img',
-                    'icon%dx%d.png' % (size, size)))
+            target_path = self.TARGET % (size, size)
+            try:
+                target_stat = os.stat(target_path)
+                if not (source_stat.st_mtime > target_stat.st_mtime) :
+                    continue
+            except:
+                pass
+            buildlib.icons.convert(source_path, target_path, (size, size))
 
 
 @build_command
 class generate_favicon(Command):
     description = 'generate a favicon from SVG sources'
+    sub_commands = [
+        ('generate_raster_icons', None)]
 
-    # The icon dimensions to generate
+    BASE_ICO = 'favicon.ico'
+    BASE_PNG = 'favicon.png'
+
+    DIR = os.path.abspath(os.path.join(
+        buildlib.HTML_ROOT))
+
+    TARGET_ICO = os.path.join(DIR, BASE_ICO)
+    TARGET_PNG = os.path.join(DIR, BASE_PNG)
+
     DIMENSIONS = (128, 64, 32, 16)
 
     def run(self):
-        target_dir = os.path.join(
-            os.path.dirname(__file__),
-            'build',
-            'icos')
-        if not os.path.isdir(target_dir):
-            os.makedirs(target_dir)
-
-        # Generate the application icons
-        for size in self.DIMENSIONS:
-            buildlib.icons.app_icon(
-                size,
-                os.path.join(
-                    target_dir,
-                    'icon%dx%d.ico' % (size, size)))
-        # Create the composite icon
+        Command.run(self)
         buildlib.icons.combine(
+            self.TARGET_ICO,
+            *(
+                generate_raster_icons.TARGET % (size, size)
+                for size in self.DIMENSIONS))
+        shutil.copy2(
+            generate_raster_icons.TARGET % (
+                self.DIMENSIONS[0], self.DIMENSIONS[0]),
+            self.TARGET_PNG)
+
+
+@build_command
+class generate_appicon(Command):
+    description = 'generate the app icon for all platforms'
+    sub_commands = [
+        ('generate_raster_icons', None),
+        ('generate_appicon_darwin', None),
+        ('generate_appicon_linux', None),
+        ('generate_appicon_win', None)]
+
+    BASE = 'icon%dx%d.png'
+
+    DIR = os.path.abspath(os.path.join(
+        buildlib.HTML_ROOT, 'img'))
+
+    TARGET = os.path.join(DIR, BASE)
+
+    DIMENSIONS = (196, 144, 114, 72, 57)
+
+    def run(self):
+        Command.run(self)
+
+        for size in self.DIMENSIONS:
+            source_path = generate_raster_icons.TARGET % (size, size)
+            target_path = self.TARGET % (size, size)
+            shutil.copy2(source_path, target_path)
+
+
+@build_command
+class generate_appicon_darwin(Command):
+    description = 'generate the app icon for OSX'
+    sub_commands = [
+        ('generate_raster_icons', None)]
+
+    BASE = 'icon-darwin.icns'
+
+    DIR = generate_raster_icons.DIR
+
+    TARGET = os.path.join(DIR, BASE)
+
+    # The format used to generate the icon file names for the icon set; these
+    # must match the files names for an OSX iconset directory
+    BASE1X = 'icon_%dx%d.png'
+    BASE2X = 'icon_%dx%d@2x.png'
+
+    DIMENSIONS = (16, 32, 64, 128, 256, 512, 1024)
+
+    @contextlib.contextmanager
+    def _iconset(self):
+        """Generates a temporary directory for the target *ICNS* iconset.
+
+        The target directory exists only as long as this context manager is
+        active.
+        """
+        tmpdir = tempfile.mkdtemp(suffix='.iconset')
+        try:
+            for size in self.DIMENSIONS:
+                source_path = os.path.join(
+                    generate_raster_icons.TARGET % (size, size))
+                target_path1x = os.path.join(
+                    tmpdir,
+                    self.BASE1X % (size, size))
+                target_path2x = os.path.join(
+                    tmpdir,
+                    self.BASE2X % (size // 2, size // 2))
+                shutil.copy2(source_path, target_path1x)
+                shutil.copy2(source_path, target_path2x)
+
+            yield tmpdir
+
+        finally:
+            shutil.rmtree(tmpdir)
+
+    def run(self):
+        Command.run(self)
+        try:
+            with self._iconset() as tmpdir:
+                subprocess.check_call([
+                    'iconutil',
+                    '--convert', 'icns',
+                    tmpdir,
+                    '--output', self.TARGET])
+        except:
+            if sys.platform == 'darwin':
+                raise
+
+
+@build_command
+class generate_appicon_linux(Command):
+    description = 'generate the app icon for Linux'
+    sub_commands = [
+        ('generate_raster_icons', None)]
+
+    BASE = 'icon-linux.png'
+
+    DIR = generate_raster_icons.DIR
+
+    TARGET = os.path.join(DIR, BASE)
+
+    # The icon dimension to use
+    DIMENSION = 128
+
+    def run(self):
+        Command.run(self)
+        shutil.copy2(
             os.path.join(
-                    buildlib.HTML_ROOT,
-                    'favicon.ico'),
+                generate_raster_icons.TARGET % (
+                    self.DIMENSION, self.DIMENSION)),
+            self.TARGET)
+
+
+@build_command
+class generate_appicon_win(Command):
+    description = 'generate the app icon for Windows'
+    sub_commands = [
+        ('generate_raster_icons', None)]
+
+    BASE = 'icon-win.ico'
+
+    DIR = generate_raster_icons.DIR
+
+    TARGET = os.path.join(DIR, BASE)
+
+    # The icon dimensions to include
+    DIMENSIONS = (128, 64, 32, 16)
+
+    def run(self):
+        Command.run(self)
+        buildlib.icons.combine(
+            self.TARGET,
             *(os.path.join(
-                    target_dir,
-                    'icon%dx%d.ico' % (size, size))
+                    generate_raster_icons.TARGET % (size, size))
                 for size in self.DIMENSIONS))
 
 

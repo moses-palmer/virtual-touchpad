@@ -22,6 +22,11 @@ def _locate_convert():
 
 CONVERT_COMMAND = _locate_convert()
 
+APP_ICON = os.path.join(
+    os.path.dirname(__file__),
+    'res',
+    'icon.svg')
+
 if CONVERT_COMMAND:
     def convert(source, target, dimensions):
         """Converts and resizes an image.
@@ -39,7 +44,8 @@ if CONVERT_COMMAND:
             CONVERT_COMMAND,
             '-background', 'none',
             source,
-            '-resize', 'x'.join(str(dimension) for dimension in dimensions),
+            '-resize', '%s!' % 'x'.join(
+                str(dimension) for dimension in dimensions),
             target],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
@@ -80,21 +86,3 @@ else:
         sys.stdout.write(
             'Not combining %s to %s: ImageMagick is not installed' % (
                 ', '.join(icons), target) + '\n')
-
-
-def app_icon(size, target_path):
-    """Creates an application icon *PNG*.
-
-    :param size: The required size of the output.
-    :type size: (int, int)
-
-    :param str target: The output target.
-    """
-    # Create a PNG image from ./res/icon; its size is 16 px
-    convert(
-        os.path.join(
-            os.path.dirname(__file__),
-            'res',
-            'icon.svg'),
-        target_path,
-        (size, size))

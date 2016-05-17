@@ -163,8 +163,7 @@ def start():
             address, args.port),
         icon=PIL.Image.open(
             resource.open_stream(
-                os.path.join(
-                    'img', 'icon196x196.png'))))
+                'favicon.png')))
 
     try:
         def setup(icon):

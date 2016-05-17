@@ -216,22 +216,28 @@ class generate_favicon(Command):
     sub_commands = [
         ('generate_raster_icons', None)]
 
-    BASE = 'favicon.ico'
+    BASE_ICO = 'favicon.ico'
+    BASE_PNG = 'favicon.png'
 
     DIR = os.path.abspath(os.path.join(
         buildlib.HTML_ROOT))
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET_ICO = os.path.join(DIR, BASE_ICO)
+    TARGET_PNG = os.path.join(DIR, BASE_PNG)
 
     DIMENSIONS = (128, 64, 32, 16)
 
     def run(self):
         Command.run(self)
         buildlib.icons.combine(
-            self.TARGET,
+            self.TARGET_ICO,
             *(
                 generate_raster_icons.TARGET % (size, size)
                 for size in self.DIMENSIONS))
+        shutil.copy2(
+            generate_raster_icons.TARGET % (
+                self.DIMENSIONS[0], self.DIMENSIONS[0]),
+            self.TARGET_PNG)
 
 
 @build_command

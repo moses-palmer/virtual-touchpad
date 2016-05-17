@@ -1,1 +1,6 @@
-**/index.min.xhtml
+# Ignore generated minified HTML
+*.min.xhtml
+
+# Ignore generated images
+*.ico
+*.png

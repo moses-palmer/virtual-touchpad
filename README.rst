@@ -37,6 +37,8 @@ repository available from the linked *home page* below. Install by running this
 command:
 
     cd $VIRTUAL_TOUCHPAD_REPO
+    python bootstrap.py
+    # Follow instructions to activate virtualenv
     python setup.py install
 
 

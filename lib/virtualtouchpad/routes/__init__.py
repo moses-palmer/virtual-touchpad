@@ -19,15 +19,8 @@ import aiohttp
 import asyncio
 import json
 import logging
-import re
 
 from virtualtouchpad import app
-
-
-#: The regular expression used to transform bottle variable paths to aiohttp
-# variable paths
-BOTTLE_RE = re.compile(
-    r'<([^:>]+)(?::([^>]+))?>')
 
 
 class HTTPResponse(object):
@@ -77,18 +70,9 @@ def get(path):
                 log.exception('An error occurred when handling request')
                 raise aiohttp.web.HTTPInternalServerError()
 
-        def replacer(m):
-            try:
-                name, extra = m.groups()
-                return '{%s:%s}' % (
-                    name,
-                    dict(
-                        path='[^{}]+')[extra])
-            except:
-                return '{%s}' % m.group(1)
         app.router.add_route(
             'GET',
-            BOTTLE_RE.sub(replacer, path),
+            path,
             wrapper)
 
         return handler

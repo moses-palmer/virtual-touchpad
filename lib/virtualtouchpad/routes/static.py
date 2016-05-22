@@ -37,7 +37,7 @@ INDEX_FILES = (
 
 
 @get('/')
-@get('/<filepath:path>')
+@get('/{filepath:.*}')
 def static(headers, filepath='.'):
     # If the resource is a directory, we try to serve the index file
     if resource.isdir(filepath):

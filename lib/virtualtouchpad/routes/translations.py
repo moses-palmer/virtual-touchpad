@@ -23,7 +23,7 @@ from . import get, HTTPResponse
 from ._static import static
 
 
-@get('/translations/<domain>')
+@get('/translations/{domain}')
 def translations(headers, domain):
     accept_language = headers.get('accept-language', 'default')
     languages = sorted((

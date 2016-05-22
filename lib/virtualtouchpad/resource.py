@@ -39,11 +39,15 @@ RESOURCE_PATH = os.path.join(RESOURCE_BASE, RESOURCE_NAME)
 
 
 def __get_static_root():
+    def correct(path):
+        result = os.path.realpath(path)
+        return result if result[-1] == os.path.sep else result + os.path.sep
+
     # First use the environment variables
     try:
         root_from_env = os.environ[STATIC_ROOT_ENV]
         if os.path.isdir(root_from_env):
-            return root_from_env
+            return correct(root_from_env)
 
     except KeyError:
         # The environment variable is not set, ignore
@@ -57,7 +61,7 @@ def __get_static_root():
                 os.path.dirname(sys.executable),
                 RESOURCE_PATH)
             if os.path.isdir(root_from_exe):
-                return root_from_exe
+                return correct(root_from_exe)
 
     except AttributeError:
         # The application is not frozen, ignore
@@ -70,7 +74,7 @@ def __get_static_root():
         os.path.pardir,
         RESOURCE_PATH)
     if os.path.isdir(root_from_package):
-        return root_from_package
+        return correct(root_from_package)
 
     # If we have no root directory, we are probably running from an egg, and
     # we return None to make the functions below use pkg_resources

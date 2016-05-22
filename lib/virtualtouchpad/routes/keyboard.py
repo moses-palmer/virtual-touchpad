@@ -21,7 +21,7 @@ import logging
 import virtualtouchpad.resource as resource
 
 from . import get, HTTPResponse
-from .static import static
+from ._static import static
 
 
 log = logging.getLogger(__name__)

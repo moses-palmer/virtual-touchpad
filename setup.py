@@ -36,10 +36,6 @@ BUILD_REQUIREMENTS = [
 
 #: Packages requires for different environments
 EXTRA_PACKAGES = {
-    ':python_version <= "2.7"': [
-        'bottle >=0.11',
-        'gevent >=0.13',
-        'gevent-websocket >=0.9'],
     ':python_version >= "3.3"': [
         'aiohttp >=0.21']}
 

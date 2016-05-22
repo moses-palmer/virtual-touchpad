@@ -30,6 +30,7 @@ REQUIREMENTS = [
 BUILD_REQUIREMENTS = [
     'cssmin',
     'polib >=1.0.4',
+    'PyInstaller >=3.2',
     'slimit']
 
 #: Packages requires for different environments
@@ -493,6 +494,25 @@ class xgettext(Command):
                 pofile = os.path.join(target_dir, domain, f)
 
                 buildlib.translation.merge_catalogs(potfile, pofile)
+
+
+@build_command
+class build_exe(Command):
+    description = 'generate executable'
+    sub_commands = list(distutils.command.build.build.sub_commands) + [
+        ('build', None)]
+
+    SPEC_DIR = os.path.join(os.path.dirname(__file__), 'pyi')
+
+    def run(self):
+        Command.run(self)
+        env = dict(os.environ)
+        env['PYTHONPATH'] = os.pathsep.join(sys.path)
+        for spec in os.listdir(self.SPEC_DIR):
+            subprocess.check_call([
+                'python', '-m', 'PyInstaller',
+                os.path.join(self.SPEC_DIR, spec)],
+                env=env)
 
 
 # Read globals from virtualtouchpad._info without loading it

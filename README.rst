@@ -14,7 +14,7 @@ On *Windows*, you can use the pre-packaged binary ``virtualtouchpad.exe``. When
 you run it, an icon will appear in the notification area. Hovering over this
 icon reveals the URL to use on your phone or tablet.
 
-If no pre-built executable exists for your platform, launch it from a terminal:
+If no pre-built executable exists for your platform, launch it from a terminal::
 
     python -m virtualtouchpad
 
@@ -34,12 +34,18 @@ Install this application by running the following command:
 
 If you want to have access to pre-release versions, you can clone the *git*
 repository available from the linked *home page* below. Install by running this
-command:
+command::
 
     cd $VIRTUAL_TOUCHPAD_REPO
     python bootstrap.py
     # Follow instructions to activate virtualenv
     python setup.py install
+
+If you intend to run the build target ``build_exe``, you must activate the
+*virtualenv*. This is to ensure that no optional dependencies for any libraries,
+*PIL* in particular, are included from the host system. *PIL* contains import
+statements for *Tk* and *Qt*, which will increase the size of the resulting
+binary, and thus the download and startup times, considerably.
 
 
 Installation issues

@@ -5,6 +5,11 @@ import subprocess
 import sys
 
 
+if sys.version_info < (3, 5):
+    print('Only Python 3.5 and later are supported.')
+    sys.exit(1)
+
+
 DIR = os.path.dirname(__file__) or '.'
 PLATFORM = ''.join(c for c in sys.platform if c.isalpha())
 VIRTUALENVDIR = os.path.join('venv', '%s-%d.%d' % (

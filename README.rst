@@ -32,21 +32,6 @@ Install this application by running the following command:
 
     pip install virtual-touchpad
 
-If you want to have access to pre-release versions, you can clone the *git*
-repository available from the linked *home page* below. Install by running this
-command::
-
-    cd $VIRTUAL_TOUCHPAD_REPO
-    python bootstrap.py
-    # Follow instructions to activate virtualenv
-    python setup.py install
-
-If you intend to run the build target ``build_exe``, you must activate the
-*virtualenv*. This is to ensure that no optional dependencies for any libraries,
-*PIL* in particular, are included from the host system. *PIL* contains import
-statements for *Tk* and *Qt*, which will increase the size of the resulting
-binary, and thus the download and startup times, considerably.
-
 
 Installation issues
 ~~~~~~~~~~~~~~~~~~~
@@ -62,3 +47,28 @@ run the installation, as do *Python* development headers files.
 The easies way to install the headers is via the packager manager provided by
 your operating system. The names of the packages required depend on your
 specific operating system.
+
+
+Building
+--------
+
+If you want to have access to pre-release versions, you can clone the *git*
+repository available from the linked *home page* below. Install by running this
+command::
+
+    cd $VIRTUAL_TOUCHPAD_REPO
+    python bootstrap.py
+    # Follow instructions to activate virtualenv
+    python setup.py install
+
+
+Building a native binary
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you intend to run the build target ``build_exe``, you must activate the
+*virtualenv*.
+
+This is to ensure that no optional dependencies for any libraries, *PIL* in
+particular, are included from the host system. *PIL* contains import statements
+for *Tk* and *Qt*, which will increase the size of the resulting binary, and
+thus the download and startup times, considerably.

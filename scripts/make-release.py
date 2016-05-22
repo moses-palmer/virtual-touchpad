@@ -29,7 +29,7 @@ def git(*args):
             ' '.join(args),
             g.returncode, stderr)
     else:
-        return stdout
+        return stdout.decode('utf-8')
 
 
 def get_version():
@@ -94,13 +94,21 @@ def update_info(version):
     :param tuple version: The version to set.
     """
     gsub(
-        os.path.join(
-            os.path.dirname(__file__),
-            os.pardir,
-            'lib', PACKAGE_NAME, '_info.py'),
+        update_info.path,
         re.compile(r'__version__\s*=\s*(\([0-9]+(\s*,\s*[0-9]+)*\))'),
         1,
         repr(version))
+
+update_info.path = os.path.join(
+    os.path.dirname(__file__),
+    os.pardir,
+    'lib', PACKAGE_NAME, '_info.py')
+
+def _update_info_undo():
+    git('co',
+        '-f',
+        update_info.path)
+update_info.undo = _update_info_undo
 
 
 def update_appcache(version):
@@ -109,13 +117,21 @@ def update_appcache(version):
     :param tuple version: The version to set.
     """
     gsub(
-        os.path.join(
-            os.path.dirname(__file__),
-            os.pardir,
-            'lib', PACKAGE_NAME, 'html', 'virtual-touchpad.appcache'),
+        update_appcache.path,
         re.compile(r'\#\s*Version\s*([0-9]+(\.[0-9]+)*)'),
         1,
         '.'.join(str(v) for v in version))
+
+update_appcache.path = os.path.join(
+    os.path.dirname(__file__),
+    os.pardir,
+    'lib', PACKAGE_NAME, 'html', 'virtual-touchpad.appcache')
+
+def _update_appcache_undo():
+    git('co',
+        '-f',
+        update_appcache.path)
+update_appcache.undo = _update_appcache_undo
 
 
 def check_readme():
@@ -233,18 +249,25 @@ def main():
     version = get_version()
 
     assert_current_branch_is_master_and_clean()
-    update_info(version)
-    update_appcache(version)
-    check_readme()
-    check_release_notes(version)
-    commit_changes(version)
     try:
-        tag_release(version)
+        update_info(version)
+        try:
+            update_appcache(version)
+            check_readme()
+            check_release_notes(version)
+            commit_changes(version)
+            try:
+                tag_release(version)
+            except:
+                commit_changes.undo()
+                raise
+            push_to_origin()
+            upload_to_pypi()
+        except:
+            update_appcache.undo()
+            raise
     except:
-        commit_changes.undo()
-        raise
-    push_to_origin()
-    upload_to_pypi()
+        update_info.undo()
 
 
 if __name__ == '__main__':

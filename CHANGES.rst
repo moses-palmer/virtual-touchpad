@@ -1,6 +1,14 @@
 Release Notes
 =============
 
+v0.16 - Multi platform prebuilt packages
+----------------------------------------
+*  Added support for building native packages for all platforms.
+*  Disallowed serving files outside of the resource directory.
+*  Correctly serve the keyboard layout on *Python 3*.
+*  Corrected parsing of *git* output when making release.
+
+
 v0.15.3 - Fixes for OSX
 ---------------------------
 *  Enabled dragging on *OSX*.

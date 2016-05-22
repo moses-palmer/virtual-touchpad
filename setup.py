@@ -513,7 +513,7 @@ with open(os.path.join(
         'lib',
         'virtualtouchpad',
         '_info.py'), 'rb') as f:
-    data = f.read().decode('utf-8') if sys.version_info.major >= 3 else f.read()
+    data = f.read().decode('utf-8')
     code = compile(data, '_info.py', 'exec')
     exec(code, {}, INFO)
 setup_arguments['author'] = INFO['__author__']

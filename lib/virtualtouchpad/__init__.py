@@ -17,8 +17,23 @@
 
 import sys
 
+from aiohttp import web
 
-if sys.version_info.major < 3:
-    from ._server_bottle import server
-else:
-    from ._server_aiohttp import server
+
+app = web.Application()
+
+
+def server(port, address):
+    """Creates the actual server instance.
+
+    :param int port: The port on which to listen.
+
+    :param address: The address on which to listen.
+
+    :return: a server instance
+    """
+    class Server(object):
+        def serve_forever(self):
+            web.run_app(app, host=address, port=port)
+
+    return Server()

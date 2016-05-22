@@ -19,13 +19,29 @@ import pkg_resources
 import os
 import sys
 
-from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+import virtualtouchpad
+
+
+#: The pkg_resources package name
+PKG_RESOURCES_PACKAGE = virtualtouchpad.__name__
+
+#: The name of the environment variable specifying a resource path override
+STATIC_ROOT_ENV = 'VIRTUAL_TOUCHPAD_STATIC_ROOT'
+
+#: The base directory for all files
+RESOURCE_BASE = virtualtouchpad.__name__
+
+#: The base directory for resources, relative to :attr:`RESOURCE_BASE`
+RESOURCE_NAME = 'html'
+
+#: The path, relative to some root directory, of the resources
+RESOURCE_PATH = os.path.join(RESOURCE_BASE, RESOURCE_NAME)
 
 
 def __get_static_root():
     # First use the environment variables
     try:
-        root_from_env = os.environ['VIRTUAL_TOUCHPAD_STATIC_ROOT']
+        root_from_env = os.environ[STATIC_ROOT_ENV]
         if os.path.isdir(root_from_env):
             return root_from_env
 
@@ -39,7 +55,7 @@ def __get_static_root():
         if sys.frozen:
             root_from_exe = os.path.join(
                 os.path.dirname(sys.executable),
-                'virtualtouchpad', 'html')
+                RESOURCE_PATH)
             if os.path.isdir(root_from_exe):
                 return root_from_exe
 
@@ -51,7 +67,8 @@ def __get_static_root():
     import virtualtouchpad
     root_from_package = os.path.join(
         os.path.dirname(virtualtouchpad.__file__),
-        'html')
+        os.path.pardir,
+        RESOURCE_PATH)
     if os.path.isdir(root_from_package):
         return root_from_package
 
@@ -73,7 +90,7 @@ def exists(path):
 
     else:
         return pkg_resources.resource_exists(
-            PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
 
 
 def isdir(path):
@@ -86,7 +103,7 @@ def isdir(path):
 
     else:
         return pkg_resources.resource_isdir(
-            PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
 
 
 def list(path):
@@ -103,7 +120,7 @@ def list(path):
     else:
         return pkg_resources.resource_listdir(
             PKG_RESOURCES_PACKAGE,
-            os.path.join('html', path))
+            os.path.join(RESOURCE_NAME, path))
 
 
 def open_stream(path):
@@ -119,4 +136,4 @@ def open_stream(path):
     else:
         return pkg_resources.resource_stream(
             PKG_RESOURCES_PACKAGE,
-            os.path.join('html', path))
+            os.path.join(RESOURCE_NAME, path))

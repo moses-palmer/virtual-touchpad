@@ -21,6 +21,7 @@ import _build as buildlib
 
 
 REQUIREMENTS = [
+    'aiohttp >=0.21',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
     'pynput >=1.0.5',
@@ -33,11 +34,6 @@ BUILD_REQUIREMENTS = [
     'polib >=1.0.4',
     'PyInstaller >=3.2',
     'slimit']
-
-#: Packages requires for different environments
-EXTRA_PACKAGES = {
-    ':python_version >= "3.3"': [
-        'aiohttp >=0.21']}
 
 # The directories in which the packages can be found
 PACKAGE_DIR = {
@@ -67,7 +63,6 @@ setup_arguments = dict(
 
     install_requires=REQUIREMENTS,
     setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
-    extras_require=EXTRA_PACKAGES,
 
     author_email='moses.palmer@gmail.com',
 

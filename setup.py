@@ -89,8 +89,7 @@ setup_arguments = dict(
         'Operating System :: Microsoft :: Windows :: Windows NT/2000',
         'Operating System :: POSIX',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4'])
+        'Programming Language :: Python :: 3.5'])
 
 
 def build_command(cls):

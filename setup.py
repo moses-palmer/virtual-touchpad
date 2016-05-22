@@ -29,6 +29,7 @@ REQUIREMENTS = [
 
 BUILD_REQUIREMENTS = [
     'cssmin',
+    'docutils',
     'polib >=1.0.4',
     'PyInstaller >=3.2',
     'slimit']

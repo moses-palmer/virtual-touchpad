@@ -37,7 +37,7 @@ def default_layout(headers):
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     # TODO: Select the one used by the current system
     return static(headers, '%s/%s' % (ROOT, layout_files[0]))
@@ -49,7 +49,7 @@ def list_layouts(headers):
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     layouts = []
     for layout_file in layout_files:

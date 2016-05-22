@@ -45,6 +45,6 @@ def static(headers, filepath='.'):
                 os.path.join(filepath, index) for index in INDEX_FILES):
             if resource.exists(index_file):
                 return _static(headers, index_file)
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     return _static(headers, filepath)

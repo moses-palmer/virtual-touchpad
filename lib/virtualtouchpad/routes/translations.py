@@ -39,4 +39,4 @@ def translations(headers, domain):
         if resource.exists(path):
             return static(headers, path)
 
-    return HTTPResponse(404)
+    return HTTPResponse(status=404)

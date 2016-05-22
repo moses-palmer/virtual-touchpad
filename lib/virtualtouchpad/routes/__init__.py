@@ -20,16 +20,9 @@ import asyncio
 import json
 import logging
 
+from aiohttp.web import Response as HTTPResponse
+
 from virtualtouchpad import app
-
-
-class HTTPResponse(object):
-    """A lightweight class to represent an HTTP response.
-    """
-    def __init__(self, status, body=None, headers=None):
-        self.status = status
-        self.body = body or b''
-        self.headers = headers or {}
 
 
 def get(path):

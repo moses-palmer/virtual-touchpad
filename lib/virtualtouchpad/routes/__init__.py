@@ -16,7 +16,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import aiohttp
-import asyncio
 import json
 import logging
 
@@ -39,15 +38,14 @@ def get(path):
     log = logging.getLogger('%s.%s' % (__name__, path))
 
     def inner(handler):
-        @asyncio.coroutine
-        def wrapper(request):
+        async def wrapper(request):
             #import pudb; pudb.set_trace()
             arguments = dict(request.match_info)
             try:
                 headers = {
                     key.lower(): value
                     for key, value in request.headers.items()}
-                response = handler(headers, **arguments)
+                response = await handler(headers, **arguments)
                 if isinstance(response, dict):
                     return aiohttp.web.Response(
                         content_type='application/json',
@@ -87,10 +85,9 @@ def websocket(path):
     log = logging.getLogger('%s.%s' % (__name__, path))
 
     def inner(handler):
-        @asyncio.coroutine
-        def wrapper(request):
+        async def wrapper(request):
             ws = aiohttp.web.WebSocketResponse()
-            yield from ws.prepare(request)
+            await ws.prepare(request)
 
             def report_error(reason, exception, tb):
                 ws.send_str(json.dumps(dict(
@@ -103,7 +100,7 @@ def websocket(path):
             next(dispatcher)
 
             while True:
-                message = yield from ws.receive()
+                message = await ws.receive()
                 if message.tp == aiohttp.MsgType.text:
                     try:
                         dispatcher.send(message.data)

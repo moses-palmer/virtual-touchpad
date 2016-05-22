@@ -24,7 +24,7 @@ from ._static import static
 
 
 @get('/translations/{domain}')
-def translations(headers, domain):
+async def translations(headers, domain):
     accept_language = headers.get('accept-language', 'default')
     languages = sorted((
         (

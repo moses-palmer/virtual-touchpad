@@ -24,6 +24,7 @@ import time
 
 import virtualtouchpad.resource as resource
 
+from ._static import static as _static
 from . import get, HTTPResponse
 
 
@@ -43,46 +44,7 @@ def static(headers, filepath='.'):
         for index_file in (
                 os.path.join(filepath, index) for index in INDEX_FILES):
             if resource.exists(index_file):
-                return static(headers, index_file)
+                return _static(headers, index_file)
         return HTTPResponse(404)
 
-    # Open the file and get its size
-    try:
-        stream = resource.open_stream(filepath)
-        stream.seek(0, os.SEEK_END)
-        size = stream.tell()
-        stream.seek(0, os.SEEK_SET)
-        body = stream.read()
-
-    except IOError:
-        log.exception('File %s does not exist', filepath)
-        return HTTPResponse(404)
-
-    response_headers = {}
-    response_headers['Content-Length'] = size
-
-    # Guess the content type and encoding
-    mimetype, encoding = mimetypes.guess_type(filepath)
-    if mimetype:
-        response_headers['Content-Type'] = mimetype
-    if encoding:
-        response_headers['Content-Encoding'] = encoding
-
-    # Check the file mtime; we use the egg file or the current binary
-    try:
-        st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
-    except OSError:
-        st = os.stat(os.path.abspath(sys.argv[0]))
-    response_headers['Last-Modified'] = email.utils.formatdate(st.st_mtime)
-
-    if headers.get('if-modified-since'):
-        if_modified_since = time.mktime(email.utils.parsedate(
-            headers.get('if-modified-since').split(";")[0].strip()))
-        if if_modified_since is not None \
-                and if_modified_since >= int(st.st_mtime):
-            response_headers['Date'] = time.strftime(
-                '%a, %d %b %Y %H:%M:%S GMT',
-                time.gmtime())
-        return HTTPResponse(304, headers=response_headers)
-
-    return HTTPResponse(200, body=body, headers=response_headers)
+    return _static(headers, filepath)

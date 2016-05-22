@@ -20,7 +20,7 @@ import os
 import virtualtouchpad.resource as resource
 
 from . import get, HTTPResponse
-from .static import static
+from ._static import static
 
 
 @get('/translations/<domain>')

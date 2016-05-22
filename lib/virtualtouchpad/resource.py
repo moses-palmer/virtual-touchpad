@@ -19,15 +19,35 @@ import pkg_resources
 import os
 import sys
 
-from virtualtouchpad import __name__ as PKG_RESOURCES_PACKAGE
+import virtualtouchpad
+
+
+#: The pkg_resources package name
+PKG_RESOURCES_PACKAGE = virtualtouchpad.__name__
+
+#: The name of the environment variable specifying a resource path override
+STATIC_ROOT_ENV = 'VIRTUAL_TOUCHPAD_STATIC_ROOT'
+
+#: The base directory for all files
+RESOURCE_BASE = virtualtouchpad.__name__
+
+#: The base directory for resources, relative to :attr:`RESOURCE_BASE`
+RESOURCE_NAME = 'html'
+
+#: The path, relative to some root directory, of the resources
+RESOURCE_PATH = os.path.join(RESOURCE_BASE, RESOURCE_NAME)
 
 
 def __get_static_root():
+    def correct(path):
+        result = os.path.realpath(path)
+        return result if result[-1] == os.path.sep else result + os.path.sep
+
     # First use the environment variables
     try:
-        root_from_env = os.environ['VIRTUAL_TOUCHPAD_STATIC_ROOT']
+        root_from_env = os.environ[STATIC_ROOT_ENV]
         if os.path.isdir(root_from_env):
-            return root_from_env
+            return correct(root_from_env)
 
     except KeyError:
         # The environment variable is not set, ignore
@@ -39,9 +59,9 @@ def __get_static_root():
         if sys.frozen:
             root_from_exe = os.path.join(
                 os.path.dirname(sys.executable),
-                'virtualtouchpad', 'html')
+                RESOURCE_PATH)
             if os.path.isdir(root_from_exe):
-                return root_from_exe
+                return correct(root_from_exe)
 
     except AttributeError:
         # The application is not frozen, ignore
@@ -51,9 +71,10 @@ def __get_static_root():
     import virtualtouchpad
     root_from_package = os.path.join(
         os.path.dirname(virtualtouchpad.__file__),
-        'html')
+        os.path.pardir,
+        RESOURCE_PATH)
     if os.path.isdir(root_from_package):
-        return root_from_package
+        return correct(root_from_package)
 
     # If we have no root directory, we are probably running from an egg, and
     # we return None to make the functions below use pkg_resources
@@ -63,17 +84,45 @@ def __get_static_root():
 STATIC_ROOT = __get_static_root()
 
 
+def _abs(path):
+    """Translates a path to an absolute path.
+
+    :param str path: The relative path.
+
+    :return: an absolute path
+
+    :raises FileNotFoundError: if the resulting path lies outside of the root; a
+        successful return does not indicate that the file actually exists
+
+    :raises ValueError: if no static root is set
+    """
+    if STATIC_ROOT is None:
+        raise ValueError(STATIC_ROOT)
+
+    if not path:
+        return os.path.dirname(STATIC_ROOT)
+
+    apath = os.path.realpath(os.path.join(STATIC_ROOT, path))
+    if apath.startswith(STATIC_ROOT):
+        return apath
+    else:
+        raise FileNotFoundError(path)
+
+
 def exists(path):
     """Returns whether a static file exists.
 
     :param str path: The path of the static file.
     """
-    if STATIC_ROOT is not None:
-        return os.access(os.path.join(STATIC_ROOT, path), os.R_OK)
+    try:
+        return os.access(_abs(path), os.R_OK)
 
-    else:
+    except ValueError:
         return pkg_resources.resource_exists(
-            PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
+
+    except:
+        return False
 
 
 def isdir(path):
@@ -81,12 +130,15 @@ def isdir(path):
 
     :param str path: The path of the static file.
     """
-    if STATIC_ROOT is not None:
-        return os.path.isdir(os.path.join(STATIC_ROOT, path))
+    try:
+        return os.path.isdir(_abs(path))
 
-    else:
+    except ValueError:
         return pkg_resources.resource_isdir(
-            PKG_RESOURCES_PACKAGE, os.path.join('html', path))
+            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
+
+    except:
+        return False
 
 
 def list(path):
@@ -97,13 +149,16 @@ def list(path):
     :return: a list of resources
     :rtype: [str]
     """
-    if STATIC_ROOT is not None:
-        return os.listdir(os.path.join(STATIC_ROOT, path))
+    try:
+        return os.listdir(_abs(path))
 
-    else:
+    except ValueError:
         return pkg_resources.resource_listdir(
             PKG_RESOURCES_PACKAGE,
-            os.path.join('html', path))
+            os.path.join(RESOURCE_NAME, path))
+
+    except:
+        return []
 
 
 def open_stream(path):
@@ -113,10 +168,13 @@ def open_stream(path):
 
     :return: a file-like object
     """
-    if STATIC_ROOT is not None:
-        return open(os.path.join(STATIC_ROOT, path), 'rb')
+    try:
+        return open(_abs(path), 'rb')
 
-    else:
+    except ValueError:
         return pkg_resources.resource_stream(
             PKG_RESOURCES_PACKAGE,
-            os.path.join('html', path))
+            os.path.join(RESOURCE_NAME, path))
+
+    except:
+        raise FileNotFoundError(path)

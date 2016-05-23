@@ -56,7 +56,7 @@ def list_layouts(headers):
         path = '%s/%s' % (ROOT, layout_file)
         try:
             with resource.open_stream(path) as f:
-                layout = json.load(f)
+                layout = json.loads(f.read().decode('utf-8'))
                 layouts.append({
                     'url': '/%s' % path,
                     'name': layout['meta']['name']})

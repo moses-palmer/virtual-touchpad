@@ -5,31 +5,37 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+from _util import *
+
 PACKAGE_NAME = 'virtualtouchpad'
 
 
-def git(*args):
-    """Executes ``git`` with the command line arguments given.
+def main():
+    version = get_version()
 
-    :param args: The arguments to ``git``.
-
-    :return: stdout of ``git``
-
-    :raises RuntimeError: if ``git`` returns non-zero
-    """
-    g = subprocess.Popen(
-        ['git'] + list(args),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
-
-    stdout, stderr = g.communicate()
-    if g.returncode != 0:
-        raise RuntimeError(
-            'Failed to call git %s (%d): %s',
-            ' '.join(args),
-            g.returncode, stderr)
-    else:
-        return stdout.decode('utf-8')
+    assert_clean()
+    assert_current_branch()
+    update_info(version)
+    try:
+        update_appcache(version)
+        try:
+            check_readme()
+            check_release_notes(version)
+            commit_changes(version)
+            try:
+                tag_release(version)
+            except:
+                commit_changes.undo()
+                raise
+            push_to_origin()
+            upload_to_pypi()
+        except:
+            update_appcache.undo()
+            raise
+    except:
+        update_info.undo()
+        raise
 
 
 def get_version():
@@ -45,33 +51,7 @@ def get_version():
         raise RuntimeError('Invalid version: %s', sys.argv[1])
 
 
-def gsub(path, regex, group, replacement):
-    """Runs a regular expression on the contents of a file and replaces a
-    group.
-
-    :param str path: The path to the file.
-
-    :param regex: The regular expression to use.
-
-    :param int group: The group of the regular expression to replace.
-
-    :param str replacement: The replacement string.
-    """
-    with open(path) as f:
-        data = f.read()
-
-    def sub(match):
-        full = match.group(0)
-        o = match.start(0)
-        return full[:match.start(group) - o] \
-            + replacement \
-            + full[match.end(group) - o:]
-
-    with open(path, 'w') as f:
-        f.write(regex.sub(sub, data))
-
-
-def assert_current_branch_is_master_and_clean():
+def assert_current_branch():
     """Asserts that the current branch is *master* and contains no local
     changes.
 
@@ -81,11 +61,6 @@ def assert_current_branch_is_master_and_clean():
     """
     assert git('rev-parse', '--abbrev-ref', 'HEAD').strip() == 'master', \
         'The current branch is not master'
-    try:
-        git('diff-index', '--quiet', 'HEAD', '--')
-    except RuntimeError as e:
-        print(e.args[0] % e.args[1:])
-        raise RuntimeError('Your repository contains local changes')
 
 
 def update_info(version):
@@ -97,7 +72,7 @@ def update_info(version):
         update_info.path,
         re.compile(r'__version__\s*=\s*(\([0-9]+(\s*,\s*[0-9]+)*\))'),
         1,
-        repr(version))
+        lambda m: repr(version))
 
 update_info.path = os.path.join(
     os.path.dirname(__file__),
@@ -120,7 +95,7 @@ def update_appcache(version):
         update_appcache.path,
         re.compile(r'\#\s*Version\s*([0-9]+(\.[0-9]+)*)'),
         1,
-        '.'.join(str(v) for v in version))
+        lambda m: '.'.join(str(v) for v in version))
 
 update_appcache.path = os.path.join(
     os.path.dirname(__file__),
@@ -179,6 +154,7 @@ def check_release_notes(version):
                 '  %s' % release_note
                 for release_note in release_notes) + '\n')
         sys.stdout.write('Is this correct [yes/no]? ')
+        sys.stdout.flush()
         response = sys.stdin.readline().strip()
         if response in ('yes', 'y'):
             break
@@ -243,31 +219,6 @@ def upload_to_pypi():
         raise RuntimeError(
             'Failed to upload to PyPi (%d): %s',
             g.returncode, stderr)
-
-
-def main():
-    version = get_version()
-
-    assert_current_branch_is_master_and_clean()
-    try:
-        update_info(version)
-        try:
-            update_appcache(version)
-            check_readme()
-            check_release_notes(version)
-            commit_changes(version)
-            try:
-                tag_release(version)
-            except:
-                commit_changes.undo()
-                raise
-            push_to_origin()
-            upload_to_pypi()
-        except:
-            update_appcache.undo()
-            raise
-    except:
-        update_info.undo()
 
 
 if __name__ == '__main__':

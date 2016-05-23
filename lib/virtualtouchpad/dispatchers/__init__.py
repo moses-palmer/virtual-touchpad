@@ -1,6 +1,6 @@
 # coding=utf-8
 # virtual-touchpad
-# Copyright (C) 2013-2015 Moses Palmér
+# Copyright (C) 2013-2016 Moses Palmér
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software

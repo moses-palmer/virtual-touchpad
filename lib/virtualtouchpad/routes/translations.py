@@ -23,8 +23,8 @@ from . import get, HTTPResponse
 from ._static import static
 
 
-@get('/translations/<domain>')
-def translations(headers, domain):
+@get('/translations/{domain}')
+async def translations(headers, domain):
     accept_language = headers.get('accept-language', 'default')
     languages = sorted((
         (
@@ -39,4 +39,4 @@ def translations(headers, domain):
         if resource.exists(path):
             return static(headers, path)
 
-    return HTTPResponse(404)
+    return HTTPResponse(status=404)

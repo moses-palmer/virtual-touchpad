@@ -32,31 +32,31 @@ ROOT = 'keyboard/layout'
 
 
 @get('/keyboard/layout/default')
-def default_layout(headers):
+async def default_layout(headers):
     """Returns the default keyboard layout.
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     # TODO: Select the one used by the current system
     return static(headers, '%s/%s' % (ROOT, layout_files[0]))
 
 
 @get('/keyboard/layout/')
-def list_layouts(headers):
+async def list_layouts(headers):
     """Returns a list of all keyboard layouts.
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     layouts = []
     for layout_file in layout_files:
         path = '%s/%s' % (ROOT, layout_file)
         try:
             with resource.open_stream(path) as f:
-                layout = json.load(f)
+                layout = json.loads(f.read().decode('utf-8'))
                 layouts.append({
                     'url': '/%s' % path,
                     'name': layout['meta']['name']})

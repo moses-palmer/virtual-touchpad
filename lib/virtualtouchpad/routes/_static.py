@@ -41,7 +41,7 @@ def static(headers, filepath='.'):
 
     except IOError:
         log.exception('File %s does not exist', filepath)
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     response_headers = {}
     response_headers['Content-Length'] = size
@@ -68,6 +68,6 @@ def static(headers, filepath='.'):
             response_headers['Date'] = time.strftime(
                 '%a, %d %b %Y %H:%M:%S GMT',
                 time.gmtime())
-        return HTTPResponse(304, headers=response_headers)
+        return HTTPResponse(status=304, headers=response_headers)
 
-    return HTTPResponse(200, body=body, headers=response_headers)
+    return HTTPResponse(status=200, body=body, headers=response_headers)

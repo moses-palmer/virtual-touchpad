@@ -15,21 +15,111 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+import aiohttp
+import json
+import logging
 
-if sys.version_info.major < 3:
-    from ._routes_bottle import get, websocket
-else:
-    from ._routes_aiohttp import get, websocket
+from aiohttp.web import Response as HTTPResponse
+
+from virtualtouchpad import app
 
 
-class HTTPResponse(object):
-    """A lightweight class to represent an HTTP response.
+def get(path):
+    """A decorator to mark a function as handling an *HTTP* ``GET`` request.
+
+    Please see :func:`bottle.Application.get` for a reference on the format of
+    ``path``.
+
+    The decorated function is passed the request headers, where header names are
+    lower case, as its first parameter, and any values extracted from the path.
+
+    :param str path: The path this function handles.
     """
-    def __init__(self, status, body=None, headers=None):
-        self.status = status
-        self.body = body or b''
-        self.headers = headers or {}
+    log = logging.getLogger('%s.%s' % (__name__, path))
+
+    def inner(handler):
+        async def wrapper(request):
+            #import pudb; pudb.set_trace()
+            arguments = dict(request.match_info)
+            try:
+                headers = {
+                    key.lower(): value
+                    for key, value in request.headers.items()}
+                response = await handler(headers, **arguments)
+                if isinstance(response, dict):
+                    return aiohttp.web.Response(
+                        content_type='application/json',
+                        status=200,
+                        text=json.dumps(response))
+                else:
+                    return aiohttp.web.Response(
+                        body=response.body,
+                        status=response.status,
+                        headers=response.headers)
+
+            except Exception as e:
+                log.exception('An error occurred when handling request')
+                raise aiohttp.web.HTTPInternalServerError()
+
+        app.router.add_route(
+            'GET',
+            path,
+            wrapper)
+
+        return handler
+
+    return inner
+
+
+def websocket(path):
+    """A decorator to mark a function as handling incoming *WebSocket* commands.
+
+    This is not a generic *WebSocket* handler; it will only handle incoming
+    data.
+
+    The decorated function must be a generator. It will be sent ``None``
+    followed by any data received.
+
+    :param str path: The path this function handles.
+    """
+    log = logging.getLogger('%s.%s' % (__name__, path))
+
+    def inner(handler):
+        async def wrapper(request):
+            ws = aiohttp.web.WebSocketResponse()
+            await ws.prepare(request)
+
+            def report_error(reason, exception, tb):
+                ws.send_str(json.dumps(dict(
+                    reason=reason,
+                    exception=type(exception).__name__,
+                    data=str(exception),
+                    tb=traceback.extract_tb(tb))))
+
+            dispatcher = handler(report_error)
+            next(dispatcher)
+
+            while True:
+                message = await ws.receive()
+                if message.tp == aiohttp.MsgType.text:
+                    try:
+                        dispatcher.send(message.data)
+                    except Exception as e:
+                        log.exception(
+                            'An error occurred while dispatching %s',
+                            message)
+                        break
+                else:
+                    break
+
+        app.router.add_route(
+            'GET',
+            path,
+            wrapper)
+
+        return handler
+
+    return inner
 
 
 # Importing these modules will attach routes to app

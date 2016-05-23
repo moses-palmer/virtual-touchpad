@@ -37,14 +37,14 @@ INDEX_FILES = (
 
 
 @get('/')
-@get('/<filepath:path>')
-def static(headers, filepath='.'):
+@get('/{filepath:.*}')
+async def static(headers, filepath='.'):
     # If the resource is a directory, we try to serve the index file
     if resource.isdir(filepath):
         for index_file in (
                 os.path.join(filepath, index) for index in INDEX_FILES):
             if resource.exists(index_file):
                 return _static(headers, index_file)
-        return HTTPResponse(404)
+        return HTTPResponse(status=404)
 
     return _static(headers, filepath)

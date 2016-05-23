@@ -21,6 +21,7 @@ import _build as buildlib
 
 
 REQUIREMENTS = [
+    'aiohttp >=0.21',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
     'pynput >=1.0.5',
@@ -33,15 +34,6 @@ BUILD_REQUIREMENTS = [
     'polib >=1.0.4',
     'PyInstaller >=3.2',
     'slimit']
-
-#: Packages requires for different environments
-EXTRA_PACKAGES = {
-    ':python_version <= "2.7"': [
-        'bottle >=0.11',
-        'gevent >=0.13',
-        'gevent-websocket >=0.9'],
-    ':python_version >= "3.3"': [
-        'aiohttp >=0.21']}
 
 # The directories in which the packages can be found
 PACKAGE_DIR = {
@@ -71,7 +63,6 @@ setup_arguments = dict(
 
     install_requires=REQUIREMENTS,
     setup_requires=REQUIREMENTS + BUILD_REQUIREMENTS,
-    extras_require=EXTRA_PACKAGES,
 
     author_email='moses.palmer@gmail.com',
 
@@ -98,8 +89,7 @@ setup_arguments = dict(
         'Operating System :: Microsoft :: Windows :: Windows NT/2000',
         'Operating System :: POSIX',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4'])
+        'Programming Language :: Python :: 3.5'])
 
 
 def build_command(cls):
@@ -523,7 +513,7 @@ with open(os.path.join(
         'lib',
         'virtualtouchpad',
         '_info.py'), 'rb') as f:
-    data = f.read().decode('utf-8') if sys.version_info.major >= 3 else f.read()
+    data = f.read().decode('utf-8')
     code = compile(data, '_info.py', 'exec')
     exec(code, {}, INFO)
 setup_arguments['author'] = INFO['__author__']

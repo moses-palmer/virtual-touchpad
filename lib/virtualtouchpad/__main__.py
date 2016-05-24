@@ -25,13 +25,12 @@ import sys
 import PIL.Image
 import pystray
 
-import virtualtouchpad.routes
-import virtualtouchpad.resource as resource
-
 from argparse import ArgumentParser
 
-from virtualtouchpad import server
 from ._info import __version__
+from . import resource
+from . import routes
+from . import server
 
 
 # The name of the Virtual Touchpad service

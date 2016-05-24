@@ -1,0 +1,10 @@
+{
+    "name": "virtual-touchpad-dependencies",
+    "repository": "https://github.com/moses-palmer/virtual-touchpad",
+
+    "dependencies": {
+        "coffee-script": ">=1.9.2",
+        "jasmine": ">=2.3.1",
+        "xmlhttprequest": ">=1.7.0"
+    }
+}

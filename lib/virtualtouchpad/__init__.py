@@ -23,24 +23,32 @@ from aiohttp import web
 app = web.Application()
 
 
-def server(port, address):
+def server(configuration):
     """Creates the actual server instance.
 
-    :param int port: The port on which to listen.
+    :param virtualtouchpad.status.Status configuration: The server
+        configuration. This has to include at least ``SERVER_HOST`` and
+        ``SERVER_PORT``.
 
     :param address: The address on which to listen.
 
     :return: a server instance
     """
     class Server(object):
+        def __init__(self, configuration):
+            self.configuration = configuration
+
         def serve_forever(self):
             if 'server' in app:
                 raise RuntimeError('only one server allowed')
 
             app['server'] = self
             try:
-                web.run_app(app, host=address, port=port)
+                web.run_app(
+                    app,
+                    host=configuration.SERVER_HOST(),
+                    port=configuration.SERVER_PORT())
             finally:
                 del app['server']
 
-    return Server()
+    return Server(configuration)

@@ -31,6 +31,7 @@ from ._info import __version__
 from . import resource
 from . import routes
 from . import server
+from . import status
 
 
 # The name of the Virtual Touchpad service
@@ -132,6 +133,17 @@ def _announcer(ip_address, port):
         zc.close()
 
 
+def _load_configuration(**kwargs):
+    """Loads the server configuration as a
+    :class:`~virtualtouchpad.status.Status` instance.
+
+    :param kwargs: Override values.
+
+    :return: a configuration store
+    """
+    return status.Status(status.Configuration, **kwargs)
+
+
 def start():
     parser = ArgumentParser(
         description='Turns your mobile or tablet into a touchpad for your '
@@ -156,19 +168,22 @@ def start():
         level=getattr(logging, args.log_level.upper()))
 
     address = _get_local_address()
+
+    configuration = _load_configuration(**{
+        status.Configuration.SERVER_HOST.value[0]: address,
+        status.Configuration.SERVER_PORT.value[0]: args.port})
+
     icon = pystray.Icon(
         __name__,
-        title='Virtual Touchpad - http://%s:%d' % (
-            address, args.port),
+        title='Virtual Touchpad - {}'.format(
+            configuration.SERVER_URL()),
         icon=PIL.Image.open(
             resource.open_stream(
                 'favicon.png')))
 
     try:
         def setup(icon):
-            sys.stdout.write('Starting server http://%s:%d/...\n' % (
-                address, args.port))
-            main_server = server(args.port, address)
+            main_server = server(configuration)
             icon.visible = True
             main_server.serve_forever()
 

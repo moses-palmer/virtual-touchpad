@@ -34,6 +34,13 @@ def server(port, address):
     """
     class Server(object):
         def serve_forever(self):
-            web.run_app(app, host=address, port=port)
+            if 'server' in app:
+                raise RuntimeError('only one server allowed')
+
+            app['server'] = self
+            try:
+                web.run_app(app, host=address, port=port)
+            finally:
+                del app['server']
 
     return Server()

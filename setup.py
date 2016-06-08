@@ -601,7 +601,6 @@ def read(name):
     try:
         with open(os.path.join(
                 os.path.dirname(__file__),
-                os.pardir,
                 name), 'rb') as f:
             return f.read().decode('utf-8')
     except IOError:

@@ -7,7 +7,6 @@ v0.16.1 - Corrected Resources
 *  Corrected handling of getting the root.
 
 
-
 v0.16 - Multi platform prebuilt packages
 ----------------------------------------
 *  Added support for building native packages for all platforms.

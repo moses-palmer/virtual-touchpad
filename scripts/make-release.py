@@ -71,16 +71,16 @@ def gsub(path, regex, group, replacement):
         f.write(regex.sub(sub, data))
 
 
-def assert_current_branch_is_master_and_clean():
-    """Asserts that the current branch is *master* and contains no local
+def assert_current_branch_is_release_0_16_and_clean():
+    """Asserts that the current branch is *release-0.16* and contains no local
     changes.
 
-    :raises AssertionError: if the current branch is not master
+    :raises AssertionError: if the current branch is not release-0.16
 
     :raises RuntimeError: if the repository contains local changes
     """
-    assert git('rev-parse', '--abbrev-ref', 'HEAD').strip() == 'master', \
-        'The current branch is not master'
+    assert git('rev-parse', '--abbrev-ref', 'HEAD').strip() == 'release-0.16', \
+        'The current branch is not release-4.8'
     try:
         git('diff-index', '--quiet', 'HEAD', '--')
     except RuntimeError as e:
@@ -216,11 +216,11 @@ def tag_release(version):
 
 
 def push_to_origin():
-    """Pushes master to origin.
+    """Pushes release-0.16 to origin.
     """
     print('Pushing to origin...')
 
-    git('push', 'origin', 'HEAD:master')
+    git('push', 'origin', 'HEAD:release-0.16')
     git('push', '--tags')
 
 
@@ -248,7 +248,7 @@ def upload_to_pypi():
 def main():
     version = get_version()
 
-    assert_current_branch_is_master_and_clean()
+    assert_current_branch_is_release_0_16_and_clean()
     try:
         update_info(version)
         try:

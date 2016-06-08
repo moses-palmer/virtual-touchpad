@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.16.2 - Include Release Notes
+-------------------------------
+*  Actually include release notes when publishing on *PyPi*.
+
+
 v0.16.1 - Corrected Resources
 -----------------------------
 *  Actually include help files in *PyPi* package.

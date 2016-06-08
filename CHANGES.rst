@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+v0.16.1 - Corrected Resources
+-----------------------------
+*  Actually include help files in *PyPi* package.
+*  Corrected handling of getting the root.
+
+
+
 v0.16 - Multi platform prebuilt packages
 ----------------------------------------
 *  Added support for building native packages for all platforms.

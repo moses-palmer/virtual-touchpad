@@ -49,6 +49,7 @@ PACKAGE_DATA = {
     'virtualtouchpad': [
         'html/*.*',
         'html/css/*.*',
+        'html/help/*.*',
         'html/img/*.*',
         'html/js/*.*',
         'html/js/*/*.*',

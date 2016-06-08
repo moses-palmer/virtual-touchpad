@@ -18,7 +18,7 @@ If no pre-built executable exists for your platform, launch it from a terminal::
 
     python -m virtualtouchpad
 
-This will start an HTTP server. It will print the line
+This will start an HTTP server. It will print the line::
 
     Starting server http://<computer name>:<port>/...
 
@@ -28,7 +28,7 @@ Connect to the URL displayed.
 Installation
 ------------
 
-Install this application by running the following command:
+Install this application by running the following command::
 
     pip install virtual-touchpad
 

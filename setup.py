@@ -28,7 +28,7 @@ REQUIREMENTS = [
     'aiohttp >=0.21',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
-    'pynput >=1.0.5',
+    'pynput >=1.1',
     'pystray >=0.3.3',
     'zeroconf >=0.17']
 

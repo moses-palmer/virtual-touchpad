@@ -13,9 +13,8 @@ VIRTUALENV_DIR="$1"
 PYTHON="$2"
 
 
-# Create the virtualenv and import some system packages
+# Create the virtualenv
 "$PYTHON" -m virtualenv --python="$PYTHON" "$VIRTUALENV_DIR"
-"$PYTHON" "$SCRIPTDIR/import-packages.py" "$VIRTUALENV_DIR"
 
 
 # Activate the virtualenv and install packages; make sure pip fails if we run

@@ -5,10 +5,8 @@ set VIRTUALENV_DIR=%1
 set PYTHON=%2
 
 
-:: Create the virtualenv and import some system packages
+:: Create the virtualenv
 %PYTHON% -m virtualenv --python=%PYTHON% %VIRTUALENV_DIR% ^
-    || exit 1
-%PYTHON% %SCRIPTDIR%\import-packages.py %VIRTUALENV_DIR%  ^
     || exit 1
 
 

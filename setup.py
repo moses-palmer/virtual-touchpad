@@ -94,20 +94,6 @@ setup_arguments = dict(
         'Programming Language :: Python :: 3.5'])
 
 
-@build_command
-class build(distutils.command.build.build):
-    sub_commands = list(distutils.command.build.build.sub_commands) + [
-        ('generate_res', None)]
-
-
-@build_command('generate all resources')
-class generate_res(Command):
-    sub_commands = [
-        ('minify_html', None),
-        ('generate_icons', None),
-        ('generate_translations', None)]
-
-
 @build_command('minify html files')
 class minify_html(Command):
     files = (
@@ -137,13 +123,6 @@ class minify_html(Command):
     def run(self):
         for name, include_appcache in self.files:
             self.minify(name, include_appcache)
-
-
-@build_command('generates all icons')
-class generate_icons(Command):
-    sub_commands = [
-        ('generate_favicon', None),
-        ('generate_appicon', None)]
 
 
 @build_command('generates raster icons')
@@ -178,11 +157,9 @@ class generate_raster_icons(Command):
             buildlib.icons.convert(source_path, target_path, (size, size))
 
 
-@build_command('generate a favicon from SVG sources')
+@build_command('generate a favicon from SVG sources',
+               generate_raster_icons)
 class generate_favicon(Command):
-    sub_commands = [
-        ('generate_raster_icons', None)]
-
     BASE_ICO = 'favicon.ico'
     BASE_PNG = 'favicon.png'
 
@@ -207,37 +184,9 @@ class generate_favicon(Command):
             self.TARGET_PNG)
 
 
-@build_command('generate the app icon for all platforms')
-class generate_appicon(Command):
-    sub_commands = [
-        ('generate_raster_icons', None),
-        ('generate_appicon_darwin', None),
-        ('generate_appicon_linux', None),
-        ('generate_appicon_win', None)]
-
-    BASE = 'icon%dx%d.png'
-
-    DIR = os.path.abspath(os.path.join(
-        buildlib.HTML_ROOT, 'img'))
-
-    TARGET = os.path.join(DIR, BASE)
-
-    DIMENSIONS = (196, 144, 114, 72, 57)
-
-    def run(self):
-        Command.run(self)
-
-        for size in self.DIMENSIONS:
-            source_path = generate_raster_icons.TARGET % (size, size)
-            target_path = self.TARGET % (size, size)
-            shutil.copy2(source_path, target_path)
-
-
-@build_command('generate the app icon for OSX')
+@build_command('generate the app icon for OSX',
+               generate_raster_icons)
 class generate_appicon_darwin(Command):
-    sub_commands = [
-        ('generate_raster_icons', None)]
-
     BASE = 'icon-darwin.icns'
 
     DIR = generate_raster_icons.DIR
@@ -291,11 +240,9 @@ class generate_appicon_darwin(Command):
                 raise
 
 
-@build_command('generate the app icon for Linux')
+@build_command('generate the app icon for Linux',
+               generate_raster_icons)
 class generate_appicon_linux(Command):
-    sub_commands = [
-        ('generate_raster_icons', None)]
-
     BASE = 'icon-linux.png'
 
     DIR = generate_raster_icons.DIR
@@ -314,11 +261,9 @@ class generate_appicon_linux(Command):
             self.TARGET)
 
 
-@build_command('generate the app icon for Windows')
+@build_command('generate the app icon for Windows',
+               generate_raster_icons)
 class generate_appicon_win(Command):
-    sub_commands = [
-        ('generate_raster_icons', None)]
-
     BASE = 'icon-win.ico'
 
     DIR = generate_raster_icons.DIR
@@ -335,6 +280,36 @@ class generate_appicon_win(Command):
             *(os.path.join(
                     generate_raster_icons.TARGET % (size, size))
                 for size in self.DIMENSIONS))
+
+
+@build_command('generate the app icon for all platforms',
+               generate_appicon_darwin,
+               generate_appicon_linux,
+               generate_appicon_win)
+class generate_appicon(Command):
+    BASE = 'icon%dx%d.png'
+
+    DIR = os.path.abspath(os.path.join(
+        buildlib.HTML_ROOT, 'img'))
+
+    TARGET = os.path.join(DIR, BASE)
+
+    DIMENSIONS = (196, 144, 114, 72, 57)
+
+    def run(self):
+        Command.run(self)
+
+        for size in self.DIMENSIONS:
+            source_path = generate_raster_icons.TARGET % (size, size)
+            target_path = self.TARGET % (size, size)
+            shutil.copy2(source_path, target_path)
+
+
+@build_command('generates all icons',
+               generate_favicon,
+               generate_appicon)
+class generate_icons(Command):
+    pass
 
 
 @build_command('generate translation catalogues from PO files')
@@ -509,21 +484,32 @@ class node_dependencies(Command):
         self.packages()
 
 
-@build_command
+@build_command('run tests',
+               node_dependencies)
 class test(setuptools.command.test.test):
-    sub_commands = [
-        ('node_dependencies', None)]
-
     def run(self):
         Command.run(self)
         setuptools.command.test.test.run(self)
 
 
-@build_command('generate executable')
-class build_exe(Command):
-    sub_commands = list(distutils.command.build.build.sub_commands) + [
-        ('build', None)]
+@build_command('generate all resources',
+               minify_html,
+               generate_icons,
+               generate_translations)
+class generate_res(Command):
+    pass
 
+
+@build_command('build the project',
+               generate_res,
+               *distutils.command.build.build.sub_commands)
+class build(distutils.command.build.build):
+    pass
+
+
+@build_command('generate executable',
+               build)
+class build_exe(Command):
     SPEC_DIR = os.path.join(os.path.dirname(__file__), 'pyi')
 
     def run(self):

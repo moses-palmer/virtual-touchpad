@@ -5,14 +5,20 @@ import setuptools
 CMDCLASS = {}
 
 
-def build_command(decorated):
+def build_command(decorated, *dependencies):
     """Registers a class as a build command.
 
     :param decorated: The command class, or a descripttion string.
+
+    :param dependencies: The dependencies, expressed as classes.
     """
     def inner(cls):
         if cls is not decorated:
             cls.description = decorated
+            cls.sub_commands = [
+                dependency if isinstance(dependency, tuple)
+                else (dependency.__name__, None)
+                for dependency in dependencies]
         CMDCLASS[cls.__name__] = cls
         return cls
 

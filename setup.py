@@ -100,21 +100,19 @@ class build(distutils.command.build.build):
         ('generate_res', None)]
 
 
-@build_command
+@build_command('generate all resources')
 class generate_res(Command):
-    description = 'generates all resources'
     sub_commands = [
         ('minify_html', None),
         ('generate_icons', None),
         ('generate_translations', None)]
 
 
-@build_command
+@build_command('minify html files')
 class minify_html(Command):
     files = (
         ('index.xhtml', True),
         ('help/index.xhtml', False))
-    description = 'minify html files'
 
     def minify(self, name, include_appcache):
         dom_context = buildlib.xmltransform.start(
@@ -141,18 +139,15 @@ class minify_html(Command):
             self.minify(name, include_appcache)
 
 
-@build_command
+@build_command('generates all icons')
 class generate_icons(Command):
-    description = 'generates all icons'
     sub_commands = [
         ('generate_favicon', None),
         ('generate_appicon', None)]
 
 
-@build_command
+@build_command('generates raster icons')
 class generate_raster_icons(Command):
-    description = 'generates raster icons'
-
     BASE = 'icon%dx%d.png'
 
     DIR = os.path.abspath(os.path.join(
@@ -183,9 +178,8 @@ class generate_raster_icons(Command):
             buildlib.icons.convert(source_path, target_path, (size, size))
 
 
-@build_command
+@build_command('generate a favicon from SVG sources')
 class generate_favicon(Command):
-    description = 'generate a favicon from SVG sources'
     sub_commands = [
         ('generate_raster_icons', None)]
 
@@ -213,9 +207,8 @@ class generate_favicon(Command):
             self.TARGET_PNG)
 
 
-@build_command
+@build_command('generate the app icon for all platforms')
 class generate_appicon(Command):
-    description = 'generate the app icon for all platforms'
     sub_commands = [
         ('generate_raster_icons', None),
         ('generate_appicon_darwin', None),
@@ -240,9 +233,8 @@ class generate_appicon(Command):
             shutil.copy2(source_path, target_path)
 
 
-@build_command
+@build_command('generate the app icon for OSX')
 class generate_appicon_darwin(Command):
-    description = 'generate the app icon for OSX'
     sub_commands = [
         ('generate_raster_icons', None)]
 
@@ -299,9 +291,8 @@ class generate_appicon_darwin(Command):
                 raise
 
 
-@build_command
+@build_command('generate the app icon for Linux')
 class generate_appicon_linux(Command):
-    description = 'generate the app icon for Linux'
     sub_commands = [
         ('generate_raster_icons', None)]
 
@@ -323,9 +314,8 @@ class generate_appicon_linux(Command):
             self.TARGET)
 
 
-@build_command
+@build_command('generate the app icon for Windows')
 class generate_appicon_win(Command):
-    description = 'generate the app icon for Windows'
     sub_commands = [
         ('generate_raster_icons', None)]
 
@@ -347,10 +337,8 @@ class generate_appicon_win(Command):
                 for size in self.DIMENSIONS))
 
 
-@build_command
+@build_command('generate translation catalogues from PO files')
 class generate_translations(Command):
-    description = 'generate translation catalogues from PO files'
-
     def run(self):
         import json
 
@@ -421,10 +409,8 @@ class generate_translations(Command):
             return entry.msgstr
 
 
-@build_command
+@build_command('update the POT files')
 class xgettext(Command):
-    description = 'update the POT files'
-
     def run(self):
         source_dir = buildlib.HTML_ROOT
         target_dir = os.path.join(
@@ -465,10 +451,8 @@ class xgettext(Command):
                 buildlib.translation.merge_catalogs(potfile, pofile)
 
 
-@build_command
+@build_command('install node dependencies')
 class node_dependencies(Command):
-    Description = 'install node dependencies'
-
     PACKAGE_COMMAND = ['npm', 'install']
 
     def node(self):
@@ -535,9 +519,8 @@ class test(setuptools.command.test.test):
         setuptools.command.test.test.run(self)
 
 
-@build_command
+@build_command('generate executable')
 class build_exe(Command):
-    description = 'generate executable'
     sub_commands = list(distutils.command.build.build.sub_commands) + [
         ('build', None)]
 

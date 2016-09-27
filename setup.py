@@ -9,19 +9,28 @@ import setuptools
 import setuptools.command.test
 import shutil
 import subprocess
+import sys
 import tempfile
 
 from setuptools import setup
 
-# Make sure we can import build
-import sys
-sys.path.append(os.path.join(
-    os.path.dirname(__file__),
+ROOT = os.path.abspath(os.path.dirname(__file__))
+BUILDDIR = os.path.abspath(os.path.join(
+    ROOT,
+    'build'))
+LIBDIR = os.path.abspath(os.path.join(
+    ROOT,
     'lib'))
+PDIR = os.path.abspath(os.path.join(
+    LIBDIR,
+    'virtualtouchpad'))
+
+# Make sure we can import build
+sys.path.append(LIBDIR)
 import _build as buildlib
 
 # Make sure we can import tests
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(ROOT)
 
 
 REQUIREMENTS = [
@@ -74,9 +83,7 @@ setup_arguments = dict(
     url='https://github.com/moses-palmer/virtual-touchpad',
 
     packages=setuptools.find_packages(
-        os.path.join(
-            os.path.dirname(__file__),
-            'lib'),
+        LIBDIR,
         exclude=[
             '_build']),
     package_dir=PACKAGE_DIR,
@@ -181,7 +188,7 @@ class generate_raster_icons(Command):
     BASE = 'icon%dx%d.png'
 
     DIR = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), 'build', 'icons'))
+        BUILDDIR, 'icons'))
 
     TARGET = os.path.join(DIR, BASE)
 
@@ -201,7 +208,7 @@ class generate_raster_icons(Command):
             target_path = self.TARGET % (size, size)
             try:
                 target_stat = os.stat(target_path)
-                if not (source_stat.st_mtime > target_stat.st_mtime) :
+                if not (source_stat.st_mtime > target_stat.st_mtime):
                     continue
             except:
                 pass
@@ -380,13 +387,10 @@ class generate_translations(Command):
         import json
 
         source_dir = os.path.join(
-            os.path.dirname(__file__),
+            ROOT,
             'po')
         target_dir = os.path.join(
-            os.path.dirname(__file__),
-            'lib',
-            'virtualtouchpad',
-            'html',
+            buildlib.HTML_ROOT,
             'translations')
 
         for domain in os.listdir(source_dir):
@@ -456,7 +460,7 @@ class xgettext(Command):
     def run(self):
         source_dir = buildlib.HTML_ROOT
         target_dir = os.path.join(
-            os.path.dirname(__file__),
+            ROOT,
             'po')
 
         for path in os.listdir(source_dir):
@@ -587,9 +591,7 @@ class build_exe(Command):
 # Read globals from virtualtouchpad._info without loading it
 INFO = {}
 with open(os.path.join(
-        os.path.dirname(__file__),
-        'lib',
-        'virtualtouchpad',
+        PDIR,
         '_info.py'), 'rb') as f:
     data = f.read().decode('utf-8')
     code = compile(data, '_info.py', 'exec')
@@ -602,7 +604,7 @@ setup_arguments['version'] = '.'.join(str(v) for v in INFO['__version__'])
 def read(name):
     try:
         with open(os.path.join(
-                os.path.dirname(__file__),
+                ROOT,
                 name), 'rb') as f:
             return f.read().decode('utf-8')
     except IOError:

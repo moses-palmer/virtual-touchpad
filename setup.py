@@ -21,6 +21,9 @@ import buildlib
 from buildlib.commands import build_command, CMDCLASS, Command
 from buildlib import ROOT, BUILDDIR, LIBDIR, PDIR
 
+import buildlib.commands.minify as minify
+
+
 # Make sure we can import the main package
 sys.path.append(LIBDIR)
 
@@ -92,37 +95,6 @@ setup_arguments = dict(
         'Operating System :: POSIX',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5'])
-
-
-@build_command('minify html files')
-class minify_html(Command):
-    files = (
-        ('index.xhtml', True),
-        ('help/index.xhtml', False))
-
-    def minify(self, name, include_appcache):
-        dom_context = buildlib.xmltransform.start(
-            os.path.join(
-                buildlib.HTML_ROOT,
-                name))
-
-        buildlib.xmltransform.minify_html(dom_context)
-
-        if include_appcache:
-            buildlib.xmltransform.add_manifest(
-                dom_context,
-                'virtual-touchpad.appcache')
-
-        base, ext = name.rsplit('.', 1)
-        buildlib.xmltransform.end(
-            dom_context,
-            os.path.join(
-                buildlib.HTML_ROOT,
-                base + '.min.' + ext))
-
-    def run(self):
-        for name, include_appcache in self.files:
-            self.minify(name, include_appcache)
 
 
 @build_command('generates raster icons')
@@ -493,7 +465,7 @@ class test(setuptools.command.test.test):
 
 
 @build_command('generate all resources',
-               minify_html,
+               minify.minify_html,
                generate_icons,
                generate_translations)
 class generate_res(Command):

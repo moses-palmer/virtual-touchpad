@@ -14,23 +14,14 @@ import tempfile
 
 from setuptools import setup
 
-ROOT = os.path.abspath(os.path.dirname(__file__))
-BUILDDIR = os.path.abspath(os.path.join(
-    ROOT,
-    'build'))
-LIBDIR = os.path.abspath(os.path.join(
-    ROOT,
-    'lib'))
-PDIR = os.path.abspath(os.path.join(
-    LIBDIR,
-    'virtualtouchpad'))
+# Make sure we can import buildlib and tests
+sys.path.append(os.path.dirname(__file__))
+import buildlib
 
-# Make sure we can import build
+from buildlib import ROOT, BUILDDIR, LIBDIR, PDIR
+
+# Make sure we can import the main package
 sys.path.append(LIBDIR)
-import _build as buildlib
-
-# Make sure we can import tests
-sys.path.append(ROOT)
 
 
 REQUIREMENTS = [
@@ -82,10 +73,7 @@ setup_arguments = dict(
 
     url='https://github.com/moses-palmer/virtual-touchpad',
 
-    packages=setuptools.find_packages(
-        LIBDIR,
-        exclude=[
-            '_build']),
+    packages=setuptools.find_packages(LIBDIR),
     package_dir=PACKAGE_DIR,
     package_data=PACKAGE_DATA,
     zip_safe=True,

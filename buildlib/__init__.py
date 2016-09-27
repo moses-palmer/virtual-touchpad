@@ -52,6 +52,5 @@ with open(os.path.join(
         'LICENSE'), 'rb') as f:
     LICENSE = f.read().decode('utf-8')
 
-from . import icons
 from . import translation
 from . import xmltransform

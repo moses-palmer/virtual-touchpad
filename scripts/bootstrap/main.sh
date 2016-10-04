@@ -9,7 +9,7 @@ unset __PYVENV_LAUNCHER__
 
 
 SCRIPTDIR="$(dirname $0)"
-VIRTUALENV_DIR="$1"
+VIRTUALENV_DIR="$(readlink -f "$1")"
 PYTHON="$2"
 
 

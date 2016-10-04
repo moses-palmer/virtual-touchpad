@@ -576,6 +576,8 @@ class build_exe(Command):
         env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(sys.path)
         for spec in os.listdir(self.SPEC_DIR):
+            if not spec.endswith('.spec'):
+                continue
             subprocess.check_call([
                 'python', '-m', 'PyInstaller',
                 os.path.join(self.SPEC_DIR, spec)],

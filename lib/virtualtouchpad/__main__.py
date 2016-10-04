@@ -35,7 +35,7 @@ from . import status
 
 
 # The name of the Virtual Touchpad service
-SERVICE_NAME = '_virtualtouchpad._http._tcp.local.'
+SERVICE_NAME = '_virtualtouchpad._tcp.local.'
 
 log = logging.getLogger('virtualtouchpad')
 

@@ -5,6 +5,7 @@ from xml.dom import Node
 from xml.dom.minidom import parse
 from xml.sax import make_parser
 
+from . import ROOT, HTML_ROOT
 from .xmltransform import _recurse
 
 
@@ -44,7 +45,9 @@ def _extract_x_tr(e, pofile, path):
         polib.POEntry(
             comment=e.getAttribute('x-tr'),
             msgid=' '.join(e.firstChild.nodeValue.split()),
-            occurrences=[(path, e.parse_position[0])]))
+            occurrences=[(
+                os.path.relpath(path, ROOT),
+                e.parse_position[0])]))
 
 
 def _extract_javascript(e, pofile, path):
@@ -58,19 +61,29 @@ def _extract_javascript(e, pofile, path):
             or e.getAttribute('x-no-inline') == 'true':
         return
 
+    src = e.getAttribute('src')
+    if src[0] == '/':
+        # Absolute path, relative to dirname of path
+        full_path = os.path.join(HTML_ROOT, src[1:])
+    else:
+        full_path = os.path.join(
+            os.path.dirname(path),
+            e.getAttribute('src'))
+
     # Extract and merge messages; use the C# parser to support _('string '
     # + 'concatenation')
+    cwd = ROOT
     podata = subprocess.check_output([
         'xgettext',
-        os.path.join(
-            os.path.dirname(path),
-            e.getAttribute('src')),
+        os.path.relpath(full_path, cwd),
         '--add-comments',
         '--from-code=utf-8',
         '--language=C#',
         '--keyword=_',
         '--keyword=_N:1,2',
-        '--output=-'])
+        '--output=-'],
+        cwd=cwd,
+        universal_newlines=True)
     if podata:
         for entry in polib.pofile(podata):
             _add_entry(pofile, entry)

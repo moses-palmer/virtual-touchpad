@@ -9,7 +9,7 @@ unset __PYVENV_LAUNCHER__
 
 
 SCRIPTDIR="$(dirname $0)"
-VIRTUALENV_DIR="$1"
+VIRTUALENV_DIR="$(readlink -f "$1")"
 PYTHON="$2"
 
 
@@ -22,3 +22,9 @@ PYTHON="$2"
 export PIP_REQUIRE_VIRTUALENV=true
 . "$VIRTUALENV_DIR/bin/activate"
 python "$SCRIPTDIR/install-packages.py"
+
+
+# If we are not running on Mac OSX, we should install UI dependencies
+if [ "$(uname)" != "Darwin" ]; then
+    PREFIX="$VIRTUALENV_DIR" "$(dirname "$0")/install-gi.sh"
+fi

@@ -1,5 +1,6 @@
 # -*- mode: python -*-
 
+import fnmatch
 import os
 import sys
 
@@ -17,6 +18,9 @@ ICON = 'build/icons/icon-%s.%s' % (
         'darwin': 'icns',
         'linux': 'png',
         'win': 'ico'}[PLATFORM])
+
+IGNORE = (
+    '/usr/share/*',)
 
 
 a = Analysis(
@@ -41,7 +45,12 @@ exe = EXE(
     a.scripts,
     a.binaries,
     a.zipfiles,
-    a.datas,
+    [
+        (target, source, tag)
+        for (target, source, tag) in a.datas
+        if not any(
+            fnmatch.fnmatch(source, ignore)
+            for ignore in IGNORE)],
     icon=ICON,
     name=NAME,
     debug=False,

@@ -41,3 +41,22 @@ Successfully bootstrapped! Run this command to activate the virtualenv:
 
 except subprocess.CalledProcessError as e:
     sys.exit(e.returncode)
+
+
+def zip_to_dir(path):
+    """Converts a zipped egg to an unzipped directory with the same name.
+
+    A backup will be saved as ``'%s.zip' % path``.
+
+    :param str path: The path to the egg.
+    """
+    print('Unzipping %s...' % path)
+    zpath = '%s.zip' % path
+    os.rename(path, zpath)
+    subprocess.check_call(['python', '-m', 'zipfile', '-e', zpath, path])
+
+
+# Unzip all zipped eggs
+for root, dirs, files in os.walk(DIR):
+    for name in (f for f in files if f.endswith('.egg')):
+        zip_to_dir(os.path.join(root, name))

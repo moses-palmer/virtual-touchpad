@@ -28,8 +28,8 @@ REQUIREMENTS = [
     'aiohttp >=0.21',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
-    'pynput >=1.1',
-    'pystray >=0.3.5',
+    'pynput >=1.1.3',
+    'pystray >=0.10',
     'zeroconf >=0.17']
 
 BUILD_REQUIREMENTS = [
@@ -576,6 +576,8 @@ class build_exe(Command):
         env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(sys.path)
         for spec in os.listdir(self.SPEC_DIR):
+            if not spec.endswith('.spec'):
+                continue
             subprocess.check_call([
                 'python', '-m', 'PyInstaller',
                 os.path.join(self.SPEC_DIR, spec)],

@@ -1,6 +1,32 @@
 import os
 
 
+#: The root directory for the repository
+ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__),
+    os.path.pardir))
+
+#: The build directory
+BUILDDIR = os.path.abspath(os.path.join(
+    ROOT,
+    'build'))
+
+#: The source directory
+LIBDIR = os.path.abspath(os.path.join(
+    ROOT,
+    'lib'))
+
+#: The directory containing the main package
+PDIR = os.path.abspath(os.path.join(
+    LIBDIR,
+    'virtualtouchpad'))
+
+#: The directory in which *HTML* resources are located
+HTML_ROOT = os.path.join(
+    PDIR,
+    'html')
+
+
 def update_file_time(target, *sources):
     """Updates the file modification times of a file to match the latest
     modification time in sources.
@@ -22,20 +48,9 @@ def update_file_time(target, *sources):
 
 
 with open(os.path.join(
-        os.path.dirname(__file__),
-        os.pardir,
-        os.pardir,
+        ROOT,
         'LICENSE'), 'rb') as f:
     LICENSE = f.read().decode('utf-8')
 
-#: The directory in which *HTML* resources are located
-HTML_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    os.path.pardir,
-    'virtualtouchpad',
-    'html')
-
-
-from . import icons
 from . import translation
 from . import xmltransform

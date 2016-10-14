@@ -8,6 +8,11 @@ export LC_ALL=""${LC_ALL:-C}""
 unset __PYVENV_LAUNCHER__
 
 
+# Make sure the virtualenv directory exists
+if [ ! -d "$1" ]; then
+    mkdir -p "$1"
+fi
+
 SCRIPTDIR="$(dirname $0)"
 VIRTUALENV_DIR="$(readlink -f "$1")"
 PYTHON="$2"

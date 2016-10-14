@@ -22,6 +22,9 @@ import virtualtouchpad.resource as resource
 from . import get, HTTPResponse
 from ._static import static
 
+#: The root path for translations
+ROOT = 'translations'
+
 
 @get('/translations/{domain}')
 async def translations(headers, domain):
@@ -35,7 +38,7 @@ async def translations(headers, domain):
         reverse=True) + [('default', 0.0)]
 
     for language, q in languages:
-        path = os.path.join('translations', domain, language + '.js')
+        path = os.path.join(ROOT, domain, language + '.js')
         if resource.exists(path):
             return static(headers, path)
 

@@ -179,7 +179,7 @@ def start():
             configuration.SERVER_URL()),
         icon=PIL.Image.open(
             resource.open_stream(
-                'favicon.png')))
+                'icon.png')))
 
     try:
         def setup(icon):

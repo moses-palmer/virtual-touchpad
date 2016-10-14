@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 
-from buildlib import BUILDDIR, HTML_ROOT, update_file_time
+from buildlib import BUILDDIR, HTML_ROOT, PDIR, update_file_time
 from . import build_command, Command
 
 APP_ICON = os.path.join(
@@ -70,6 +70,25 @@ class generate_favicon(Command):
         shutil.copy2(
             generate_raster_icons.TARGET % (
                 self.DIMENSIONS[0], self.DIMENSIONS[0]),
+            self.TARGET_PNG)
+
+
+@build_command('generate a system tray icon from SVG sources',
+               generate_raster_icons)
+class generate_trayicon(Command):
+    BASE_PNG = 'icon.png'
+
+    DIR = PDIR
+
+    TARGET_PNG = os.path.join(DIR, BASE_PNG)
+
+    DIMENSION = 64
+
+    def run(self):
+        Command.run(self)
+        shutil.copy2(
+            generate_raster_icons.TARGET % (
+                self.DIMENSION, self.DIMENSION),
             self.TARGET_PNG)
 
 
@@ -197,6 +216,7 @@ class generate_appicon(Command):
 
 @build_command('generates all icons',
                generate_favicon,
+               generate_trayicon,
                generate_appicon)
 class generate_icons(Command):
     pass

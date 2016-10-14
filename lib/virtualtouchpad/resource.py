@@ -31,11 +31,8 @@ STATIC_ROOT_ENV = 'VIRTUAL_TOUCHPAD_STATIC_ROOT'
 #: The base directory for all files
 RESOURCE_BASE = virtualtouchpad.__name__
 
-#: The base directory for resources, relative to :attr:`RESOURCE_BASE`
-RESOURCE_NAME = 'html'
-
 #: The path, relative to some root directory, of the resources
-RESOURCE_PATH = os.path.join(RESOURCE_BASE, RESOURCE_NAME)
+RESOURCE_PATH = RESOURCE_BASE
 
 
 def __get_static_root():
@@ -119,7 +116,8 @@ def exists(path):
 
     except ValueError:
         return pkg_resources.resource_exists(
-            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
+            PKG_RESOURCES_PACKAGE,
+            path)
 
     except:
         return False
@@ -135,7 +133,8 @@ def isdir(path):
 
     except ValueError:
         return pkg_resources.resource_isdir(
-            PKG_RESOURCES_PACKAGE, os.path.join(RESOURCE_NAME, path))
+            PKG_RESOURCES_PACKAGE,
+            path)
 
     except:
         return False
@@ -155,7 +154,7 @@ def list(path):
     except ValueError:
         return pkg_resources.resource_listdir(
             PKG_RESOURCES_PACKAGE,
-            os.path.join(RESOURCE_NAME, path))
+            path)
 
     except:
         return []
@@ -174,7 +173,7 @@ def open_stream(path):
     except ValueError:
         return pkg_resources.resource_stream(
             PKG_RESOURCES_PACKAGE,
-            os.path.join(RESOURCE_NAME, path))
+            path)
 
     except:
         raise FileNotFoundError(path)

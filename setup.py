@@ -54,15 +54,16 @@ PACKAGE_DIR = {
 # completed
 PACKAGE_DATA = {
     'virtualtouchpad': [
+        './*.png',
         'html/*.*',
         'html/css/*.*',
         'html/help/*.*',
         'html/img/*.*',
         'html/js/*.*',
         'html/js/*/*.*',
-        'html/keyboard/*.*',
-        'html/keyboard/*/*.*',
-        'html/translations/*/*.*']}
+        'keyboard/*.*',
+        'keyboard/*/*.*',
+        'translations/*/*.*']}
 
 
 # These are the arguments passed to setuptools.setup; they are further modified

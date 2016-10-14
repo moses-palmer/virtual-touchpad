@@ -28,7 +28,7 @@ log = logging.getLogger(__name__)
 
 
 #: The root path for layouts
-ROOT = 'keyboard/layout'
+ROOT = 'html/keyboard/layout'
 
 
 @get('/keyboard/layout/default')

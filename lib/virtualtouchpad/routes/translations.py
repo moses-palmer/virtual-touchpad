@@ -23,7 +23,7 @@ from . import get, HTTPResponse
 from ._static import static
 
 #: The root path for translations
-ROOT = 'translations'
+ROOT = 'html/translations'
 
 
 @get('/translations/{domain}')

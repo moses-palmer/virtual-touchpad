@@ -29,7 +29,7 @@ from . import get, HTTPResponse
 
 
 #: The root path for static resources
-ROOT = '.'
+ROOT = 'html'
 
 #: The files, in the preferred order, to use as index files
 INDEX_FILES = (

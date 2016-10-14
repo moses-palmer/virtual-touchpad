@@ -27,13 +27,20 @@ import virtualtouchpad.resource as resource
 from . import HTTPResponse
 
 
+#: The root directory, relative to the path in virtualtouchpad.resource, of the
+#: static files
+ROOT = '.'
+
+
 log = logging.getLogger(__name__)
 
 
 def static(headers, filepath='.'):
+    fullpath = os.path.join(ROOT, filepath)
+
     # Open the file and get its size
     try:
-        stream = resource.open_stream(filepath)
+        stream = resource.open_stream(fullpath)
         stream.seek(0, os.SEEK_END)
         size = stream.tell()
         stream.seek(0, os.SEEK_SET)

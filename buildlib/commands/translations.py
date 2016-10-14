@@ -1,6 +1,6 @@
 import os
 
-from buildlib import HTML_ROOT, ROOT
+from buildlib import PDIR, ROOT
 from . import build_command, Command
 
 
@@ -13,7 +13,7 @@ class generate_translations(Command):
             ROOT,
             'po')
         target_dir = os.path.join(
-            HTML_ROOT,
+            PDIR,
             'translations')
 
         for domain in os.listdir(source_dir):

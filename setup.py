@@ -63,7 +63,7 @@ PACKAGE_DATA = {
         'html/js/*/*.*',
         'keyboard/*.*',
         'keyboard/*/*.*',
-        'html/translations/*/*.*']}
+        'translations/*/*.*']}
 
 
 # These are the arguments passed to setuptools.setup; they are further modified

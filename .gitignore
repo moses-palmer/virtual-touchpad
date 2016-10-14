@@ -1,9 +1,17 @@
-*.sublime-*
-*.pyc
+# Ignore egg directories for various versions
 *.egg-info/
 *.egg/
 *.eggs/
-build/*
-dist/*
-node_modules/*
-venv/*
+
+# Ignore generated images
+*.ico
+*.png
+
+# Ignore bytecode
+*.pyc
+
+# Ignore build and runtime directories
+build/
+dist/
+node_modules/
+venv/

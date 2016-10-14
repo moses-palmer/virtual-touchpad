@@ -61,8 +61,8 @@ PACKAGE_DATA = {
         'html/img/*.*',
         'html/js/*.*',
         'html/js/*/*.*',
-        'html/keyboard/*.*',
-        'html/keyboard/*/*.*',
+        'keyboard/*.*',
+        'keyboard/*/*.*',
         'html/translations/*/*.*']}
 
 

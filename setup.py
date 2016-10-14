@@ -54,6 +54,7 @@ PACKAGE_DIR = {
 # completed
 PACKAGE_DATA = {
     'virtualtouchpad': [
+        './*.png',
         'html/*.*',
         'html/css/*.*',
         'html/help/*.*',

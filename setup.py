@@ -110,7 +110,8 @@ class test(setuptools.command.test.test):
 
 
 @build_command('update the POT files',
-               translations.xgettext_xhtml)
+               translations.xgettext_xhtml,
+               translations.xgettext_py)
 class xgettext(Command):
     pass
 

@@ -157,6 +157,31 @@ class xgettext_xhtml(Command):
                 os.path.join(domain_path, filename))
 
 
+@build_command('update the POT files for Python files')
+class xgettext_py(Command):
+    SOURCE_DIR = PDIR
+    TARGET_DIR = xgettext_xhtml.TARGET_DIR
+    DOMAIN = 'server.py'
+
+    def run(self):
+        filenames = []
+        for dirpath, dirnames, names in os.walk(self.SOURCE_DIR):
+            for name in (f for f in names if f.endswith('.py')):
+                filenames.append(
+                    os.path.relpath(os.path.join(dirpath, name), ROOT))
+
+        potfile = os.path.join(self.TARGET_DIR, self.DOMAIN + '.pot')
+        subprocess.check_output([
+            'xgettext',
+            '--output=%s' % os.path.relpath(potfile, ROOT),
+            '--language=Python',
+            '--files-from=-'],
+            cwd=ROOT,
+            input='\n'.join(filenames),
+            universal_newlines=True)
+
+        xgettext_xhtml.update(self.TARGET_DIR, self.DOMAIN, potfile)
+
 @build_command('generate translation catalogues from PO files',
                generate_translations_js,
                generate_translations_py)

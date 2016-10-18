@@ -38,7 +38,9 @@ def server(configuration):
         def __init__(self, configuration):
             self.configuration = configuration
 
-        def serve_forever(self):
+        def start(self):
+            """Starts the server.
+            """
             if 'server' in app:
                 raise RuntimeError('only one server allowed')
 

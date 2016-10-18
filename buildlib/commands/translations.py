@@ -6,18 +6,18 @@ from . import build_command, Command
 
 @build_command('generate translation catalogues from PO files')
 class generate_translations(Command):
+    SOURCE_DIR = os.path.join(
+        ROOT,
+        'po')
+    TARGET_DIR = os.path.join(
+        PDIR,
+        'translations')
+
     def run(self):
         import json
 
-        source_dir = os.path.join(
-            ROOT,
-            'po')
-        target_dir = os.path.join(
-            PDIR,
-            'translations')
-
-        for domain in os.listdir(source_dir):
-            domain_path = os.path.join(source_dir, domain)
+        for domain in os.listdir(self.SOURCE_DIR):
+            domain_path = os.path.join(self.SOURCE_DIR, domain)
             if not os.path.isdir(domain_path):
                 continue
 
@@ -28,7 +28,7 @@ class generate_translations(Command):
 
                 code, catalog = self.generate_catalog(language_path)
                 with open(os.path.join(
-                        target_dir,
+                        self.TARGET_DIR,
                         domain,
                         code + '.js'), 'w') as f:
                     f.write('exports.translation.catalog=')

@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from buildlib import PDIR, ROOT
 from . import build_command, Command
@@ -92,7 +93,29 @@ class generate_translations_js(Command):
             return entry.msgstr
 
 
+@build_command('generate Python translation catalogues from PO files')
+class generate_translations_py(Command):
+    SOURCE_DIR = generate_translations_js.SOURCE_DIR
+    TARGET_DIR = generate_translations_js.TARGET_DIR
+
+    def run(self):
+        for domain, po_path in list_po_from_domain(self.SOURCE_DIR):
+            if not domain.endswith('.py'):
+                continue
+
+            target = os.path.join(
+                self.TARGET_DIR,
+                domain.rsplit('.')[0],
+                '%s.mo' % os.path.basename(po_path).rsplit('.', 1)[0])
+
+            subprocess.check_call([
+                'msgfmt',
+                '--output-file', target,
+                po_path])
+
+
 @build_command('generate translation catalogues from PO files',
-               generate_translations_js)
+               generate_translations_js,
+               generate_translations_py)
 class generate_translations(Command):
     pass

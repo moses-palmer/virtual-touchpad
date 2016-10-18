@@ -101,54 +101,19 @@ setup_arguments = dict(
         'Programming Language :: Python :: 3.5'])
 
 
-@build_command('update the POT files')
-class xgettext(Command):
-    def run(self):
-        source_dir = buildlib.HTML_ROOT
-        target_dir = os.path.join(
-            ROOT,
-            'po')
-
-        for path in os.listdir(source_dir):
-            # Only handle XHTML files
-            if not path.endswith('.xhtml'):
-                continue
-
-            # Extract the text domain, and ignore minified files
-            domain = path.rsplit('.', 1)[0]
-            if domain.endswith('.min'):
-                continue
-            domain_path = os.path.join(target_dir, domain)
-
-            potfile = os.path.join(target_dir, domain + '.pot')
-
-            # Extract the messages and save the POT file
-            full_path = os.path.join(source_dir, path)
-            messages = buildlib.translation.read_translatable_strings(full_path)
-            messages.save(potfile)
-
-            # Make sure that the translation directory exists
-            try:
-                os.makedirs(domain_path)
-            except OSError:
-                pass
-
-            # Update the old translations
-            for f in os.listdir(domain_path):
-                if not f.endswith('.po'):
-                    continue
-
-                pofile = os.path.join(target_dir, domain, f)
-
-                buildlib.translation.merge_catalogs(potfile, pofile)
-
-
 @build_command('run tests',
                node.node_dependencies)
 class test(setuptools.command.test.test):
     def run(self):
         Command.run(self)
         setuptools.command.test.test.run(self)
+
+
+@build_command('update the POT files',
+               translations.xgettext_xhtml,
+               translations.xgettext_py)
+class xgettext(Command):
+    pass
 
 
 @build_command('generate all resources',

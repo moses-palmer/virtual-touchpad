@@ -22,9 +22,6 @@ import pkg_resources
 import socket
 import sys
 
-import PIL.Image
-import pystray
-
 from argparse import ArgumentParser
 
 from ._info import __version__
@@ -32,6 +29,7 @@ from . import resource
 from . import routes
 from . import server
 from . import status
+from . import trayicon
 
 
 # The name of the Virtual Touchpad service
@@ -173,19 +171,15 @@ def start():
         status.Configuration.SERVER_HOST.value[0]: address,
         status.Configuration.SERVER_PORT.value[0]: args.port})
 
-    icon = pystray.Icon(
-        __name__,
-        title='Virtual Touchpad - {}'.format(
-            configuration.SERVER_URL()),
-        icon=PIL.Image.open(
-            resource.open_stream(
-                'icon.png')))
+    icon = trayicon.create(configuration)
 
     try:
         def setup(icon):
             main_server = server(configuration)
             icon.visible = True
-            main_server.serve_forever()
+            icon.server = main_server
+            main_server.start()
+            icon.stop()
 
         with _announcer(address, args.port):
             icon.run(setup)

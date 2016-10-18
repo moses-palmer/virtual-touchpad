@@ -4,8 +4,30 @@ from buildlib import PDIR, ROOT
 from . import build_command, Command
 
 
-@build_command('generate translation catalogues from PO files')
-class generate_translations(Command):
+def list_po_from_domain(path):
+    """Lists all PO files found under a root directory.
+
+    This function will yield tuples on the form
+    ``(domain, os.path.join(path, domain, name_po))``.
+
+    :param str path: The source directory.
+    """
+    for domain, domain_path in (
+            (
+                domain,
+                os.path.join(path, domain))
+            for domain in os.listdir(path)
+            if os.path.isdir(os.path.join(path, domain))):
+        yield from (
+                (
+                    domain,
+                    os.path.join(domain_path, name))
+                for name in os.listdir(domain_path)
+                if name.endswith('.po'))
+
+
+@build_command('generate Javascript translation catalogues from PO files')
+class generate_translations_js(Command):
     SOURCE_DIR = os.path.join(
         ROOT,
         'po')
@@ -16,23 +38,17 @@ class generate_translations(Command):
     def run(self):
         import json
 
-        for domain in os.listdir(self.SOURCE_DIR):
-            domain_path = os.path.join(self.SOURCE_DIR, domain)
-            if not os.path.isdir(domain_path):
+        for domain, po_path in list_po_from_domain(self.SOURCE_DIR):
+            if not domain.endswith('.js'):
                 continue
 
-            for language in os.listdir(domain_path):
-                language_path = os.path.join(domain_path, language)
-                if not language_path.endswith('.po'):
-                    continue
-
-                code, catalog = self.generate_catalog(language_path)
-                with open(os.path.join(
-                        self.TARGET_DIR,
-                        domain,
-                        code + '.js'), 'w') as f:
-                    f.write('exports.translation.catalog=')
-                    json.dump(catalog, f)
+            code, catalog = self.generate_catalog(po_path)
+            with open(os.path.join(
+                    self.TARGET_DIR,
+                    domain.rsplit('.')[0],
+                    code + '.js'), 'w') as f:
+                f.write('exports.translation.catalog=')
+                json.dump(catalog, f)
 
     def generate_catalog(self, language_path):
         import polib
@@ -74,3 +90,9 @@ class generate_translations(Command):
 
         else:
             return entry.msgstr
+
+
+@build_command('generate translation catalogues from PO files',
+               generate_translations_js)
+class generate_translations(Command):
+    pass

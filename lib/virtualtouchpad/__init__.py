@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import http.client
 import sys
 
 from aiohttp import web
@@ -40,6 +41,8 @@ def server(configuration):
 
         def start(self):
             """Starts the server.
+
+            This method runs until :meth:`stop` is called.
             """
             if 'server' in app:
                 raise RuntimeError('only one server allowed')
@@ -52,5 +55,19 @@ def server(configuration):
                     port=configuration.SERVER_PORT())
             finally:
                 del app['server']
+
+        def stop(self):
+            """Stops the server.
+            """
+            if 'server' not in app:
+                raise RuntimeError('server is not running')
+
+            app.loop.stop()
+
+            # TODO: The web application will stall until a conneciton attempt is
+            # made, but this should be possible to solve more elegantly?
+            http.client.HTTPConnection(
+                self.configuration.SERVER_HOST(),
+                self.configuration.SERVER_PORT()).request('GET', '/')
 
     return Server(configuration)

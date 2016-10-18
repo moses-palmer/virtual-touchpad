@@ -177,7 +177,9 @@ def start():
         def setup(icon):
             main_server = server(configuration)
             icon.visible = True
+            icon.server = main_server
             main_server.start()
+            icon.stop()
 
         with _announcer(address, args.port):
             icon.run(setup)

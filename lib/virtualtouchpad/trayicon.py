@@ -18,6 +18,9 @@
 import PIL.Image
 import pystray
 
+from pystray import Menu as menu, MenuItem as item
+
+from .translation import _
 from . import resource
 
 
@@ -30,4 +33,8 @@ def create(configuration):
             configuration.SERVER_URL()),
         icon=PIL.Image.open(
             resource.open_stream(
-                'icon.png')))
+                'icon.png')),
+        menu=menu(
+            item(
+                _('Exit'),
+                lambda icon: icon.server.stop())))

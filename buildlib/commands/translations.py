@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from buildlib import PDIR, ROOT
+from buildlib import HTML_ROOT, PDIR, ROOT, translation
 from . import build_command, Command
 
 
@@ -112,6 +112,49 @@ class generate_translations_py(Command):
                 'msgfmt',
                 '--output-file', target,
                 po_path])
+
+
+@build_command('update the POT files for XHTML files')
+class xgettext_xhtml(Command):
+    SOURCES = (
+        ('index.js', os.path.join(HTML_ROOT, 'index.xhtml')),
+        ('help.js', os.path.join(HTML_ROOT, 'help', 'index.xhtml')))
+    TARGET_DIR = os.path.join(
+        ROOT,
+        'po')
+
+    def run(self):
+        for domain, path in self.SOURCES:
+            # The POT file is stored immediately in the target directory
+            potfile = os.path.join(self.TARGET_DIR, domain + '.pot')
+
+            # Extract the messages and save the POT file
+            messages = translation.read_translatable_strings(path)
+            messages.save(potfile)
+
+            # Update the old translations
+            self.update(self.TARGET_DIR, domain, potfile)
+
+    @staticmethod
+    def update(target_dir, domain, potfile):
+        """Updates all PO files in a directory with strings from a POT file.
+
+        :param str target_dir: The root directory for translations.
+
+        :param str domain: The domain.
+
+        :param str potfile: The newly generated POT file.
+        """
+        domain_path = os.path.join(target_dir, domain)
+        if not os.path.isdir(domain_path):
+            return
+        for filename in (
+                f
+                for f in os.listdir(domain_path)
+                if f.endswith('.po')):
+            translation.merge_catalogs(
+                potfile,
+                os.path.join(domain_path, filename))
 
 
 @build_command('generate translation catalogues from PO files',

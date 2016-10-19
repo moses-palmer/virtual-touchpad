@@ -65,9 +65,8 @@ msgid "Touch events are not supported"
 msgstr "Touch events stöds inte"
 
 #: lib/virtualtouchpad/html/js/lib/features.js:57
-#, fuzzy
 msgid "SVG images are not supported"
-msgstr "WebSockets stöds inte"
+msgstr "SVG-bilder stöds inte"
 
 #: lib/virtualtouchpad/html/js/lib/features.js:64
 msgid ""

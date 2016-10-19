@@ -77,8 +77,3 @@ msgstr ""
 #: lib/virtualtouchpad/html/js/lib/features.js:70
 msgid "Please upgrade your browser to a newer version."
 msgstr "Uppgradera din webbläsare till en nyare version."
-
-#~ msgid "One apple."
-#~ msgid_plural "Many apples."
-#~ msgstr[0] "Ett äpple."
-#~ msgstr[1] "Många applen."

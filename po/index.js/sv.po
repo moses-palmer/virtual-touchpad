@@ -40,21 +40,21 @@ msgstr "Anslutningen misslyckades. Kontrollera att <host> kör."
 #. Do not translate <host> or <message>
 #: lib/virtualtouchpad/html/js/app.js:96
 msgid "Failed to send command: <code><message></code>."
-msgstr ""
+msgstr "Misslyckades att skicka kommando: <code><message></code>"
 
 #. Do not translate <host> or <message>
 #: lib/virtualtouchpad/html/js/app.js:103
 msgid "An error occurred on <host>: <code><message></code>."
-msgstr ""
+msgstr "Ett fel uppstod op <host>: <code><message></code>"
 
 #. Do not translate <host> or <message>
 #: lib/virtualtouchpad/html/js/app.js:111
 msgid "An unknown error occurred: <code><message></code>."
-msgstr ""
+msgstr "Ett okänt fel uppstod: <code><message></code>"
 
 #: lib/virtualtouchpad/html/js/app.js:135
 msgid "Stack trace"
-msgstr ""
+msgstr "Stackspårning"
 
 #: lib/virtualtouchpad/html/js/lib/features.js:45
 msgid "WebSockets are not supported"

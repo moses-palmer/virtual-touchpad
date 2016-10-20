@@ -40,7 +40,6 @@ def get(path):
 
     def inner(handler):
         async def wrapper(request):
-            #import pudb; pudb.set_trace()
             arguments = dict(request.match_info)
             try:
                 headers = {

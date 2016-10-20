@@ -46,7 +46,10 @@ def get(path):
                     key.lower(): value
                     for key, value in request.headers.items()}
                 response = await handler(headers, **arguments)
-                if isinstance(response, dict):
+                if response is None:
+                    return aiohttp.web.Response(
+                        status=204)
+                elif isinstance(response, dict):
                     return aiohttp.web.Response(
                         content_type='application/json',
                         status=200,

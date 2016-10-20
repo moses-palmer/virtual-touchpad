@@ -22,7 +22,7 @@ from aiohttp.web import HTTPNotFound
 import virtualtouchpad.resource as resource
 
 from . import get
-from ._static import static
+from ._util import static
 
 #: The root path for translations
 ROOT = 'translations'

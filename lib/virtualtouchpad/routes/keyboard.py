@@ -24,7 +24,7 @@ from aiohttp.web import HTTPNotFound
 import virtualtouchpad.resource as resource
 
 from . import get
-from ._static import static
+from ._util import static
 
 
 log = logging.getLogger(__name__)

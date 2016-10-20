@@ -21,7 +21,7 @@ from aiohttp.web import HTTPNotFound
 
 import virtualtouchpad.resource as resource
 
-from ._static import static as _static
+from ._util import static as _static
 from . import get
 
 

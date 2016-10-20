@@ -131,5 +131,5 @@ from . import controller
 from . import keyboard
 from . import translations
 
-# Import static last since it is the catch-all route
-from . import static
+# Import files last since it is the catch-all route
+from . import files

@@ -21,7 +21,7 @@ from aiohttp.web import HTTPNotFound
 
 import virtualtouchpad.resource as resource
 
-from ._util import static as _static
+from ._util import static
 from . import get
 
 
@@ -36,7 +36,7 @@ INDEX_FILES = (
 
 @get('/')
 @get('/{filepath:.*}')
-async def static(headers, filepath=''):
+async def file_resource(headers, filepath=''):
     path = os.path.join(ROOT, filepath)
 
     # If the resource is a directory, we try to serve the index file
@@ -45,7 +45,7 @@ async def static(headers, filepath=''):
                 os.path.join(path, index)
                 for index in INDEX_FILES):
             if resource.exists(index_file):
-                return _static(headers, index_file)
+                return static(headers, index_file)
         raise HTTPNotFound()
 
-    return _static(headers, path)
+    return static(headers, path)

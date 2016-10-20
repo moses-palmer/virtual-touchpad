@@ -50,10 +50,7 @@ def get(path):
                     return aiohttp.web.Response(
                         status=204)
                 elif isinstance(response, dict):
-                    return aiohttp.web.Response(
-                        content_type='application/json',
-                        status=200,
-                        text=json.dumps(response))
+                    return aiohttp.web.json_response(response)
                 else:
                     return aiohttp.web.Response(
                         body=response.body,

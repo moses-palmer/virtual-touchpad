@@ -33,7 +33,7 @@ ROOT = 'html'
 
 #: The files, in the preferred order, to use as index files
 INDEX_FILES = (
-    'index.min.xhtml',
+    'index.xhtml.min',
     'index.xhtml')
 
 

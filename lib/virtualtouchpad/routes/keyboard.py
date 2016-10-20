@@ -17,6 +17,7 @@
 
 import json
 import logging
+import os
 
 import virtualtouchpad.resource as resource
 
@@ -40,7 +41,8 @@ async def default_layout(headers):
         return HTTPResponse(status=404)
 
     # TODO: Select the one used by the current system
-    return static(headers, '%s/%s' % (ROOT, layout_files[0]))
+    with resource.open_stream(os.path.join(ROOT, layout_files[0])) as f:
+        return json.loads(f.read().decode('utf-8'))
 
 
 @get('/keyboard/layout/')

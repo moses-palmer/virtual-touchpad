@@ -62,7 +62,10 @@ def static(headers, filepath='.'):
 
     # Check the file mtime; we use the egg file or the current binary
     try:
-        st = os.stat(os.path.join(__file__, os.path.pardir, os.path.pardir))
+        st = os.stat(os.path.join(
+            os.path.dirname(__file__),
+            os.path.pardir,
+            os.path.pardir))
     except OSError:
         st = os.stat(os.path.abspath(sys.argv[0]))
     response_headers['Last-Modified'] = email.utils.formatdate(st.st_mtime)

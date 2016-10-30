@@ -35,6 +35,27 @@ ROOT = '.'
 log = logging.getLogger(__name__)
 
 
+def read(path):
+    """Reads a file and guesses the content type.
+
+    :param str path: The resource path.
+
+    :return: the tuple ``(headers, body)``
+    """
+    # Read the file
+    body = resource.open_stream(path).read()
+
+    # Guess the content type and encoding
+    headers = {}
+    mimetype, encoding = mimetypes.guess_type(path)
+    if mimetype:
+        headers['Content-Type'] = mimetype
+    if encoding:
+        headers['Content-Encoding'] = encoding
+
+    return headers, body
+
+
 def static(headers, filepath='.'):
     """Reads a static file and returns a response object.
 
@@ -56,25 +77,13 @@ def static(headers, filepath='.'):
 
     # Open the file and get its size
     try:
-        stream = resource.open_stream(fullpath)
-        stream.seek(0, os.SEEK_END)
-        size = stream.tell()
-        stream.seek(0, os.SEEK_SET)
-        body = stream.read()
+        response_headers, body = read(fullpath)
 
     except FileNotFoundError:
         log.warn('File %s does not exist', filepath)
         raise HTTPNotFound()
 
-    response_headers = {}
-    response_headers['Content-Length'] = size
-
-    # Guess the content type and encoding
-    mimetype, encoding = mimetypes.guess_type(filepath)
-    if mimetype:
-        response_headers['Content-Type'] = mimetype
-    if encoding:
-        response_headers['Content-Encoding'] = encoding
+    response_headers['Content-Length'] = len(body)
 
     # Check the file mtime; we use the egg file or the current binary
     try:

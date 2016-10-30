@@ -36,6 +36,22 @@ log = logging.getLogger(__name__)
 
 
 def static(headers, filepath='.'):
+    """Reads a static file and returns a response object.
+
+    If the file cannot be opened, ``None`` is returned.
+
+    This function honours the ``If-Modified-Since`` header.
+
+    :param headers: The request headers. These are used to decide whether to
+        return ``HTTP 304`` when requesting a file the second time.
+
+    :param str filepath: The path of the resource. The resource is read using
+        :func:`virtualtouchpad.resource.open_stream`.
+
+    :return: a response
+
+    :raises HTTPNotFound: if the resource does not exist
+    """
     fullpath = os.path.join(ROOT, filepath)
 
     # Open the file and get its size

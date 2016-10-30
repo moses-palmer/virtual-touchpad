@@ -17,10 +17,7 @@
 
 import contextlib
 import logging
-import os
-import pkg_resources
 import socket
-import sys
 
 from argparse import ArgumentParser
 

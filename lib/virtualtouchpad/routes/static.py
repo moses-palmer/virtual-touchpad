@@ -15,12 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import mimetypes
 import os
-import email.utils
-import sys
-import time
 
 import virtualtouchpad.resource as resource
 

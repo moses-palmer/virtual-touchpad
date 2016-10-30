@@ -18,6 +18,7 @@
 import aiohttp
 import json
 import logging
+import traceback
 
 from aiohttp.web import Response as HTTPResponse
 

@@ -20,6 +20,8 @@ import json
 import logging
 import traceback
 
+import aiohttp.web
+
 from aiohttp.web import Response as HTTPResponse
 
 from virtualtouchpad import app
@@ -56,6 +58,10 @@ def get(path):
                         body=response.body,
                         status=response.status,
                         headers=response.headers)
+
+            # Let aiohttp handle HTTP exceptions
+            except aiohttp.web.HTTPException:
+                raise
 
             except Exception as e:
                 log.exception('An error occurred when handling request')

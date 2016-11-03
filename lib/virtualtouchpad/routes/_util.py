@@ -16,6 +16,7 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import email.utils
+import functools
 import logging
 import mimetypes
 import os
@@ -35,7 +36,25 @@ ROOT = '.'
 log = logging.getLogger(__name__)
 
 
-def read(root, filepath, index_files):
+def strip_special(path, special_extensions):
+    """Strips special extensions from a file name.
+
+    :param str path: The file name.
+
+    :param special_extensions: Extensions to strip when determining the MIME
+        type.
+
+    :return: a path with special extensions stripped
+    """
+    return functools.reduce(
+        lambda previous, special_extension:
+        previous.rsplit('.', 1)[0] if previous.endswith('.' + special_extension)
+        else previous,
+        special_extensions,
+        path)
+
+
+def read(root, filepath, index_files, special_extensions):
     """Reads a file and guesses the content type.
 
     :param str root: The root path to which `filepath` is a relative path.
@@ -44,6 +63,9 @@ def read(root, filepath, index_files):
 
     :param index_files: The names of index files. These are used if ``path`` is
         a directory.
+
+    :param special_extensions: Extensions to strip when determining the MIME
+        type.
 
     :return: the tuple ``(headers, body)``
 
@@ -73,7 +95,8 @@ def read(root, filepath, index_files):
 
     # Guess the content type and encoding
     headers = {}
-    mimetype, encoding = mimetypes.guess_type(fullpath)
+    mimetype, encoding = mimetypes.guess_type(
+        strip_special(fullpath, special_extensions))
     if mimetype:
         headers['Content-Type'] = mimetype
     if encoding:
@@ -82,7 +105,8 @@ def read(root, filepath, index_files):
     return headers, body
 
 
-def static(headers, root, filepath='.', index_files=None):
+def static(headers, root, filepath='.', index_files=None,
+           special_extensions=None):
     """Reads a static file and returns a response object.
 
     If the file cannot be opened, ``None`` is returned.
@@ -101,6 +125,9 @@ def static(headers, root, filepath='.', index_files=None):
         used if ``filepath`` ends with ``'/'``, which is used to denote a
         directory.
 
+    :param special_extensions: Extensions to strip when determining the MIME
+        type.
+
     :return: a response
 
     :raises HTTPNotFound: if the resource does not exist
@@ -109,7 +136,8 @@ def static(headers, root, filepath='.', index_files=None):
 
     # Open the file and get its size
     try:
-        response_headers, body = read(fullroot, filepath, index_files or [])
+        response_headers, body = read(
+            fullroot, filepath, index_files or [], special_extensions or [])
 
     except FileNotFoundError:
         log.warn('File %s does not exist', filepath)

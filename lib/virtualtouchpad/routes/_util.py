@@ -35,12 +35,15 @@ ROOT = '.'
 log = logging.getLogger(__name__)
 
 
-def read(root, filepath):
+def read(root, filepath, index_files):
     """Reads a file and guesses the content type.
 
     :param str root: The root path to which `filepath` is a relative path.
 
     :param str filepath: The resource path.
+
+    :param index_files: The names of index files. These are used if ``path`` is
+        a directory.
 
     :return: the tuple ``(headers, body)``
 
@@ -53,12 +56,24 @@ def read(root, filepath):
     if resource.isdir(path) and path[-1] != '/':
         raise HTTPFound(filepath + '/')
 
-    # Read the file
-    body = resource.open_stream(path).read()
+    # Read the file; if a directory is requested, we pick the first matching
+    # index file
+    if path[-1] != '/':
+        fullpath = path
+    else:
+        try:
+            fullpath = next(
+                os.path.join(path, index_file)
+                for index_file in index_files
+                if resource.exists(os.path.join(path, index_file)))
+        except StopIteration:
+            raise HTTPNotFound()
+
+    body = resource.open_stream(fullpath).read()
 
     # Guess the content type and encoding
     headers = {}
-    mimetype, encoding = mimetypes.guess_type(path)
+    mimetype, encoding = mimetypes.guess_type(fullpath)
     if mimetype:
         headers['Content-Type'] = mimetype
     if encoding:
@@ -67,7 +82,7 @@ def read(root, filepath):
     return headers, body
 
 
-def static(headers, root, filepath='.'):
+def static(headers, root, filepath='.', index_files=None):
     """Reads a static file and returns a response object.
 
     If the file cannot be opened, ``None`` is returned.
@@ -82,6 +97,10 @@ def static(headers, root, filepath='.'):
     :param str filepath: The path of the resource. The resource is read using
         :func:`virtualtouchpad.resource.open_stream`.
 
+    :param index_files: The names of files to use as index files. These are only
+        used if ``filepath`` ends with ``'/'``, which is used to denote a
+        directory.
+
     :return: a response
 
     :raises HTTPNotFound: if the resource does not exist
@@ -90,7 +109,7 @@ def static(headers, root, filepath='.'):
 
     # Open the file and get its size
     try:
-        response_headers, body = read(fullroot, filepath)
+        response_headers, body = read(fullroot, filepath, index_files or [])
 
     except FileNotFoundError:
         log.warn('File %s does not exist', filepath)

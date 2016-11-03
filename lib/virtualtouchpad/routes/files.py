@@ -15,12 +15,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
-from aiohttp.web import HTTPNotFound
-
-import virtualtouchpad.resource as resource
-
 from ._util import static
 from . import get
 
@@ -37,13 +31,4 @@ INDEX_FILES = (
 @get('/')
 @get('/{filepath:.*}')
 async def file_resource(headers, filepath=''):
-    # If the resource is a directory, we try to serve the index file
-    if resource.isdir(os.path.join(ROOT, filepath)):
-        for index_file in (
-                os.path.join(filepath, index)
-                for index in INDEX_FILES):
-            if resource.exists(os.path.join(ROOT, index_file)):
-                return static(headers, ROOT, index_file)
-        raise HTTPNotFound()
-
-    return static(headers, ROOT, filepath)
+    return static(headers, ROOT, filepath, INDEX_FILES)

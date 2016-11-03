@@ -1,2 +1,2 @@
-# Ignore generated minified HTML
-*.min.xhtml
+# Ignore generated minified files
+*.min

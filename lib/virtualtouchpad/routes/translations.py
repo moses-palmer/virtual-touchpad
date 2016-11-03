@@ -17,10 +17,12 @@
 
 import os
 
+from aiohttp.web import HTTPNotFound
+
 import virtualtouchpad.resource as resource
 
-from . import get, HTTPResponse
-from ._static import static
+from . import get
+from ._util import static
 
 #: The root path for translations
 ROOT = 'translations'
@@ -38,8 +40,8 @@ async def translations(headers, domain):
         reverse=True) + [('default', 0.0)]
 
     for language, q in languages:
-        path = os.path.join(ROOT, domain, language + '.js')
-        if resource.exists(path):
-            return static(headers, path)
+        path = os.path.join(domain, language + '.js')
+        if resource.exists(os.path.join(ROOT, path)):
+            return static(headers, ROOT, path)
 
-    return HTTPResponse(status=404)
+    raise HTTPNotFound()

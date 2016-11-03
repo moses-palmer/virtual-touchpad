@@ -18,8 +18,9 @@
 import aiohttp
 import json
 import logging
+import traceback
 
-from aiohttp.web import Response as HTTPResponse
+import aiohttp.web
 
 from virtualtouchpad import app
 
@@ -39,23 +40,26 @@ def get(path):
 
     def inner(handler):
         async def wrapper(request):
-            #import pudb; pudb.set_trace()
             arguments = dict(request.match_info)
             try:
                 headers = {
                     key.lower(): value
                     for key, value in request.headers.items()}
                 response = await handler(headers, **arguments)
-                if isinstance(response, dict):
+                if response is None:
                     return aiohttp.web.Response(
-                        content_type='application/json',
-                        status=200,
-                        text=json.dumps(response))
+                        status=204)
+                elif isinstance(response, dict):
+                    return aiohttp.web.json_response(response)
                 else:
                     return aiohttp.web.Response(
                         body=response.body,
                         status=response.status,
                         headers=response.headers)
+
+            # Let aiohttp handle HTTP exceptions
+            except aiohttp.web.HTTPException:
+                raise
 
             except Exception as e:
                 log.exception('An error occurred when handling request')
@@ -127,5 +131,5 @@ from . import controller
 from . import keyboard
 from . import translations
 
-# Import static last since it is the catch-all route
-from . import static
+# Import files last since it is the catch-all route
+from . import files

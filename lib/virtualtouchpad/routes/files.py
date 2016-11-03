@@ -15,40 +15,26 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import mimetypes
-import os
-import email.utils
-import sys
-import time
-
-import virtualtouchpad.resource as resource
-
-from ._static import static as _static
-from . import get, HTTPResponse
+from ._util import static
+from . import get
 
 
 #: The root path for static resources
 ROOT = 'html'
 
+#: Special extensions which should be removed before determining the MIME type
+#: of a file; the order is significant, as extensions will stripped one by one
+#: in order
+SPECIAL_EXTENSIONS = (
+    'min',)
+
 #: The files, in the preferred order, to use as index files
 INDEX_FILES = (
-    'index.min.xhtml',
+    'index.xhtml.min',
     'index.xhtml')
 
 
 @get('/')
 @get('/{filepath:.*}')
-async def static(headers, filepath=''):
-    path = os.path.join(ROOT, filepath)
-
-    # If the resource is a directory, we try to serve the index file
-    if resource.isdir(path):
-        for index_file in (
-                os.path.join(path, index)
-                for index in INDEX_FILES):
-            if resource.exists(index_file):
-                return _static(headers, index_file)
-        return HTTPResponse(status=404)
-
-    return _static(headers, path)
+async def file_resource(headers, filepath=''):
+    return static(headers, ROOT, filepath, INDEX_FILES, SPECIAL_EXTENSIONS)

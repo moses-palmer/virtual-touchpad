@@ -7,7 +7,7 @@ from . import build_command, Command
 
 @build_command('minify html files')
 class minify_html(Command):
-    files = (
+    FILES = (
         ('index.xhtml', True),
         ('help/index.xhtml', False))
 
@@ -24,13 +24,12 @@ class minify_html(Command):
                 dom_context,
                 'virtual-touchpad.appcache')
 
-        base, ext = name.rsplit('.', 1)
         buildlib.xmltransform.end(
             dom_context,
             os.path.join(
                 buildlib.HTML_ROOT,
-                base + '.min.' + ext))
+                name + '.min'))
 
     def run(self):
-        for name, include_appcache in self.files:
+        for name, include_appcache in self.FILES:
             self.minify(name, include_appcache)

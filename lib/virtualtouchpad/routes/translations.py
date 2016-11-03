@@ -29,7 +29,7 @@ ROOT = 'translations'
 
 
 @get('/translations/{domain}')
-async def translations(headers, domain):
+async def translations(app, headers, domain):
     accept_language = headers.get('accept-language', 'default')
     languages = sorted((
         (

@@ -35,13 +35,17 @@ ROOT = '.'
 log = logging.getLogger(__name__)
 
 
-def read(path):
+def read(root, filepath):
     """Reads a file and guesses the content type.
 
-    :param str path: The resource path.
+    :param str root: The root path to which `filepath` is a relative path.
+
+    :param str filepath: The resource path.
 
     :return: the tuple ``(headers, body)``
     """
+    path = os.path.join(root, filepath)
+
     # Read the file
     body = resource.open_stream(path).read()
 
@@ -56,7 +60,7 @@ def read(path):
     return headers, body
 
 
-def static(headers, filepath='.'):
+def static(headers, root, filepath='.'):
     """Reads a static file and returns a response object.
 
     If the file cannot be opened, ``None`` is returned.
@@ -66,6 +70,8 @@ def static(headers, filepath='.'):
     :param headers: The request headers. These are used to decide whether to
         return ``HTTP 304`` when requesting a file the second time.
 
+    :param str root: The root path to which `filepath` is a relative path.
+
     :param str filepath: The path of the resource. The resource is read using
         :func:`virtualtouchpad.resource.open_stream`.
 
@@ -73,11 +79,11 @@ def static(headers, filepath='.'):
 
     :raises HTTPNotFound: if the resource does not exist
     """
-    fullpath = os.path.join(ROOT, filepath)
+    fullroot = os.path.join(ROOT, root)
 
     # Open the file and get its size
     try:
-        response_headers, body = read(fullpath)
+        response_headers, body = read(fullroot, filepath)
 
     except FileNotFoundError:
         log.warn('File %s does not exist', filepath)

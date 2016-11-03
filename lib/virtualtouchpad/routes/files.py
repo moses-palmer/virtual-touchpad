@@ -37,15 +37,13 @@ INDEX_FILES = (
 @get('/')
 @get('/{filepath:.*}')
 async def file_resource(headers, filepath=''):
-    path = os.path.join(ROOT, filepath)
-
     # If the resource is a directory, we try to serve the index file
-    if resource.isdir(path):
+    if resource.isdir(os.path.join(ROOT, filepath)):
         for index_file in (
-                os.path.join(path, index)
+                os.path.join(filepath, index)
                 for index in INDEX_FILES):
-            if resource.exists(index_file):
-                return static(headers, index_file)
+            if resource.exists(os.path.join(ROOT, index_file)):
+                return static(headers, ROOT, index_file)
         raise HTTPNotFound()
 
-    return static(headers, path)
+    return static(headers, ROOT, filepath)

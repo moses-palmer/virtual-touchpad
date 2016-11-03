@@ -19,9 +19,11 @@ import json
 import logging
 import os
 
+from aiohttp.web import HTTPNotFound
+
 import virtualtouchpad.resource as resource
 
-from . import get, HTTPResponse
+from . import get
 from ._static import static
 
 
@@ -38,7 +40,7 @@ async def default_layout(headers):
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(status=404)
+        raise HTTPNotFound()
 
     # TODO: Select the one used by the current system
     with resource.open_stream(os.path.join(ROOT, layout_files[0])) as f:
@@ -51,7 +53,7 @@ async def list_layouts(headers):
     """
     layout_files = resource.list(ROOT)
     if not layout_files:
-        return HTTPResponse(status=404)
+        raise HTTPNotFound()
 
     layouts = []
     for layout_file in layout_files:

@@ -17,10 +17,12 @@
 
 import os
 
+from aiohttp.web import HTTPNotFound
+
 import virtualtouchpad.resource as resource
 
 from ._static import static as _static
-from . import get, HTTPResponse
+from . import get
 
 
 #: The root path for static resources
@@ -44,6 +46,6 @@ async def static(headers, filepath=''):
                 for index in INDEX_FILES):
             if resource.exists(index_file):
                 return _static(headers, index_file)
-        return HTTPResponse(status=404)
+        raise HTTPNotFound()
 
     return _static(headers, path)

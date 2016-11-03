@@ -22,8 +22,6 @@ import traceback
 
 import aiohttp.web
 
-from aiohttp.web import Response as HTTPResponse
-
 from virtualtouchpad import app
 
 

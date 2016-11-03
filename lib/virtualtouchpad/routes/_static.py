@@ -22,9 +22,9 @@ import os
 import sys
 import time
 
-import virtualtouchpad.resource as resource
+from aiohttp.web import HTTPNotFound, Response
 
-from . import HTTPResponse
+import virtualtouchpad.resource as resource
 
 
 #: The root directory, relative to the path in virtualtouchpad.resource, of the
@@ -46,9 +46,9 @@ def static(headers, filepath='.'):
         stream.seek(0, os.SEEK_SET)
         body = stream.read()
 
-    except IOError:
-        log.exception('File %s does not exist', filepath)
-        return HTTPResponse(status=404)
+    except FileNotFoundError:
+        log.warn('File %s does not exist', filepath)
+        raise HTTPNotFound()
 
     response_headers = {}
     response_headers['Content-Length'] = size
@@ -78,6 +78,6 @@ def static(headers, filepath='.'):
             response_headers['Date'] = time.strftime(
                 '%a, %d %b %Y %H:%M:%S GMT',
                 time.gmtime())
-        return HTTPResponse(status=304, headers=response_headers)
+        return Response(status=304, headers=response_headers)
 
-    return HTTPResponse(status=200, body=body, headers=response_headers)
+    return Response(status=200, body=body, headers=response_headers)

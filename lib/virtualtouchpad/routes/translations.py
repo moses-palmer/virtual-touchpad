@@ -17,9 +17,11 @@
 
 import os
 
+from aiohttp.web import HTTPNotFound
+
 import virtualtouchpad.resource as resource
 
-from . import get, HTTPResponse
+from . import get
 from ._static import static
 
 #: The root path for translations
@@ -42,4 +44,4 @@ async def translations(headers, domain):
         if resource.exists(path):
             return static(headers, path)
 
-    return HTTPResponse(status=404)
+    raise HTTPNotFound()

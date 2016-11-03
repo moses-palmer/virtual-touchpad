@@ -22,7 +22,7 @@ import os
 import sys
 import time
 
-from aiohttp.web import HTTPNotFound, Response
+from aiohttp.web import HTTPFound, HTTPNotFound, Response
 
 import virtualtouchpad.resource as resource
 
@@ -43,8 +43,15 @@ def read(root, filepath):
     :param str filepath: The resource path.
 
     :return: the tuple ``(headers, body)``
+
+    :raises aiohttp.web.HTTPFound: if ``path`` is a directory, but does not end
+        with ``'/'``
     """
     path = os.path.join(root, filepath)
+
+    # Redirect to directories
+    if resource.isdir(path) and path[-1] != '/':
+        raise HTTPFound(filepath + '/')
 
     # Read the file
     body = resource.open_stream(path).read()

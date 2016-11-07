@@ -163,7 +163,7 @@ table.stack td:nth-child(2) {
     }
 }
 
-#toolbar > button {
+#toolbar > x-button {
     display: table-cell;
     height: 44px;
     width: 44px;
@@ -181,43 +181,43 @@ table.stack td:nth-child(2) {
     background-color: transparent;
 }
 
-#toolbar > button svg {
+#toolbar > x-button svg {
     fill: #606060;
     stroke: #606060;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 4;
 }
-#toolbar > button text {
+#toolbar > x-button text {
     font-family: sans;
     font-size: 32px;
     font-weight: bolder;
 
     stroke: none;
 }
-#toolbar > button .frame {
+#toolbar > x-button .frame {
     fill: none;
 }
-#toolbar > button .shape {
+#toolbar > x-button .shape {
     stroke: none;
 }
 
-.connected #toolbar > button.settings {
+.connected #toolbar > x-button.settings {
     float: left;
 }
 
-*:fullscreen #toolbar > button.fullscreen {
+*:fullscreen #toolbar > x-button.fullscreen {
      display: none;
 }
 
-*:-moz-full-screen #toolbar > button.fullscreen {
+*:-moz-full-screen #toolbar > x-button.fullscreen {
     display: none;
 }
 
-*:-webkit-full-screen #toolbar > button.fullscreen {
+*:-webkit-full-screen #toolbar > x-button.fullscreen {
     display: none;
 }
 
-.fullscreen-disabled #toolbar > button.fullscreen {
+.fullscreen-disabled #toolbar > x-button.fullscreen {
      display: none;
 }

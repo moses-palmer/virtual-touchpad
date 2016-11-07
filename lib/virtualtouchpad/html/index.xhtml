@@ -83,12 +83,12 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <x-message-box id="message-box"></x-message-box>
 
         <!-- The control that is used as touchpad -->
-        <touchpad id="touchpad"
+        <x-touchpad id="touchpad"
             onbuttondown="app.touchpad.onButtonDown.apply(this, event.detail);"
             onbuttonup="app.touchpad.onButtonUp.apply(this, event.detail);"
             onmove="app.touchpad.onMove.apply(this, event.detail);"
             onscroll="app.touchpad.onScroll.apply(this, event.detail);">
-        </touchpad>
+        </x-touchpad>
 
         <!-- The settings container -->
         <div id="settings-overlay"></div>

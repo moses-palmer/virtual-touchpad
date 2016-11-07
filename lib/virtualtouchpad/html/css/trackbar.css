@@ -1,4 +1,4 @@
-trackbar {
+x-trackbar {
     display: block;
     height: 48px;
     width: 100%;
@@ -6,7 +6,7 @@ trackbar {
     background: none;
 }
 
-trackbar .track {
+x-trackbar .track {
     display: block;
     position: relative;
     width: 100%;
@@ -17,7 +17,7 @@ trackbar .track {
     background-color: #A0A0A0;
 }
 
-trackbar .groove {
+x-trackbar .groove {
     display: block;
     position: relative;
     height: 4px;
@@ -26,7 +26,7 @@ trackbar .groove {
     background-color: #0000FF;
 }
 
-trackbar .mark {
+x-trackbar .mark {
     position: relative;
     top: -10px;
     float: right;
@@ -40,6 +40,6 @@ trackbar .mark {
     border-radius: 16px;
 }
 
-trackbar.active .mark {
+x-trackbar.active .mark {
     background-color: #0000FF;
 }

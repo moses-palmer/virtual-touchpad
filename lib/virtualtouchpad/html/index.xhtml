@@ -132,14 +132,14 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         <!-- The keyboard -->
         <x-include href="/keyboard/buttons.svg" />
-        <keyboard
+        <x-keyboard
             id="keyboard"
             src="/keyboard/geometry/large.svg"
             layout="/keyboard/layout/default"
             onpress="app.keyboard.onPress.apply(this, event.detail);"
             onrelease="app.keyboard.onRelease.apply(this, event.detail);"
             onaction="app.keyboard.onAction.apply(this, event.detail);"/>
-        <keyboard
+        <x-keyboard
             id="keyboard-func"
             src="/keyboard/geometry/function-keys.svg"
             onpress="app.keyboard.onPress.apply(this, event.detail);"

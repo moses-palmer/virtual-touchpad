@@ -167,7 +167,6 @@ table.stack td:nth-child(2) {
     display: table-cell;
     height: 44px;
     width: 44px;
-    float: right;
 
     border: 0;
     margin-left: 4px;
@@ -179,6 +178,18 @@ table.stack td:nth-child(2) {
     text-align: center;
 
     background-color: transparent;
+}
+
+#toolbar > x-button.settings {
+    float: left;
+}
+
+#toolbar > x-button.help {
+    float: right;
+}
+
+#toolbar > x-button.fullscreen {
+    float: right;
 }
 
 #toolbar > x-button svg {
@@ -200,10 +211,6 @@ table.stack td:nth-child(2) {
 }
 #toolbar > x-button .shape {
     stroke: none;
-}
-
-.connected #toolbar > x-button.settings {
-    float: left;
 }
 
 *:fullscreen #toolbar > x-button.fullscreen {

@@ -60,8 +60,13 @@ class Status:
             _notifier = self._notifier
             _store = self._store
 
+        self._values = []
         for v in configuration:
-            setattr(self, v.name, Value(*v.value))
+            self._values.append(Value(*v.value))
+            setattr(self, v.name, self._values[-1])
+
+    def __iter__(self):
+        return iter(self._values)
 
     @property
     def store(self):

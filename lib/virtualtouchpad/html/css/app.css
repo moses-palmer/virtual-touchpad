@@ -178,6 +178,13 @@ table.stack td:nth-child(2) {
     text-align: center;
 
     background-color: transparent;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.connected #toolbar > x-button {
+    opacity: 1.0;
+    pointer-events: all;
 }
 
 #toolbar > x-button.settings {

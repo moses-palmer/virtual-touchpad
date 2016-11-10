@@ -16,12 +16,19 @@
 
 import enum
 
+import virtualtouchpad._info as info
+
 from .notifier import Notifier as _Notifier
 from .store import Store as _Store
 from .value import Value as _Value
 
 
 class Configuration(enum.Enum):
+    APPLICATION_VERSION = (
+        'application.version',
+        'The version of this application',
+        True,
+        lambda v: '.'.join(str(v) for v in info.__version__))
     SERVER_HOST = (
         'server.host',
         'The server hostname')

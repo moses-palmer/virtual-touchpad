@@ -110,7 +110,7 @@ table.stack td:nth-child(2) {
     width: 67%;
 
     margin-left: -67%;
-    transition: margin-left 0.5s ease;
+    transition: margin-left 0.3s cubic-bezier(0, 1, 0.9, 1);
 
     background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
     background-color: white;

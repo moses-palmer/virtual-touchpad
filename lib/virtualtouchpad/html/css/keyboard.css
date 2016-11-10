@@ -1,4 +1,4 @@
-keyboard svg {
+x-keyboard svg {
     width: 100%;
 }
 
@@ -50,34 +50,34 @@ text.keyboard.small, keyboard text.small {
  * Definitions to show and hide the appropriate key labels depending on the
  * keyboard modifier state
  */
-keyboard .key text {
+x-keyboard .key text {
     visibility: hidden;
 }
-keyboard .key text.static {
+x-keyboard .key text.static {
     visibility: visible;
     font-size: 9px;
 }
-keyboard.mod-none .key text.mod-none {
+x-keyboard.mod-none .key text.mod-none {
     visibility: visible;
 }
-keyboard.mod-shift .key text.mod-shift {
+x-keyboard.mod-shift .key text.mod-shift {
     visibility: visible;
 }
-keyboard.mod-altgr .key text.mod-altgr {
+x-keyboard.mod-altgr .key text.mod-altgr {
     visibility: visible;
 }
-keyboard.mod-both .key text.mod-both {
+x-keyboard.mod-both .key text.mod-both {
     visibility: visible;
 }
 
 /*
  * Definitions to scale and animate keys when pressed.
  */
-keyboard .key {
+x-keyboard .key {
     transform-origin: 50% 50%;
     transform: scale(1.0);
     transition: transform 0.05s ease;
 }
-keyboard .key.pressed {
+x-keyboard .key.pressed {
     transform: scale(0.85);
 }

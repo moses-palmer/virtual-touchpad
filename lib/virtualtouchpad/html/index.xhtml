@@ -80,70 +80,69 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
     <body>
         <!-- The modal message box -->
-        <message-box id="message-box"></message-box>
+        <x-message-box id="message-box"></x-message-box>
 
         <!-- The control that is used as touchpad -->
-        <touchpad id="touchpad"
+        <x-touchpad id="touchpad"
             onbuttondown="app.touchpad.onButtonDown.apply(this, event.detail);"
             onbuttonup="app.touchpad.onButtonUp.apply(this, event.detail);"
             onmove="app.touchpad.onMove.apply(this, event.detail);"
             onscroll="app.touchpad.onScroll.apply(this, event.detail);">
-        </touchpad>
+        </x-touchpad>
 
         <!-- The settings container -->
         <div id="settings-overlay"></div>
         <div id="settings-view">
             <div>
                 <span x-tr="Caption in configuration">Sensitivity</span>
-                <trackbar
+                <x-trackbar
                     property="view.sensitivity"
                     min-value="0.3"
                     max-value="1.0"
                     default-value="0.5">
-                </trackbar>
+                </x-trackbar>
             </div>
 
             <div>
                 <span x-tr="Caption in configuration">Acceleration</span>
-                <trackbar
+                <x-trackbar
                     property="view.acceleration"
                     min-value="0.2"
                     max-value="1.0"
                     default-value="0.5">
-                </trackbar>
+                </x-trackbar>
             </div>
         </div>
 
         <!-- The toolbar -->
         <div id="toolbar" class="toolbar">
-            <button class="help"
+            <x-button class="help"
                     onclick="app.toolbar.onHelp();">
                 <x-include href="/img/help.svg" />
-            </button>
-            <button class="settings"
+            </x-button>
+            <x-button class="settings"
                     onclick="app.toolbar.onSettings();">
                 <x-include href="/img/settings.svg" />
-            </button>
-            <button class="fullscreen on"
+            </x-button>
+            <x-button class="fullscreen on"
                     onclick="app.toolbar.onFullscreenOn();">
                 <x-include href="/img/fullscreen.svg" />
-            </button>
+            </x-button>
         </div>
 
         <!-- The keyboard -->
         <x-include href="/keyboard/buttons.svg" />
-        <keyboard
+        <x-keyboard
             id="keyboard"
             src="/keyboard/geometry/large.svg"
             layout="/keyboard/layout/default"
             onpress="app.keyboard.onPress.apply(this, event.detail);"
             onrelease="app.keyboard.onRelease.apply(this, event.detail);"
             onaction="app.keyboard.onAction.apply(this, event.detail);"/>
-        <keyboard
+        <x-keyboard
             id="keyboard-func"
             src="/keyboard/geometry/function-keys.svg"
             onpress="app.keyboard.onPress.apply(this, event.detail);"
             onrelease="app.keyboard.onRelease.apply(this, event.detail);"/>
     </body>
 </html>
-

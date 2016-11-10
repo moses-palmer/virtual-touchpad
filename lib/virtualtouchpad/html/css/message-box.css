@@ -1,4 +1,4 @@
-message-box {
+x-message-box {
     z-index: 100;
     position: fixed;
     left: 0;
@@ -17,9 +17,9 @@ message-box {
     font-size: 18pt;
 }
 
-.message-box message-box {
+.message-box x-message-box {
     max-height: 100%;
     padding: 4pt;
 }
 
-message-box.error {}
+x-message-box.error {}

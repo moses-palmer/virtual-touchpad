@@ -110,13 +110,13 @@ table.stack td:nth-child(2) {
     width: 67%;
 
     margin-left: -67%;
-    transition: margin-left 0.5s ease;
+    transition: margin-left 0.3s cubic-bezier(0, 1, 0.9, 1);
 
     background: linear-gradient(white 0%, #E0E0E0 50%, #D0D0D0 100%);
     background-color: white;
 }
 
-#settings-view.toggled {
+.connected #settings-view.toggled {
     margin-left: 0;
 }
 
@@ -167,7 +167,6 @@ table.stack td:nth-child(2) {
     display: table-cell;
     height: 44px;
     width: 44px;
-    float: right;
 
     border: 0;
     margin-left: 4px;
@@ -179,6 +178,25 @@ table.stack td:nth-child(2) {
     text-align: center;
 
     background-color: transparent;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.connected #toolbar > x-button {
+    opacity: 1.0;
+    pointer-events: all;
+}
+
+#toolbar > x-button.settings {
+    float: left;
+}
+
+#toolbar > x-button.help {
+    float: right;
+}
+
+#toolbar > x-button.fullscreen {
+    float: right;
 }
 
 #toolbar > x-button svg {
@@ -200,10 +218,6 @@ table.stack td:nth-child(2) {
 }
 #toolbar > x-button .shape {
     stroke: none;
-}
-
-.connected #toolbar > x-button.settings {
-    float: left;
 }
 
 *:fullscreen #toolbar > x-button.fullscreen {

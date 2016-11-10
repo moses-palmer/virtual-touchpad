@@ -131,6 +131,7 @@ def websocket(path):
 # Importing these modules will attach routes to app
 from . import controller
 from . import keyboard
+from . import status
 from . import translations
 
 # Import files last since it is the catch-all route

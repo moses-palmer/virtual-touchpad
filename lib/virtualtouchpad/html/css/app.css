@@ -116,7 +116,7 @@ table.stack td:nth-child(2) {
     background-color: white;
 }
 
-#settings-view.toggled {
+.connected #settings-view.toggled {
     margin-left: 0;
 }
 

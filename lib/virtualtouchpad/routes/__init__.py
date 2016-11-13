@@ -45,7 +45,7 @@ def get(path):
                 headers = {
                     key.lower(): value
                     for key, value in request.headers.items()}
-                response = await handler(headers, **arguments)
+                response = await handler(app, headers, **arguments)
                 if response is None:
                     return aiohttp.web.Response(
                         status=204)
@@ -116,6 +116,8 @@ def websocket(path):
                 else:
                     break
 
+            return ws
+
         app.router.add_route(
             'GET',
             path,
@@ -129,6 +131,7 @@ def websocket(path):
 # Importing these modules will attach routes to app
 from . import controller
 from . import keyboard
+from . import status
 from . import translations
 
 # Import files last since it is the catch-all route

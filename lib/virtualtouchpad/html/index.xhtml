@@ -42,8 +42,8 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <link rel="apple-touch-icon" sizes="57x57"
             href="/img/icon57x57.png" />
 
-        <title>
-            Virtual Touchpad
+        <title x-tpl="">
+            Virtual Touchpad ${application.version}
         </title>
 
         <link rel="stylesheet" type="text/css" href="/css/app.css" />
@@ -69,6 +69,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         <script type="text/javascript" src="/js/lib/view.js"></script>
         <script type="text/javascript" src="/js/lib/trackbar.js"></script>
         <script type="text/javascript" src="/js/lib/translation.js"></script>
+
+        <!-- Apply templates after loading the translation library -->
+        <script type="text/javascript" src="/js/lib/template.js"></script>
 
         <!-- The main application -->
         <script type="text/javascript" src="/js/app.js"></script>

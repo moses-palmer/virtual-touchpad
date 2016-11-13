@@ -116,6 +116,8 @@ def websocket(path):
                 else:
                     break
 
+            return ws
+
         app.router.add_route(
             'GET',
             path,

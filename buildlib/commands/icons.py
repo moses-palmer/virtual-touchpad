@@ -222,19 +222,39 @@ class generate_icons(Command):
     pass
 
 
-def _locate_convert():
-    """Locates ``convert`` from *ImageMagick*.
+def _locate_binary(name, checker=lambda output: True):
+    """Locates a binary.
 
-    :return: the path to convert, or ``None``
+    The binary in question must support being called with the single argument
+    ``--version``. The fort one to reutn success of all binaries on ``$PATH`` is
+    returned.
+
+    :param str name: The name of the binary.
+
+    :param callable checker: A function that is passed the output of running the
+        command. It must return ``True`` if the output is correct.
+
+    :return: the path to the binary, or ``None``
     :rtype: str or None
     """
     for path in os.getenv('PATH').split(os.pathsep):
         try:
-            full = os.path.join(path, 'convert')
-            if b'ImageMagick' in subprocess.check_output([full, '--version']):
+            full = os.path.join(path, name)
+            if checker(subprocess.check_output([full, '--version'])):
                 return full
         except:
             pass
+
+
+def _locate_convert():
+    """Locates *convert* from *ImageMagick*.
+
+    :return: the path to ``convert``, or ``None``
+    :rtype: str or None
+    """
+    return _locate_binary(
+        'convert',
+        lambda output: b'ImageMagick' in output)
 
 
 CONVERT_COMMAND = _locate_convert()

@@ -257,7 +257,17 @@ def _locate_convert():
         lambda output: b'ImageMagick' in output)
 
 
+def _locate_phantomjs():
+    """Locates *phantomjs*.
+
+    :return: the path to ``phantonjs``, or ``None``
+    :rtype: str or None
+    """
+    return _locate_binary('phantomjs')
+
+
 CONVERT_COMMAND = _locate_convert()
+PHANTOMJS_COMMAND = _locate_phantomjs()
 
 
 if CONVERT_COMMAND:

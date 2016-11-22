@@ -20,7 +20,7 @@ class generate_raster_icons(Command):
 
     # The names of the icon files, relative to ``SOURCE_DIR`` and excluding the
     # file extension
-    ICONS = ('icon')
+    ICONS = ('icon-dark', 'icon-light')
 
     # The target directory for generated icons
     TARGET_DIR = os.path.abspath(os.path.join(
@@ -94,19 +94,18 @@ class generate_favicon(Command):
 @build_command('generate a system tray icon from SVG sources',
                generate_raster_icons)
 class generate_trayicon(Command):
-    BASE_PNG = 'icon.png'
-
+    # The target directory for generated icons
     TARGET_DIR = PDIR
 
-    TARGET_PNG = os.path.join(TARGET_DIR, BASE_PNG)
-
+    # The raster icon dimension to use
     DIMENSION = 64
 
     def run(self):
         Command.run(self)
-        shutil.copy2(
-            generate_raster_icons.icon_name(self.DIMENSION),
-            self.TARGET_PNG)
+        for name in generate_raster_icons.ICONS:
+            shutil.copy2(
+                generate_raster_icons.icon_name(self.DIMENSION, name),
+                os.path.join(self.TARGET_DIR, name + '.png'))
 
 
 @build_command('generate the app icon for OSX',

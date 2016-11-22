@@ -1,4 +1,5 @@
 import contextlib
+import json
 import os
 import shutil
 import subprocess
@@ -222,25 +223,94 @@ class generate_icons(Command):
     pass
 
 
-def _locate_convert():
-    """Locates ``convert`` from *ImageMagick*.
+def _locate_binary(name, checker=lambda output: True):
+    """Locates a binary.
 
-    :return: the path to convert, or ``None``
+    The binary in question must support being called with the single argument
+    ``--version``. The fort one to reutn success of all binaries on ``$PATH`` is
+    returned.
+
+    :param str name: The name of the binary.
+
+    :param callable checker: A function that is passed the output of running the
+        command. It must return ``True`` if the output is correct.
+
+    :return: the path to the binary, or ``None``
     :rtype: str or None
     """
     for path in os.getenv('PATH').split(os.pathsep):
         try:
-            full = os.path.join(path, 'convert')
-            if b'ImageMagick' in subprocess.check_output([full, '--version']):
+            full = os.path.join(path, name)
+            if checker(subprocess.check_output([full, '--version'])):
                 return full
         except:
             pass
 
 
+def _locate_convert():
+    """Locates *convert* from *ImageMagick*.
+
+    :return: the path to ``convert``, or ``None``
+    :rtype: str or None
+    """
+    return _locate_binary(
+        'convert',
+        lambda output: b'ImageMagick' in output)
+
+
+def _locate_phantomjs():
+    """Locates *phantomjs*.
+
+    :return: the path to ``phantonjs``, or ``None``
+    :rtype: str or None
+    """
+    return _locate_binary('phantomjs')
+
+
 CONVERT_COMMAND = _locate_convert()
+PHANTOMJS_COMMAND = _locate_phantomjs()
 
 
 if CONVERT_COMMAND:
+    if PHANTOMJS_COMMAND:
+        @contextlib.contextmanager
+        def _preprocess(source, dimensions):
+            """Converts an *SVG* file to a temporary *PNG* file.
+            """
+            if source.endswith('.svg'):
+                path = tempfile.mktemp(suffix='.png')
+                subprocess.Popen(
+                    [
+                        PHANTOMJS_COMMAND,
+                        '--web-security=false',
+                        os.path.join(
+                            os.path.dirname(__file__),
+                            'svg-converter.js')],
+                    stdin=subprocess.PIPE).communicate(json.dumps({
+                        'command': 'convert',
+                        'args': {
+                            'source': source,
+                            'target': path,
+                            'size': max(dimensions)}}).encode('utf-8'))
+
+                try:
+                    yield path
+                finally:
+                    os.unlink(path)
+
+            else:
+                yield source
+
+    else:
+        @contextlib.contextmanager
+        def _preprocess(source, dimensions):
+            """A no-op placeholder function.
+            """
+            sys.stdout.write(
+                'Not preprocessing %s: PhantomJS is not installed' % (
+                    source) + '\n')
+            yield source
+
     def convert(source, target, dimensions):
         """Converts and resizes an image.
 
@@ -253,19 +323,20 @@ if CONVERT_COMMAND:
 
         :raises RuntimeError: if the conversion fails
         """
-        p = subprocess.Popen([
-            CONVERT_COMMAND,
-            '-background', 'none',
-            source,
-            '-resize', '%s!' % 'x'.join(
-                str(dimension) for dimension in dimensions),
-            target],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
-        if p.returncode != 0:
-            raise RuntimeError('Failed to call convert: %s', stderr)
+        with _preprocess(source, dimensions) as preprocessed_source:
+            p = subprocess.Popen([
+                CONVERT_COMMAND,
+                '-background', 'none',
+                preprocessed_source,
+                '-resize', '%s!' % 'x'.join(
+                    str(dimension) for dimension in dimensions),
+                target],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            _, stderr = p.communicate()
+            if p.returncode != 0:
+                raise RuntimeError('Failed to call convert: %s', stderr)
 
-        update_file_time(target, source)
+            update_file_time(target, source)
 
     def combine(target, *icons):
         """Creates a combined *ICO* file.

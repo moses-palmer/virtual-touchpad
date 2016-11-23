@@ -20,6 +20,10 @@ APP_ICON = os.path.join(
 class generate_raster_icons(Command):
     BASE = 'icon%dx%d.png'
 
+    # The names of the icon files, relative to ``SOURCE_DIR`` and excluding the
+    # file extension
+    ICONS = ('icon',)
+
     # The target directory for generated icons
     TARGET_DIR = os.path.abspath(os.path.join(
         BUILDDIR, 'icons'))
@@ -48,6 +52,22 @@ class generate_raster_icons(Command):
                 pass
             convert(source_path, target_path, (size, size))
 
+    @classmethod
+    def icon_name(cls, dimension, name=ICONS[0]):
+        """Generates the name of the generated icon of a specific dimension.
+
+        :param int dimension: The size of the icon. This must be one of the
+            values in :attr:`DIMENSIONS`.
+
+        :param str name: The name to use as base name.
+
+        :raises ValueError: if ``dimension`` is invalid
+        """
+        if dimension not in cls.DIMENSIONS:
+            raise ValueError(dimension)
+        return os.path.join(cls.TARGET_DIR, '%s%dx%d.png' % (
+            name, dimension, dimension))
+
 
 @build_command('generate a favicon from SVG sources',
                generate_raster_icons)
@@ -67,11 +87,10 @@ class generate_favicon(Command):
         combine(
             self.TARGET_ICO,
             *(
-                generate_raster_icons.TARGET % (size, size)
+                generate_raster_icons.icon_name(size)
                 for size in self.DIMENSIONS))
         shutil.copy2(
-            generate_raster_icons.TARGET % (
-                self.DIMENSIONS[0], self.DIMENSIONS[0]),
+            generate_raster_icons.icon_name(self.DIMENSIONS[0]),
             self.TARGET_PNG)
 
 
@@ -89,8 +108,7 @@ class generate_trayicon(Command):
     def run(self):
         Command.run(self)
         shutil.copy2(
-            generate_raster_icons.TARGET % (
-                self.DIMENSION, self.DIMENSION),
+            generate_raster_icons.icon_name(self.DIMENSION),
             self.TARGET_PNG)
 
 
@@ -121,7 +139,7 @@ class generate_appicon_darwin(Command):
         try:
             for size in self.DIMENSIONS:
                 source_path = os.path.join(
-                    generate_raster_icons.TARGET % (size, size))
+                    generate_raster_icons.icon_name(size))
                 target_path1x = os.path.join(
                     tmpdir,
                     self.BASE1X % (size, size))
@@ -166,8 +184,7 @@ class generate_appicon_linux(Command):
         Command.run(self)
         shutil.copy2(
             os.path.join(
-                generate_raster_icons.TARGET % (
-                    self.DIMENSION, self.DIMENSION)),
+                generate_raster_icons.icon_name(self.DIMENSION)),
             self.TARGET)
 
 
@@ -188,7 +205,7 @@ class generate_appicon_win(Command):
         combine(
             self.TARGET,
             *(os.path.join(
-                    generate_raster_icons.TARGET % (size, size))
+                generate_raster_icons.icon_name(size))
                 for size in self.DIMENSIONS))
 
 
@@ -211,7 +228,7 @@ class generate_appicon(Command):
         Command.run(self)
 
         for size in self.DIMENSIONS:
-            source_path = generate_raster_icons.TARGET % (size, size)
+            source_path = generate_raster_icons.icon_name(size)
             target_path = self.TARGET % (size, size)
             shutil.copy2(source_path, target_path)
 

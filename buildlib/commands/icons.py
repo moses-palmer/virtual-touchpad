@@ -20,18 +20,19 @@ APP_ICON = os.path.join(
 class generate_raster_icons(Command):
     BASE = 'icon%dx%d.png'
 
-    DIR = os.path.abspath(os.path.join(
+    # The target directory for generated icons
+    TARGET_DIR = os.path.abspath(os.path.join(
         BUILDDIR, 'icons'))
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimensions to generate
     DIMENSIONS = (
         1024, 512, 256, 196, 144, 128, 114, 96, 72, 64, 57, 48, 32, 16)
 
     def run(self):
-        if not os.path.isdir(self.DIR):
-            os.makedirs(self.DIR)
+        if not os.path.isdir(self.TARGET_DIR):
+            os.makedirs(self.TARGET_DIR)
 
         source_path = APP_ICON
         source_stat = os.stat(source_path)
@@ -54,10 +55,10 @@ class generate_favicon(Command):
     BASE_ICO = 'favicon.ico'
     BASE_PNG = 'favicon.png'
 
-    DIR = HTML_ROOT
+    TARGET_DIR = HTML_ROOT
 
-    TARGET_ICO = os.path.join(DIR, BASE_ICO)
-    TARGET_PNG = os.path.join(DIR, BASE_PNG)
+    TARGET_ICO = os.path.join(TARGET_DIR, BASE_ICO)
+    TARGET_PNG = os.path.join(TARGET_DIR, BASE_PNG)
 
     DIMENSIONS = (128, 64, 32, 16)
 
@@ -79,9 +80,9 @@ class generate_favicon(Command):
 class generate_trayicon(Command):
     BASE_PNG = 'icon.png'
 
-    DIR = PDIR
+    TARGET_DIR = PDIR
 
-    TARGET_PNG = os.path.join(DIR, BASE_PNG)
+    TARGET_PNG = os.path.join(TARGET_DIR, BASE_PNG)
 
     DIMENSION = 64
 
@@ -98,9 +99,9 @@ class generate_trayicon(Command):
 class generate_appicon_darwin(Command):
     BASE = 'icon-darwin.icns'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The format used to generate the icon file names for the icon set; these
     # must match the files names for an OSX iconset directory
@@ -154,9 +155,9 @@ class generate_appicon_darwin(Command):
 class generate_appicon_linux(Command):
     BASE = 'icon-linux.png'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimension to use
     DIMENSION = 128
@@ -175,9 +176,9 @@ class generate_appicon_linux(Command):
 class generate_appicon_win(Command):
     BASE = 'icon-win.ico'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimensions to include
     DIMENSIONS = (128, 64, 32, 16)
@@ -198,11 +199,11 @@ class generate_appicon_win(Command):
 class generate_appicon(Command):
     BASE = 'icon%dx%d.png'
 
-    DIR = os.path.abspath(os.path.join(
+    TARGET_DIR = os.path.abspath(os.path.join(
         HTML_ROOT,
         'img'))
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     DIMENSIONS = (196, 144, 114, 72, 57)
 

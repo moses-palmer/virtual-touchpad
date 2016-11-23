@@ -9,26 +9,22 @@ import tempfile
 from buildlib import BUILDDIR, HTML_ROOT, PDIR, update_file_time
 from . import build_command, Command
 
-APP_ICON = os.path.join(
-    os.path.dirname(__file__),
-    os.path.pardir,
-    'res',
-    'icon.svg')
-
 
 @build_command('generates raster icons')
 class generate_raster_icons(Command):
-    BASE = 'icon%dx%d.png'
+    # The icon source directory
+    SOURCE_DIR = os.path.join(
+        os.path.dirname(__file__),
+        os.path.pardir,
+        'res')
 
     # The names of the icon files, relative to ``SOURCE_DIR`` and excluding the
     # file extension
-    ICONS = ('icon',)
+    ICONS = ('icon')
 
     # The target directory for generated icons
     TARGET_DIR = os.path.abspath(os.path.join(
         BUILDDIR, 'icons'))
-
-    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimensions to generate
     DIMENSIONS = (
@@ -38,19 +34,20 @@ class generate_raster_icons(Command):
         if not os.path.isdir(self.TARGET_DIR):
             os.makedirs(self.TARGET_DIR)
 
-        source_path = APP_ICON
-        source_stat = os.stat(source_path)
+        for name in self.ICONS:
+            source_path = os.path.join(self.SOURCE_DIR, '%s.svg' % name)
+            source_stat = os.stat(source_path)
 
-        # Generate icons only for modified files
-        for size in self.DIMENSIONS:
-            target_path = self.TARGET % (size, size)
-            try:
-                target_stat = os.stat(target_path)
-                if not (source_stat.st_mtime > target_stat.st_mtime):
-                    continue
-            except:
-                pass
-            convert(source_path, target_path, (size, size))
+            # Generate icons only for modified files
+            for size in self.DIMENSIONS:
+                target_path = self.icon_name(size, name)
+                try:
+                    target_stat = os.stat(target_path)
+                    if not (source_stat.st_mtime > target_stat.st_mtime):
+                        continue
+                except:
+                    pass
+                convert(source_path, target_path, (size, size))
 
     @classmethod
     def icon_name(cls, dimension, name=ICONS[0]):

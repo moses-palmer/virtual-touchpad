@@ -113,7 +113,10 @@ def _announcer(ip_address, port):
     zc = zeroconf.Zeroconf()
     info = zeroconf.ServiceInfo(
         SERVICE_NAME,
-        '%s@%s.%s' % (getpass.getuser(), socket.gethostname(), SERVICE_NAME),
+        '%s@%s.%s' % (
+            getpass.getuser(),
+            socket.gethostname().replace('.', '_'),
+            SERVICE_NAME),
         socket.inet_aton(ip_address),
         port,
         0, 0,

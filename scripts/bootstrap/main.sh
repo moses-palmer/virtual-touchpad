@@ -2,6 +2,28 @@
 
 set -e
 
+
+##
+# Generates a canonical, absolute path from a file name.
+#
+# $1: path
+#     The path of the file for which to generate a canonical name. If this is a
+#     symlink, it will be followed recursively.
+cannonical() {
+    path="$2"
+
+    while : ; do
+        dir="$(dirname "$path")"
+        base="$(basename "$path")"
+        cd "$dir"
+        test -L "$base" || break
+        path="$(readlink "$(basename "$path")")"
+    done
+
+    echo "$(pwd -P)/$base"
+}
+
+
 # LC_ALL may not be set on OSX, and __PYVENV_LAUNCHER__ interferes with
 # virtualenv
 export LC_ALL=""${LC_ALL:-C}""
@@ -14,7 +36,7 @@ if [ ! -d "$1" ]; then
 fi
 
 SCRIPTDIR="$(dirname $0)"
-VIRTUALENV_DIR="$(readlink -f "$1")"
+VIRTUALENV_DIR="$(cannonical "$1")"
 PYTHON="$2"
 
 

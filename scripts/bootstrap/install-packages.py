@@ -32,7 +32,8 @@ SITE_PACKAGES = distutils.sysconfig.get_python_lib()
 EXPLICIT_PACKAGES = (
     'netifaces',
     'Pillow',
-    'zeroconf')
+    'zeroconf') + {
+        'darwin': ('pyobjc-framework-Quartz',)}.get(sys.platform, tuple())
 
 
 def command(description, *args, **kwargs):

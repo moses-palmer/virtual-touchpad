@@ -98,7 +98,7 @@ class generate_trayicon(Command):
     TARGET_DIR = PDIR
 
     # The raster icon dimension to use
-    DIMENSION = 64
+    DIMENSION = 32
 
     def run(self):
         Command.run(self)

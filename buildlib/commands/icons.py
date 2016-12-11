@@ -9,43 +9,61 @@ import tempfile
 from buildlib import BUILDDIR, HTML_ROOT, PDIR, update_file_time
 from . import build_command, Command
 
-APP_ICON = os.path.join(
-    os.path.dirname(__file__),
-    os.path.pardir,
-    'res',
-    'icon.svg')
-
 
 @build_command('generates raster icons')
 class generate_raster_icons(Command):
-    BASE = 'icon%dx%d.png'
+    # The icon source directory
+    SOURCE_DIR = os.path.join(
+        os.path.dirname(__file__),
+        os.path.pardir,
+        'res')
 
-    DIR = os.path.abspath(os.path.join(
+    # The names of the icon files, relative to ``SOURCE_DIR`` and excluding the
+    # file extension
+    ICONS = ('icon-dark', 'icon-light')
+
+    # The target directory for generated icons
+    TARGET_DIR = os.path.abspath(os.path.join(
         BUILDDIR, 'icons'))
-
-    TARGET = os.path.join(DIR, BASE)
 
     # The icon dimensions to generate
     DIMENSIONS = (
         1024, 512, 256, 196, 144, 128, 114, 96, 72, 64, 57, 48, 32, 16)
 
     def run(self):
-        if not os.path.isdir(self.DIR):
-            os.makedirs(self.DIR)
+        if not os.path.isdir(self.TARGET_DIR):
+            os.makedirs(self.TARGET_DIR)
 
-        source_path = APP_ICON
-        source_stat = os.stat(source_path)
+        for name in self.ICONS:
+            source_path = os.path.join(self.SOURCE_DIR, '%s.svg' % name)
+            source_stat = os.stat(source_path)
 
-        # Generate icons only for modified files
-        for size in self.DIMENSIONS:
-            target_path = self.TARGET % (size, size)
-            try:
-                target_stat = os.stat(target_path)
-                if not (source_stat.st_mtime > target_stat.st_mtime):
-                    continue
-            except:
-                pass
-            convert(source_path, target_path, (size, size))
+            # Generate icons only for modified files
+            for size in self.DIMENSIONS:
+                target_path = self.icon_name(size, name)
+                try:
+                    target_stat = os.stat(target_path)
+                    if not (source_stat.st_mtime > target_stat.st_mtime):
+                        continue
+                except:
+                    pass
+                convert(source_path, target_path, (size, size))
+
+    @classmethod
+    def icon_name(cls, dimension, name=ICONS[0]):
+        """Generates the name of the generated icon of a specific dimension.
+
+        :param int dimension: The size of the icon. This must be one of the
+            values in :attr:`DIMENSIONS`.
+
+        :param str name: The name to use as base name.
+
+        :raises ValueError: if ``dimension`` is invalid
+        """
+        if dimension not in cls.DIMENSIONS:
+            raise ValueError(dimension)
+        return os.path.join(cls.TARGET_DIR, '%s%dx%d.png' % (
+            name, dimension, dimension))
 
 
 @build_command('generate a favicon from SVG sources',
@@ -54,10 +72,10 @@ class generate_favicon(Command):
     BASE_ICO = 'favicon.ico'
     BASE_PNG = 'favicon.png'
 
-    DIR = HTML_ROOT
+    TARGET_DIR = HTML_ROOT
 
-    TARGET_ICO = os.path.join(DIR, BASE_ICO)
-    TARGET_PNG = os.path.join(DIR, BASE_PNG)
+    TARGET_ICO = os.path.join(TARGET_DIR, BASE_ICO)
+    TARGET_PNG = os.path.join(TARGET_DIR, BASE_PNG)
 
     DIMENSIONS = (128, 64, 32, 16)
 
@@ -66,31 +84,28 @@ class generate_favicon(Command):
         combine(
             self.TARGET_ICO,
             *(
-                generate_raster_icons.TARGET % (size, size)
+                generate_raster_icons.icon_name(size)
                 for size in self.DIMENSIONS))
         shutil.copy2(
-            generate_raster_icons.TARGET % (
-                self.DIMENSIONS[0], self.DIMENSIONS[0]),
+            generate_raster_icons.icon_name(self.DIMENSIONS[0]),
             self.TARGET_PNG)
 
 
 @build_command('generate a system tray icon from SVG sources',
                generate_raster_icons)
 class generate_trayicon(Command):
-    BASE_PNG = 'icon.png'
+    # The target directory for generated icons
+    TARGET_DIR = PDIR
 
-    DIR = PDIR
-
-    TARGET_PNG = os.path.join(DIR, BASE_PNG)
-
-    DIMENSION = 64
+    # The raster icon dimension to use
+    DIMENSION = 32
 
     def run(self):
         Command.run(self)
-        shutil.copy2(
-            generate_raster_icons.TARGET % (
-                self.DIMENSION, self.DIMENSION),
-            self.TARGET_PNG)
+        for name in generate_raster_icons.ICONS:
+            shutil.copy2(
+                generate_raster_icons.icon_name(self.DIMENSION, name),
+                os.path.join(self.TARGET_DIR, name + '.png'))
 
 
 @build_command('generate the app icon for OSX',
@@ -98,9 +113,9 @@ class generate_trayicon(Command):
 class generate_appicon_darwin(Command):
     BASE = 'icon-darwin.icns'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The format used to generate the icon file names for the icon set; these
     # must match the files names for an OSX iconset directory
@@ -120,7 +135,7 @@ class generate_appicon_darwin(Command):
         try:
             for size in self.DIMENSIONS:
                 source_path = os.path.join(
-                    generate_raster_icons.TARGET % (size, size))
+                    generate_raster_icons.icon_name(size))
                 target_path1x = os.path.join(
                     tmpdir,
                     self.BASE1X % (size, size))
@@ -154,9 +169,9 @@ class generate_appicon_darwin(Command):
 class generate_appicon_linux(Command):
     BASE = 'icon-linux.png'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimension to use
     DIMENSION = 128
@@ -165,8 +180,7 @@ class generate_appicon_linux(Command):
         Command.run(self)
         shutil.copy2(
             os.path.join(
-                generate_raster_icons.TARGET % (
-                    self.DIMENSION, self.DIMENSION)),
+                generate_raster_icons.icon_name(self.DIMENSION)),
             self.TARGET)
 
 
@@ -175,9 +189,9 @@ class generate_appicon_linux(Command):
 class generate_appicon_win(Command):
     BASE = 'icon-win.ico'
 
-    DIR = generate_raster_icons.DIR
+    TARGET_DIR = generate_raster_icons.TARGET_DIR
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     # The icon dimensions to include
     DIMENSIONS = (128, 64, 32, 16)
@@ -187,7 +201,7 @@ class generate_appicon_win(Command):
         combine(
             self.TARGET,
             *(os.path.join(
-                    generate_raster_icons.TARGET % (size, size))
+                generate_raster_icons.icon_name(size))
                 for size in self.DIMENSIONS))
 
 
@@ -198,11 +212,11 @@ class generate_appicon_win(Command):
 class generate_appicon(Command):
     BASE = 'icon%dx%d.png'
 
-    DIR = os.path.abspath(os.path.join(
+    TARGET_DIR = os.path.abspath(os.path.join(
         HTML_ROOT,
         'img'))
 
-    TARGET = os.path.join(DIR, BASE)
+    TARGET = os.path.join(TARGET_DIR, BASE)
 
     DIMENSIONS = (196, 144, 114, 72, 57)
 
@@ -210,7 +224,7 @@ class generate_appicon(Command):
         Command.run(self)
 
         for size in self.DIMENSIONS:
-            source_path = generate_raster_icons.TARGET % (size, size)
+            source_path = generate_raster_icons.icon_name(size)
             target_path = self.TARGET % (size, size)
             shutil.copy2(source_path, target_path)
 

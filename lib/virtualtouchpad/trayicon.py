@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+
 import PIL.Image
 import pystray
 
@@ -33,7 +35,10 @@ def create(configuration):
             configuration.SERVER_URL()),
         icon=PIL.Image.open(
             resource.open_stream(
-                'icon.png')),
+                {
+                    'darwin': 'icon-dark.png',
+                    'linux': 'icon-light.png',
+                    'win32': 'icon-light.png'}[sys.platform])),
         menu=menu(
             item(
                 _('Exit'),

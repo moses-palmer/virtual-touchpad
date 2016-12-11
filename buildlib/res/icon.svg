@@ -1,249 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="196"
-   height="196"
-   id="svg2"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="icon.svg">
-  <defs
-     id="defs4">
-    <linearGradient
-       id="linearGradient3828">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop3830" />
-      <stop
-         style="stop-color:#606060;stop-opacity:1;"
-         offset="1"
-         id="stop3832" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3948">
-      <stop
-         style="stop-color:#808080;stop-opacity:1;"
-         offset="0"
-         id="stop3950" />
-      <stop
-         style="stop-color:#202020;stop-opacity:1;"
-         offset="1"
-         id="stop3952" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3774">
-      <stop
-         style="stop-color:#404040;stop-opacity:1;"
-         offset="0"
-         id="stop3776" />
-      <stop
-         id="stop3782"
-         offset="1"
-         style="stop-color:#383838;stop-opacity:1;" />
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="1"
-         id="stop3778" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3759">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3761" />
-      <stop
-         style="stop-color:#e0e0e0;stop-opacity:1;"
-         offset="1"
-         id="stop3763" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3771"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.83333333,0,0,0.71428571,2.9906147,296.65434)"
-       x1="-0.48873783"
-       y1="1041.8912"
-       x2="12.511262"
-       y2="1041.8912" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3792"
-       x1="2"
-       y1="12"
-       x2="12"
-       y2="12"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,1.25,0,1032.8622)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3798"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.83333333,0,0,0.71428571,2.9906147,296.65434)"
-       x1="-0.48873783"
-       y1="1041.8912"
-       x2="12.511262"
-       y2="1041.8912" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3807"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,1.25,0,1032.8622)"
-       x1="2"
-       y1="12"
-       x2="12"
-       y2="12" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3810"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.83333333,0,0,0.71428571,0.9906147,295.65434)"
-       x1="-0.48873783"
-       y1="1041.8912"
-       x2="12.511262"
-       y2="1041.8912" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3759"
-       id="linearGradient3816"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,1.25,1037.3622,-2.5)"
-       x1="2"
-       y1="12"
-       x2="12"
-       y2="12" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3828"
-       id="linearGradient3915"
-       x1="8"
-       y1="1052.3622"
-       x2="12"
-       y2="1036.3622"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3828"
-       id="linearGradient3108"
-       gradientUnits="userSpaceOnUse"
-       x1="8"
-       y1="1052.3622"
-       x2="12"
-       y2="1036.3622" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3828"
-       id="linearGradient3116"
-       gradientUnits="userSpaceOnUse"
-       x1="8"
-       y1="1052.3622"
-       x2="12"
-       y2="1036.3622"
-       gradientTransform="matrix(12.25,0,0,12.25,0,-11839.075)" />
-  </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="27.413793"
-     inkscape:cx="12.04606"
-     inkscape:cy="6.9591195"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="997"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2985"
-       empspacing="5"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-856.3622)">
-    <rect
-       style="fill:url(#linearGradient3116);fill-opacity:1;stroke:#000000;stroke-width:12.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3033"
-       width="183.75"
-       height="183.75"
-       x="6.125"
-       y="862.48676"
-       rx="36.75"
-       ry="36.75" />
-    <g
-       id="g3836"
-       transform="matrix(12.25,0,0,12.25,36.75,-11839.075)">
-      <rect
-         ry="1"
-         rx="1"
-         transform="translate(0,1036.3622)"
-         y="5"
-         x="5"
-         height="9"
-         width="6"
-         id="rect3822"
-         style="fill:#ffffff;fill-opacity:1;stroke:none" />
-      <rect
-         transform="translate(0,1036.3622)"
-         y="6"
-         x="6"
-         height="6"
-         width="4"
-         id="rect3824"
-         style="fill:#000000;fill-opacity:1;stroke:none" />
-      <path
-         transform="matrix(0.5,0,0,1,4,1035.8622)"
-         d="M 9,13.5 C 9,13.776142 8.5522847,14 8,14 7.4477153,14 7,13.776142 7,13.5 7,13.223858 7.4477153,13 8,13 c 0.5522847,0 1,0.223858 1,0.5 z"
-         sodipodi:ry="0.5"
-         sodipodi:rx="1"
-         sodipodi:cy="13.5"
-         sodipodi:cx="8"
-         id="path3826"
-         style="fill:#000000;fill-opacity:1;stroke:none"
-         sodipodi:type="arc" />
-    </g>
-    <path
-       style="fill:none;stroke:#ffffff;stroke-width:12.25px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 134.75,917.61195 c 0,0 0,-12.25 -12.25,-24.5 -19.36895,-19.36895 -67.435302,-21.9449 -85.75,0 -29.2520778,35.05021 24.5,134.75005 24.5,134.75005"
-       id="path3843"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csac" />
-  </g>
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns="http://www.w3.org/2000/svg"
+        width="64"
+        height="64"
+        version="1.1">
+    <defs>
+        <g
+                id="beam">
+            <circle
+                cx="34"
+                cy="28"
+                r="24" />
+            <circle
+                cx="34"
+                cy="28"
+                r="16" />
+            <circle
+                cx="34"
+                cy="28"
+                r="8" />
+        </g>
+
+        <g
+                id="device">
+            <rect
+                x="30"
+                y="24"
+                width="24"
+                height="38"
+                rx="4"
+                ry="4" />
+        </g>
+    </defs>
 </svg>

@@ -36,7 +36,7 @@ REQUIREMENTS = [
     'netifaces >=0.8',
     'Pillow >=1.1.7',
     'pynput >=1.1.3',
-    'pystray >=0.10',
+    'pystray >=0.11',
     'zeroconf >=0.17']
 
 BUILD_REQUIREMENTS = [

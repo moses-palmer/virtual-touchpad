@@ -106,7 +106,6 @@ class VTTranslations(gettext.GNUTranslations):
 try:
     _translation = VTTranslations(DOMAIN)
 except:
-    raise
     _translation = gettext.NullTranslations()
 _ = _translation.gettext
 _N = _translation.ngettext

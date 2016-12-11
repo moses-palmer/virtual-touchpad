@@ -1,6 +1,17 @@
 Release Notes
 =============
 
+v0.17
+-----
+*  Dropped support for *Python* before 3.5.
+*  Added menu to system tray icon to allow stopping *Virtual Touchpad*.
+*  UPdated icon.
+*  Updated mouse and keyboard control library with many fixes.
+*  Improved handling of disconnection.
+*  Improved bootstrapping on *OSX*.
+*  Corrected host name for *ZeonConf*.
+
+
 v0.16.2 - Include Release Notes
 -------------------------------
 *  Actually include release notes when publishing on *PyPi*.

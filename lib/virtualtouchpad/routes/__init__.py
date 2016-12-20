@@ -147,6 +147,7 @@ def localhost(f):
 # Importing these modules will attach routes to app
 from . import controller
 from . import keyboard
+from . import qr
 from . import status
 from . import translations
 

@@ -98,7 +98,7 @@ def websocket(path):
                     data=str(exception),
                     tb=traceback.extract_tb(tb))))
 
-            dispatcher = handler(report_error)
+            dispatcher = handler(app, request, report_error)
             next(dispatcher)
 
             while True:

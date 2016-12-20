@@ -25,7 +25,7 @@ from . import websocket
 
 
 @websocket('/controller')
-def controller(report_error):
+def controller(app, request, report_error):
     log = logging.getLogger(__name__)
     dispatch = Dispatcher(
         key=keyboard.Handler(),

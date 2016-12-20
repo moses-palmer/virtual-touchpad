@@ -18,7 +18,6 @@
 from . import get
 
 
-@get('/')
 @get('/status')
 async def status(app, headers):
     return {

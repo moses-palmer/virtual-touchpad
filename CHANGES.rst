@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.17.1 - Allow access to root
+------------------------------
+*  Allow accessing ``http://server/`` instead of ``http://server/index.xhtml``.
+
+
 v0.17
 -----
 *  Dropped support for *Python* before 3.5.

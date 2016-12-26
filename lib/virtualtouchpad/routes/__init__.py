@@ -42,10 +42,7 @@ def get(path):
         async def wrapper(request):
             arguments = dict(request.match_info)
             try:
-                headers = {
-                    key.lower(): value
-                    for key, value in request.headers.items()}
-                response = await handler(app, headers, **arguments)
+                response = await handler(app, request, **arguments)
                 if response is None:
                     return aiohttp.web.Response(
                         status=204)

@@ -19,7 +19,7 @@ from . import get
 
 
 @get('/status')
-async def status(app, headers):
+async def status(app, request):
     return {
         value.name: value()
         for value in app['server'].configuration}

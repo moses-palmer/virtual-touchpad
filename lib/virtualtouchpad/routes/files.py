@@ -36,5 +36,10 @@ INDEX_FILES = (
 
 @get('/')
 @get('/{filepath:.*}')
-async def file_resource(app, headers, filepath=''):
-    return static(headers, ROOT, filepath, INDEX_FILES, SPECIAL_EXTENSIONS)
+async def file_resource(app, request, filepath=''):
+    return static(
+        request.headers,
+        ROOT,
+        filepath,
+        INDEX_FILES,
+        SPECIAL_EXTENSIONS)

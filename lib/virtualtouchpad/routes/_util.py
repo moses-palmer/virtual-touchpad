@@ -143,7 +143,7 @@ def static(headers, root, filepath='.', index_files=None,
         log.warn('File %s does not exist', filepath)
         raise HTTPNotFound()
 
-    response_headers['Content-Length'] = len(body)
+    response_headers['Content-Length'] = str(len(body))
 
     # Check the file mtime; we use the egg file or the current binary
     try:

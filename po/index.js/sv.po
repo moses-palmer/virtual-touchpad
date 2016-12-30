@@ -14,17 +14,17 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. Caption in configuration
-#: lib/virtualtouchpad/html/index.xhtml:97
+#: lib/virtualtouchpad/html/index.xhtml:100
 msgid "Sensitivity"
 msgstr "Känslighet"
 
 #. Caption in configuration
-#: lib/virtualtouchpad/html/index.xhtml:107
+#: lib/virtualtouchpad/html/index.xhtml:110
 msgid "Acceleration"
 msgstr "Acceleration"
 
 #. <a href=...> and </a> must not be translated
-#: lib/virtualtouchpad/html/js/app.js:54
+#: lib/virtualtouchpad/html/js/app.js:53
 msgid ""
 "Connection closed. Please click <a href='javascript:location."
 "reload();'>here</a> to reconnect."
@@ -32,48 +32,48 @@ msgstr ""
 "Anslutningen stängdes. Klicka <a href='javascript:location.reload();'>här</"
 "a> för att ansluta igen."
 
-#. Do not translate <host>
-#: lib/virtualtouchpad/html/js/app.js:66
-msgid "Failed to connect. Please verify that <host> is running."
-msgstr "Anslutningen misslyckades. Kontrollera att <host> kör."
+#. Do not translate ${tokens}
+#: lib/virtualtouchpad/html/js/app.js:65
+msgid "Failed to connect. Please verify that ${host} is running."
+msgstr "Anslutningen misslyckades. Kontrollera att ${host} kör."
 
-#. Do not translate <host> or <message>
-#: lib/virtualtouchpad/html/js/app.js:96
-msgid "Failed to send command: <code><message></code>."
-msgstr "Misslyckades att skicka kommando: <code><message></code>"
+#. Do not translate ${tokens}
+#: lib/virtualtouchpad/html/js/app.js:97
+msgid "Failed to send command: <code>${message}</code>."
+msgstr "Misslyckades att skicka kommando: <code>${message}</code>"
 
-#. Do not translate <host> or <message>
-#: lib/virtualtouchpad/html/js/app.js:103
-msgid "An error occurred on <host>: <code><message></code>."
-msgstr "Ett fel uppstod op <host>: <code><message></code>"
+#. Do not translate ${tokens}
+#: lib/virtualtouchpad/html/js/app.js:105
+msgid "An error occurred on ${host}: <code>${message}</code>."
+msgstr "Ett fel uppstod på ${host}: <code>${message}</code>"
 
-#. Do not translate <host> or <message>
-#: lib/virtualtouchpad/html/js/app.js:111
-msgid "An unknown error occurred: <code><message></code>."
-msgstr "Ett okänt fel uppstod: <code><message></code>"
+#. Do not translate ${tokens}
+#: lib/virtualtouchpad/html/js/app.js:114
+msgid "An unknown error occurred: <code>${message}</code>."
+msgstr "Ett okänt fel uppstod: <code>${message}</code>"
 
-#: lib/virtualtouchpad/html/js/app.js:135
+#: lib/virtualtouchpad/html/js/app.js:139
 msgid "Stack trace"
 msgstr "Stackspårning"
 
-#: lib/virtualtouchpad/html/js/lib/features.js:45
+#: lib/virtualtouchpad/html/js/lib/features.js:48
 msgid "WebSockets are not supported"
 msgstr "WebSockets stöds inte"
 
-#: lib/virtualtouchpad/html/js/lib/features.js:51
+#: lib/virtualtouchpad/html/js/lib/features.js:54
 msgid "Touch events are not supported"
 msgstr "Touch events stöds inte"
 
-#: lib/virtualtouchpad/html/js/lib/features.js:57
+#: lib/virtualtouchpad/html/js/lib/features.js:60
 msgid "SVG images are not supported"
 msgstr "SVG-bilder stöds inte"
 
-#: lib/virtualtouchpad/html/js/lib/features.js:64
+#: lib/virtualtouchpad/html/js/lib/features.js:67
 msgid ""
 "Your browser does not support Virtual Touchpad. These features are missing:"
 msgstr ""
 "Din webbläsare stöder inte Virtual Touchpad. Följande funktioner saknas:"
 
-#: lib/virtualtouchpad/html/js/lib/features.js:70
+#: lib/virtualtouchpad/html/js/lib/features.js:73
 msgid "Please upgrade your browser to a newer version."
 msgstr "Uppgradera din webbläsare till en nyare version."

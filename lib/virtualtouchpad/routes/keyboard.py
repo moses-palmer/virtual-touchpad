@@ -27,9 +27,6 @@ from . import get
 from ._util import static
 
 
-log = logging.getLogger(__name__)
-
-
 #: The root path for layouts
 ROOT = 'keyboard/layout'
 
@@ -54,6 +51,8 @@ async def list_layouts(app, headers):
     layout_files = resource.list(ROOT)
     if not layout_files:
         raise HTTPNotFound()
+
+    log = logging.getLogger(__name__)
 
     layouts = []
     for layout_file in layout_files:

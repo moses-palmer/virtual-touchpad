@@ -16,6 +16,7 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import aiohttp
+import functools
 import json
 import logging
 import traceback
@@ -121,6 +122,24 @@ def websocket(path):
             wrapper)
 
         return handler
+
+    return inner
+
+
+def localhost(f):
+    """A decorator to restrict access to a route to ``localhost``.
+
+    :param callable f: The route handler.
+    """
+    @functools.wraps(f)
+    def inner(app, request, *args):
+        peername = request.transport.get_extra_info('peername')
+        if peername is not None:
+            host, _ = peername
+            if host == app['server'].configuration.SERVER_HOST():
+                return f(app, request, *args)
+
+        raise aiohttp.web.HTTPForbidden()
 
     return inner
 

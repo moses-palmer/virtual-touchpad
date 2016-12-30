@@ -32,7 +32,7 @@ sys.path.append(LIBDIR)
 
 
 REQUIREMENTS = [
-    'aiohttp >=0.21',
+    'aiohttp >=1.2',
     'netifaces >=0.8',
     'Pillow >=1.1.7',
     'pynput >=1.1.3',

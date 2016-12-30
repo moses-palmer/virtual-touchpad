@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-18 22:29+0200\n"
+"POT-Creation-Date: 2016-12-30 05:19+0100\n"
 "PO-Revision-Date: 2014-04-14 22:43+0100\n"
 "Last-Translator: Moses Palmér <moses.palmer@gmail.com>\n"
 "Language-Team: Swedish\n"
@@ -13,6 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/virtualtouchpad/trayicon.py:39
+#: lib/virtualtouchpad/trayicon.py:44
 msgid "Exit"
 msgstr "Avsluta"

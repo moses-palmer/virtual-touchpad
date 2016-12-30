@@ -33,9 +33,6 @@ import virtualtouchpad.resource as resource
 ROOT = '.'
 
 
-log = logging.getLogger(__name__)
-
-
 def strip_special(path, special_extensions):
     """Strips special extensions from a file name.
 
@@ -140,7 +137,6 @@ def static(headers, root, filepath='.', index_files=None,
             fullroot, filepath, index_files or [], special_extensions or [])
 
     except FileNotFoundError:
-        log.warn('File %s does not exist', filepath)
         raise HTTPNotFound()
 
     response_headers['Content-Length'] = str(len(body))

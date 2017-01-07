@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+v0.18 - QR code
+---------------
+*  Added QR code view to provide the mobile device URL. Just click *Connect
+   mobile device...* in the system tray menu.
+*  Updated *aiohttp* to version *1.2*.
+
+
 v0.17.1 - Allow access to root
 ------------------------------
 *  Allow accessing ``http://server/`` instead of ``http://server/index.xhtml``.

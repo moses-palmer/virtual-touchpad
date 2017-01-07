@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="shortcut icon" sizes="196x196"
+            href="/img/icon196x196.png" />
+
+        <link rel="apple-touch-icon" sizes="144x144"
+            href="/img/icon144x144.png" />
+        <link rel="apple-touch-icon" sizes="114x114"
+            href="/img/icon114x114.png" />
+        <link rel="apple-touch-icon" sizes="72x72"
+            href="/img/icon72x72.png" />
+        <link rel="apple-touch-icon" sizes="57x57"
+            href="/img/icon57x57.png" />
+
+        <title x-tr="Title" x-tpl="">
+            Virtual Touchpad ${application.version}
+        </title>
+
+        <link rel="stylesheet" type="text/css" href="/css/qr.css" />
+
+        <!-- Setup script -->
+        <script type="text/javascript" src="/js/lib/init.js"></script>
+        <script type="text/javascript" src="/js/lib/util.js"></script>
+
+        <!-- Required modules -->
+        <script type="text/javascript" src="/js/lib/include.js"></script>
+        <script type="text/javascript" src="/js/lib/template.js"></script>
+        <script type="text/javascript" src="/js/lib/translation.js"></script>
+
+        <!-- Translations -->
+        <script type="text/javascript" src="/translations/qr"
+            x-no-inline="true"></script>
+    </head>
+
+    <body>
+        <section>
+            <div class="qr">
+                <p x-tr="Hint to scan" class="text">
+                    To connect you mobile device, scan this QR code:
+                </p>
+                <x-include x-no-inline="true" href="/img/qr.svg" />
+            </div>
+        </section>
+    </body>
+</html>

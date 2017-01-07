@@ -16,6 +16,7 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import aiohttp
+import functools
 import json
 import logging
 import traceback
@@ -42,10 +43,7 @@ def get(path):
         async def wrapper(request):
             arguments = dict(request.match_info)
             try:
-                headers = {
-                    key.lower(): value
-                    for key, value in request.headers.items()}
-                response = await handler(app, headers, **arguments)
+                response = await handler(app, request, **arguments)
                 if response is None:
                     return aiohttp.web.Response(
                         status=204)
@@ -128,9 +126,28 @@ def websocket(path):
     return inner
 
 
+def localhost(f):
+    """A decorator to restrict access to a route to ``localhost``.
+
+    :param callable f: The route handler.
+    """
+    @functools.wraps(f)
+    def inner(app, request, *args):
+        peername = request.transport.get_extra_info('peername')
+        if peername is not None:
+            host, _ = peername
+            if host == app['server'].configuration.SERVER_HOST():
+                return f(app, request, *args)
+
+        raise aiohttp.web.HTTPForbidden()
+
+    return inner
+
+
 # Importing these modules will attach routes to app
 from . import controller
 from . import keyboard
+from . import qr
 from . import status
 from . import translations
 

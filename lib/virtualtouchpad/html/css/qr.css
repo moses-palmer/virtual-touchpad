@@ -1,0 +1,24 @@
+div.qr  {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+div.qr > svg {
+    align-self: flex-end;
+    flex: 1;
+}
+
+div.qr > .text {
+    order: 0;
+    flex: 0;
+
+    color: gray;
+    font-family: sans;
+    font-size: 16pt;
+    text-align: center;
+}

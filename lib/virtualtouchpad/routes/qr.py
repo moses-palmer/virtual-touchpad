@@ -15,11 +15,29 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-from . import get
+import io
+
+from . import get, localhost
+
+import pyqrcode
+
+from aiohttp.web import Response
 
 
-@get('/status')
-async def status(app, request):
-    return {
-        value.name: value()
-        for value in app['server'].configuration}
+@get('/img/qr.svg')
+@localhost
+async def qr(app, request):
+    # Generate a QR code SVG and save it to a stream
+    with io.BytesIO() as stream:
+        pyqrcode.create(
+            app['server'].configuration.SERVER_URL(),
+            version=4).svg(
+                stream,
+                background='white',
+                omithw=True)
+
+        return Response(
+            status=200,
+            body=stream.getvalue(),
+            headers={
+                'Content-Type': 'image/svg+xml'})

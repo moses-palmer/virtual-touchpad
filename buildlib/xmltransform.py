@@ -117,7 +117,8 @@ def _inline_include(e, source_dir, dom, files):
     # Only use img tags
     if e.nodeType != Node.ELEMENT_NODE \
             or e.tagName != 'x-include' \
-            or not e.getAttribute('href'):
+            or not e.getAttribute('href') \
+            or e.getAttribute('x-no-inline') == 'true':
         return
 
     # Load the XML

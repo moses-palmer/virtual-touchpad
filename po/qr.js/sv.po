@@ -1,0 +1,24 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-04-14 22:45+0100\n"
+"Last-Translator: Moses Palmér <moses.palmer@gmail.com>\n"
+"Language-Team: Language sv\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. Title
+#: lib/virtualtouchpad/html/qr/index.xhtml:17
+msgid "Virtual Touchpad ${application.version}"
+msgstr "Virtual Touchpad ${application.version}"
+
+#. Hint to scan
+#: lib/virtualtouchpad/html/qr/index.xhtml:40
+msgid "To connect you mobile device, scan this QR code:"
+msgstr "För att ansluta din mobila enhet, skanna denna QR-kod:"

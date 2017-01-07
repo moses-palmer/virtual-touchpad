@@ -29,8 +29,8 @@ ROOT = 'translations'
 
 
 @get('/translations/{domain}')
-async def translations(app, headers, domain):
-    accept_language = headers.get('accept-language', 'default')
+async def translations(app, request, domain):
+    accept_language = request.headers.get('accept-language', 'default')
     languages = sorted((
         (
             language.split(';')[0].strip(),
@@ -42,6 +42,6 @@ async def translations(app, headers, domain):
     for language, q in languages:
         path = os.path.join(domain, language + '.js')
         if resource.exists(os.path.join(ROOT, path)):
-            return static(headers, ROOT, path)
+            return static(request.headers, ROOT, path)
 
     raise HTTPNotFound()

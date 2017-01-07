@@ -32,7 +32,7 @@ ROOT = 'keyboard/layout'
 
 
 @get('/keyboard/layout/default')
-async def default_layout(app, headers):
+async def default_layout(app, request):
     """Returns the default keyboard layout.
     """
     layout_files = resource.list(ROOT)
@@ -45,7 +45,7 @@ async def default_layout(app, headers):
 
 
 @get('/keyboard/layout/')
-async def list_layouts(app, headers):
+async def list_layouts(app, request):
     """Returns a list of all keyboard layouts.
     """
     layout_files = resource.list(ROOT)

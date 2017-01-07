@@ -16,6 +16,8 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import urllib
+import webbrowser
 
 import PIL.Image
 import pystray
@@ -29,6 +31,12 @@ from . import resource
 def create(configuration):
     """Creates the system tray icon.
     """
+    def href(path):
+        def inner(*args, **kwargs):
+            webbrowser.open(urllib.parse.urljoin(
+                configuration.SERVER_URL(), path))
+        return inner
+
     return pystray.Icon(
         __name__,
         title='Virtual Touchpad - {}'.format(
@@ -40,6 +48,9 @@ def create(configuration):
                     'linux': 'icon-light.png',
                     'win32': 'icon-light.png'}[sys.platform])),
         menu=menu(
+            item(
+                _('Connect mobile device...'),
+                href('qr')),
             item(
                 _('Exit'),
                 lambda icon: icon.server.stop())))

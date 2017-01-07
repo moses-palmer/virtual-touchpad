@@ -32,6 +32,12 @@ import virtualtouchpad.resource as resource
 #: static files
 ROOT = '.'
 
+#: Whether to ignore the browser cache and always force a full reload; this is
+#: helpful during development
+IGNORE_CACHED = os.getenv(
+    'VIRTUAL_TOUCHPAD_IGNORE_CACHE',
+    'no') == 'yes'
+
 
 def strip_special(path, special_extensions):
     """Strips special extensions from a file name.
@@ -151,7 +157,7 @@ def static(headers, root, filepath='.', index_files=None,
         st = os.stat(os.path.abspath(sys.argv[0]))
     response_headers['Last-Modified'] = email.utils.formatdate(st.st_mtime)
 
-    if headers.get('if-modified-since'):
+    if not IGNORE_CACHED and headers.get('if-modified-since'):
         if_modified_since = time.mktime(email.utils.parsedate(
             headers.get('if-modified-since').split(";")[0].strip()))
         if if_modified_since is not None \

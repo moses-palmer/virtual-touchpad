@@ -9,6 +9,7 @@ from . import build_command, Command
 class minify_html(Command):
     FILES = (
         ('index.xhtml', True),
+        ('qr/index.xhtml', False),
         ('help/index.xhtml', False))
 
     def minify(self, name, include_appcache):

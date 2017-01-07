@@ -118,7 +118,8 @@ class generate_translations_py(Command):
 class xgettext_xhtml(Command):
     SOURCES = (
         ('index.js', os.path.join(HTML_ROOT, 'index.xhtml')),
-        ('help.js', os.path.join(HTML_ROOT, 'help', 'index.xhtml')))
+        ('help.js', os.path.join(HTML_ROOT, 'help', 'index.xhtml')),
+        ('qr.js', os.path.join(HTML_ROOT, 'qr', 'index.xhtml')))
     TARGET_DIR = os.path.join(
         ROOT,
         'po')

@@ -13,6 +13,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/virtualtouchpad/trayicon.py:44
+#: lib/virtualtouchpad/trayicon.py:52
+msgid "Connect mobile device..."
+msgstr "Anslut mobil enhet..."
+
+#: lib/virtualtouchpad/trayicon.py:55
 msgid "Exit"
 msgstr "Avsluta"

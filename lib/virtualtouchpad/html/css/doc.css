@@ -1,3 +1,29 @@
+body {
+    background-color: #F8F8F8;
+}
+
+article {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+section {
+    display: flex;
+    flex-flow: column wrap;
+
+    margin: 1em;
+    padding: 2em;
+
+    background-color: white;
+    box-shadow: 1em 1em 3em 0 rgba(0, 0, 0, .4);
+
+    width: 30em;
+}
+
 section > h1 {
     font-family: sans-serif;
     font-size: 18pt;

@@ -1,14 +1,9 @@
-article > h1 {
-    font-family: sans-serif;
-    font-size: 20pt;
-}
-
-article > h2 {
+section > h2 {
     font-family: sans-serif;
     font-size: 18pt;
 }
 
-article > p {
+section > p {
     font-family: sans-serif;
     font-size: 16pt;
 }

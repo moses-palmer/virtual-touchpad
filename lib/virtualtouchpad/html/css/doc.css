@@ -1,11 +1,16 @@
 section > h1 {
     font-family: sans-serif;
     font-size: 18pt;
+
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 section > p {
     font-family: sans-serif;
     font-size: 16pt;
+
+    margin-bottom: 0;
 }
 
 section > svg {

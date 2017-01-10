@@ -2,6 +2,24 @@ body {
     background-color: #F8F8F8;
 }
 
+aside {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+
+    margin: 1em;
+    width: 10em;
+    height: 10em;
+
+    background-image: url(/img/icon196x196.png);
+    background-size: 100% 100%;
+}
+
+aside > img {
+    width: 100%;
+}
+
 footer {
     color: #787878;
     font-family: sans-serif;

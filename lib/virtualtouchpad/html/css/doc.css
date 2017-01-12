@@ -21,14 +21,6 @@ svg {
     stroke-width: 4;
 }
 
-svg text {
-    font-family: sans;
-    font-size: 32px;
-    font-weight: bolder;
-
-    stroke: none;
-}
-
 svg .frame {
     fill: none;
 }

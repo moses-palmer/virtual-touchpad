@@ -15,9 +15,10 @@
             href="/img/icon57x57.png" />
 
         <title x-tr="Title" x-tpl="">
-            Virtual Touchpad ${application.version}
+            Virtual Touchpad ${application.version} QR code
         </title>
 
+        <link rel="stylesheet" type="text/css" href="/css/doc.css" />
         <link rel="stylesheet" type="text/css" href="/css/qr.css" />
 
         <!-- Setup script -->
@@ -35,13 +36,18 @@
     </head>
 
     <body>
-        <section>
-            <div class="qr">
+        <aside></aside>
+        <article>
+            <section class="qr">
                 <p x-tr="Hint to scan" class="text">
-                    To connect you mobile device, scan this QR code:
+                    To connect your mobile device, scan this QR code:
                 </p>
                 <x-include x-no-inline="true" href="/img/qr.svg" />
-            </div>
-        </section>
+            </section>
+
+            <footer x-tpl="">
+                Virtual Touchpad ${application.version}
+            </footer>
+        </article>
     </body>
 </html>

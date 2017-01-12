@@ -20,5 +20,5 @@ msgstr "Virtual Touchpad ${application.version}"
 
 #. Hint to scan
 #: lib/virtualtouchpad/html/qr/index.xhtml:40
-msgid "To connect you mobile device, scan this QR code:"
+msgid "To connect your mobile device, scan this QR code:"
 msgstr "För att ansluta din mobila enhet, skanna denna QR-kod:"

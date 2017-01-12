@@ -81,3 +81,14 @@ svg .frame {
 svg .shape {
     stroke: none;
 }
+
+@media screen and (max-width: 1000px) {
+    aside {
+        display: none;
+    }
+
+    section {
+        width: 100%;
+        box-shadow: 0.5em 0.5em 1em 0 rgba(0, 0, 0, .4);
+    }
+}

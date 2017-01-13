@@ -73,6 +73,28 @@ def get(path):
     return inner
 
 
+def report_error(ws, reason, exception=None, tb=None):
+    """Sends an error report over a *WebSocket* in a format that is parsable by
+    the client.
+
+    :param aiohttp.web.WebSocketResponse ws: The *WebSocket*.
+
+    :param str reason: a computer-parsable reason string.
+
+    :param exception: The exception causing the error.
+
+    :param tb: The traceback.
+    """
+    ws.send_str(json.dumps(dict(
+        reason=reason,
+        exception=type(exception).__name__ if exception else None,
+        data=str(exception) if exception else None,
+        tb=[
+            (fs.filename, fs.lineno, fs.name, fs.line)
+            for fs in
+            traceback.extract_tb(tb)] if tb else None)))
+
+
 def websocket(path):
     """A decorator to mark a function as handling incoming *WebSocket* commands.
 
@@ -91,28 +113,12 @@ def websocket(path):
             ws = aiohttp.web.WebSocketResponse()
             await ws.prepare(request)
 
-            def report_error(reason, exception, tb):
-                ws.send_str(json.dumps(dict(
-                    reason=reason,
-                    exception=type(exception).__name__,
-                    data=str(exception),
-                    tb=traceback.extract_tb(tb))))
-
-            dispatcher = handler(report_error)
-            next(dispatcher)
-
-            while True:
-                message = await ws.receive()
-                if message.tp == aiohttp.MsgType.text:
-                    try:
-                        dispatcher.send(message.data)
-                    except Exception as e:
-                        log.exception(
-                            'An error occurred while dispatching %s',
-                            message)
-                        break
-                else:
-                    break
+            try:
+                await handler(app, request, ws)
+            except Exception as e:
+                log.exception(
+                    'An error occurred in WebSocket handler %s',
+                    handler.__name__)
 
             return ws
 

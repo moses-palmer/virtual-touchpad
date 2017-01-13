@@ -19,45 +19,30 @@ import json
 import logging
 import sys
 
+import aiohttp
+
 from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 
 from . import report_error, websocket
 
 
 @websocket('/controller')
-def controller(app, request, ws):
+async def controller(app, request, ws):
     log = logging.getLogger(__name__)
     dispatch = Dispatcher(
         key=keyboard.Handler(),
         mouse=mouse.Handler())
 
-    while True:
-        message = yield
-        if not message:
-            continue
+    async for message in ws:
+        if message.type == aiohttp.WSMsgType.TEXT:
+            try:
+                dispatch(**json.loads(message.data))
+            except Exception as e:
+                log.exception(
+                    'An error occurred when handling %s',
+                    message)
+                _, _, tb = sys.exc_info()
+                report_error(ws, 'invalid_data', e, tb)
 
-        try:
-            command = json.loads(message)
-        except Exception as e:
-            log.exception(
-                'An error occurred when loading JSON from %s',
-                message)
-            ex_type, ex, tb = sys.exc_info()
-            report_error(
-                ws,
-                'invalid_data',
-                e, tb)
-            continue
-
-        try:
-            dispatch(**command)
-        except TypeError as e:
-            log.exception(
-                'Failed to dispatch command %s',
-                command)
-            ex_type, ex, tb = sys.exc_info()
-            report_error(
-                ws,
-                'invalid_command',
-                e, tb)
-            continue
+        elif message.type == aiohttp.WSMsgType.ERROR:
+            log.error('WebSocket closed with %s', ws.exception())

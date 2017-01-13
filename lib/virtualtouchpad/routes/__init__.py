@@ -113,21 +113,12 @@ def websocket(path):
             ws = aiohttp.web.WebSocketResponse()
             await ws.prepare(request)
 
-            dispatcher = handler(app, request, ws)
-            next(dispatcher)
-
-            while True:
-                message = await ws.receive()
-                if message.tp == aiohttp.MsgType.text:
-                    try:
-                        dispatcher.send(message.data)
-                    except Exception as e:
-                        log.exception(
-                            'An error occurred while dispatching %s',
-                            message)
-                        break
-                else:
-                    break
+            try:
+                await handler(app, request, ws)
+            except Exception as e:
+                log.exception(
+                    'An error occurred in WebSocket handler %s',
+                    handler.__name__)
 
             return ws
 

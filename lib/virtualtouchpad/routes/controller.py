@@ -21,11 +21,11 @@ import sys
 
 from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 
-from . import websocket
+from . import report_error, websocket
 
 
 @websocket('/controller')
-def controller(app, request, report_error):
+def controller(app, request, ws):
     log = logging.getLogger(__name__)
     dispatch = Dispatcher(
         key=keyboard.Handler(),
@@ -44,6 +44,7 @@ def controller(app, request, report_error):
                 message)
             ex_type, ex, tb = sys.exc_info()
             report_error(
+                ws,
                 'invalid_data',
                 e, tb)
             continue
@@ -56,6 +57,7 @@ def controller(app, request, report_error):
                 command)
             ex_type, ex, tb = sys.exc_info()
             report_error(
+                ws,
                 'invalid_command',
                 e, tb)
             continue

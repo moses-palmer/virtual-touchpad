@@ -73,6 +73,25 @@ def get(path):
     return inner
 
 
+def report_error(ws, reason, exception=None, tb=None):
+    """Sends an error report over a *WebSocket* in a format that is parsable by
+    the client.
+
+    :param aiohttp.web.WebSocketResponse ws: The *WebSocket*.
+
+    :param str reason: a computer-parsable reason string.
+
+    :param exception: The exception causing the error.
+
+    :param tb: The traceback.
+    """
+    ws.send_str(json.dumps(dict(
+        reason=reason,
+        exception=type(exception).__name__ if exception else None,
+        data=str(exception) if exception else None,
+        tb=traceback.extract_tb(tb) if tb else None)))
+
+
 def websocket(path):
     """A decorator to mark a function as handling incoming *WebSocket* commands.
 
@@ -91,14 +110,7 @@ def websocket(path):
             ws = aiohttp.web.WebSocketResponse()
             await ws.prepare(request)
 
-            def report_error(reason, exception, tb):
-                ws.send_str(json.dumps(dict(
-                    reason=reason,
-                    exception=type(exception).__name__,
-                    data=str(exception),
-                    tb=traceback.extract_tb(tb))))
-
-            dispatcher = handler(app, request, report_error)
+            dispatcher = handler(app, request, ws)
             next(dispatcher)
 
             while True:

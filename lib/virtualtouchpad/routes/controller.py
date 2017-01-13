@@ -26,7 +26,16 @@ from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 from . import report_error, websocket
 
 
-@websocket('/controller')
+def access_control(app, request):
+    """Provides access control for the controller by verifying that the
+    ``access_token`` parameter is correct.
+    """
+    access_token = request.url.query.get('access_token')
+    if access_token != app['server'].configuration.ACCESS_TOKEN:
+        raise aiohttp.web.HTTPForbidden()
+
+
+@websocket('/controller', access_control)
 async def controller(app, request, ws):
     log = logging.getLogger(__name__)
     dispatch = Dispatcher(

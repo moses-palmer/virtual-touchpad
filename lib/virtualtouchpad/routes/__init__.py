@@ -89,7 +89,10 @@ def report_error(ws, reason, exception=None, tb=None):
         reason=reason,
         exception=type(exception).__name__ if exception else None,
         data=str(exception) if exception else None,
-        tb=traceback.extract_tb(tb) if tb else None)))
+        tb=[
+            (fs.filename, fs.lineno, fs.name, fs.line)
+            for fs in
+            traceback.extract_tb(tb)] if tb else None)))
 
 
 def websocket(path):

@@ -109,6 +109,12 @@ class Store(object):
         """
         return self.extract_items(self._data)
 
+    @property
+    def notifier(self):
+        """The notifier.
+        """
+        return self._notifier
+
     def clear(self):
         """Clears the entire cache.
 

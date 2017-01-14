@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
-from . import get
+import asyncio
+import functools
+import json
+import logging
+
+from . import get, websocket
 
 
 @get('/status')
@@ -23,3 +28,18 @@ async def status(app, request):
     return {
         value.name: value()
         for value in app['server'].configuration}
+
+
+@websocket('/status/updates')
+async def status_updates(app, request, ws):
+    log = logging.getLogger(__name__)
+
+    def on_notified(item, value):
+        ws.send_str(json.dumps({
+            'item': item,
+            'value': value}))
+
+    with app['server'].configuration.store.notifier.registered(
+            functools.partial(app.loop.call_soon, on_notified)):
+        async for message in ws:
+            log.info('Received status message: %s', message.data)

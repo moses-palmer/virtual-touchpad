@@ -31,6 +31,9 @@
         <script type="text/javascript" src="/js/lib/server.js"></script>
         <script type="text/javascript" src="/js/lib/translation.js"></script>
 
+        <!-- The main application -->
+        <script type="text/javascript" src="/js/qr.js"></script>
+
         <!-- Translations -->
         <script type="text/javascript" src="/translations/qr"
             x-no-inline="true"></script>
@@ -43,7 +46,7 @@
                 <p x-tr="Hint to scan">
                     To connect your mobile device, scan this QR code:
                 </p>
-                <x-include x-no-inline="true" href="/img/qr.svg" />
+                <x-include x-no-inline="true" href="/img/qr.svg" id="qr" />
                 <p x-tpl="">
                     <span x-tr="Fallback when no QR scanner is available">If
                     you do not have a QR code scanner, open this location in

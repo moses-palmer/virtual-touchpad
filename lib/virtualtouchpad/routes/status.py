@@ -20,14 +20,16 @@ import functools
 import json
 import logging
 
-from . import get, websocket
+from . import get, is_local_request, websocket
 
 
 @get('/status')
 async def status(app, request):
+    local = is_local_request(request)
     return {
         v.name: value
-        for (v, value) in app['server'].configuration.values}
+        for (v, value) in app['server'].configuration.values
+        if local or not v.private}
 
 
 @websocket('/status/updates')

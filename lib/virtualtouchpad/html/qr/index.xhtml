@@ -44,6 +44,13 @@
                     To connect your mobile device, scan this QR code:
                 </p>
                 <x-include x-no-inline="true" href="/img/qr.svg" />
+                <p x-tpl="">
+                    <span x-tr="Fallback when no QR scanner is available">If
+                    you do not have a QR code scanner, open this location in
+                    your mobile device web browser instead:</span>
+                    <a href="${server.url}#${access.token}">
+                    ${server.url}#${access.token}</a>
+                </p>
             </section>
 
             <footer x-tpl="">

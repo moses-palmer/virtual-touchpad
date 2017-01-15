@@ -24,6 +24,7 @@ import pystray
 
 from pystray import Menu as menu, MenuItem as item
 
+from .routes._util import generate_access_token
 from .translation import _
 from . import resource
 
@@ -36,6 +37,11 @@ def create(configuration):
             webbrowser.open(urllib.parse.urljoin(
                 configuration.SERVER_URL, path))
         return inner
+
+    def access_token_toggle(*args):
+        configuration.ACCESS_TOKEN = (
+            None if configuration.ACCESS_TOKEN is not None
+            else generate_access_token())
 
     return pystray.Icon(
         __name__,
@@ -51,6 +57,11 @@ def create(configuration):
             item(
                 _('Connect mobile device...'),
                 href('qr')),
+            item(
+                _('Require access code to connect'),
+                access_token_toggle,
+                checked=lambda i: bool(configuration.ACCESS_TOKEN)),
+            menu.SEPARATOR,
             item(
                 _('Exit'),
                 lambda icon: icon.server.stop())))

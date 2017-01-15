@@ -24,6 +24,7 @@ import aiohttp
 from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 
 from . import report_error, websocket
+from ._util import generate_access_token
 
 
 def access_control(app, request):
@@ -41,6 +42,10 @@ async def controller(app, request, ws):
     dispatch = Dispatcher(
         key=keyboard.Handler(),
         mouse=mouse.Handler())
+
+    # Invalidate the access token
+    if app['server'].configuration.ACCESS_TOKEN:
+        app['server'].configuration.ACCESS_TOKEN = generate_access_token()
 
     async for message in ws:
         if message.type == aiohttp.WSMsgType.TEXT:

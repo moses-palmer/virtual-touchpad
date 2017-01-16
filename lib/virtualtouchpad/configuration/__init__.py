@@ -30,6 +30,9 @@ class Value:
 
         :param bool readonly: Whether the value is read-only.
 
+        :param bool private: Whether The value is private. Private values are
+            passed only to clients originating from the local host.
+
         :param callable default: A getter for the value if not specified. This
             will be called if the store returns ``None``, and will be passed the
             value as its only parameter.
@@ -39,6 +42,7 @@ class Value:
         self._name = name
         self.__doc__ = description
         self._readonly = readonly
+        self._private = private
         self._getter = default
 
     @property
@@ -52,6 +56,12 @@ class Value:
         """Whether this value is read-only.
         """
         return self._readonly
+
+    @property
+    def private(self):
+        """Whether this value is private to the local host.
+        """
+        return self._private
 
     def value(self, store):
         """Returns the actual value of this object in the context of a

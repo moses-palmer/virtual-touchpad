@@ -26,8 +26,8 @@ from . import get, websocket
 @get('/status')
 async def status(app, request):
     return {
-        value.name: value()
-        for value in app['server'].configuration}
+        v.name: value
+        for (v, value) in app['server'].configuration.values}
 
 
 @websocket('/status/updates')
@@ -39,7 +39,7 @@ async def status_updates(app, request, ws):
             'item': item,
             'value': value}))
 
-    with app['server'].configuration.store.notifier.registered(
+    with app['server'].configuration.notifier.registered(
             functools.partial(app.loop.call_soon, on_notified)):
         async for message in ws:
             log.info('Received status message: %s', message.data)

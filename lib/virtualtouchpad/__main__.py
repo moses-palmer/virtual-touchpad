@@ -139,7 +139,7 @@ def _load_configuration(**kwargs):
 
     :return: a configuration store
     """
-    return status.Status(status.Configuration, **kwargs)
+    return status.Configuration(**kwargs)
 
 
 def start():
@@ -168,8 +168,8 @@ def start():
     address = _get_local_address()
 
     configuration = _load_configuration(**{
-        status.Configuration.SERVER_HOST.value[0]: address,
-        status.Configuration.SERVER_PORT.value[0]: args.port})
+        status.Configuration.SERVER_HOST.name: address,
+        status.Configuration.SERVER_PORT.name: args.port})
 
     icon = trayicon.create(configuration)
 

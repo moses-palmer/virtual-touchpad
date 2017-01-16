@@ -51,8 +51,8 @@ def server(configuration):
             try:
                 web.run_app(
                     app,
-                    host=configuration.SERVER_HOST(),
-                    port=configuration.SERVER_PORT())
+                    host=configuration.SERVER_HOST,
+                    port=configuration.SERVER_PORT)
             finally:
                 del app['server']
 
@@ -67,7 +67,7 @@ def server(configuration):
             # TODO: The web application will stall until a conneciton attempt is
             # made, but this should be possible to solve more elegantly?
             http.client.HTTPConnection(
-                self.configuration.SERVER_HOST(),
-                self.configuration.SERVER_PORT()).request('GET', '/')
+                self.configuration.SERVER_HOST,
+                self.configuration.SERVER_PORT).request('GET', '/')
 
     return Server(configuration)

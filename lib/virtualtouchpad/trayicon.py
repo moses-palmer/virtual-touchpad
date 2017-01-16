@@ -34,13 +34,13 @@ def create(configuration):
     def href(path):
         def inner(*args, **kwargs):
             webbrowser.open(urllib.parse.urljoin(
-                configuration.SERVER_URL(), path))
+                configuration.SERVER_URL, path))
         return inner
 
     return pystray.Icon(
         __name__,
         title='Virtual Touchpad - {}'.format(
-            configuration.SERVER_URL()),
+            configuration.SERVER_URL),
         icon=PIL.Image.open(
             resource.open_stream(
                 {

@@ -17,7 +17,8 @@
 import contextlib
 import unittest
 
-from virtualtouchpad.store import Store
+from virtualtouchpad.configuration.notifier import Notifier
+from virtualtouchpad.configuration import Store, Value
 
 
 class StoreTest(unittest.TestCase):
@@ -261,3 +262,90 @@ class StoreTest(unittest.TestCase):
             [],
             values,
             str)
+
+    def test_create_simple(self):
+        """Tests that a simple status object can be created"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First')
+            SECOND = Value('val.second', 'Second')
+
+        status = Configuration(Notifier(), **{
+            'val.first': 1,
+            'val.second': 2})
+        self.assertEqual(
+            1,
+            status.FIRST)
+        self.assertEqual(
+            2,
+            status.SECOND)
+
+    def test_create_with_default(self):
+        """Tests that a status object with default values works"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First', default=lambda v: 1)
+            SECOND = Value('val.second', 'Second', default=lambda v: 2)
+
+        status = Configuration(Notifier())
+        self.assertEqual(
+            1,
+            status.FIRST)
+        self.assertEqual(
+            2,
+            status.SECOND)
+
+    def test_set_readonly(self):
+        """Tests that setting a read-only status value fails"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First', False)
+            SECOND = Value('val.second', 'Second', True)
+
+        status = Configuration(Notifier())
+        with self.assertRaises(AttributeError):
+            status.SECOND = 2
+
+    def test_set(self):
+        """Tests that setting a read-only status value fails"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First', False)
+            SECOND = Value('val.second', 'Second', True)
+
+        status = Configuration(Notifier())
+        status.FIRST = 1
+        self.assertEqual(
+            1,
+            status.FIRST)
+
+    def test_notify(self):
+        """Tests that a status object with default values works"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First', False)
+            SECOND = Value('val.second', 'Second', True)
+
+        was_called = False
+        def on_notify(name, value):
+            nonlocal was_called
+            was_called = True
+            self.assertEqual(
+                Configuration.FIRST.name,
+                name)
+            self.assertEqual(
+                1,
+                value)
+
+        status = Configuration(Notifier())
+        with status.notifier.registered(on_notify):
+            status.FIRST = 1
+        self.assertTrue(was_called)
+
+        with self.assertRaises(AttributeError):
+            status.SECOND = 2
+
+    def test_values(self):
+        """Tests that the values are returned correctly"""
+        class Configuration(Store):
+            FIRST = Value('val.first', 'First', default=lambda store: 1)
+            SECOND = Value('val.second', 'Second', default=lambda store: 2)
+
+        self.assertEquals(
+            [(Configuration.FIRST, 1), (Configuration.SECOND, 2)],
+            list(Configuration(Notifier()).values))

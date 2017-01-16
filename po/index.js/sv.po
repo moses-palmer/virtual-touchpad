@@ -14,17 +14,28 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. Caption in configuration
-#: lib/virtualtouchpad/html/index.xhtml:100
+#: lib/virtualtouchpad/html/index.xhtml:99
 msgid "Sensitivity"
 msgstr "Känslighet"
 
 #. Caption in configuration
-#: lib/virtualtouchpad/html/index.xhtml:110
+#: lib/virtualtouchpad/html/index.xhtml:109
 msgid "Acceleration"
 msgstr "Acceleration"
 
 #. <a href=...> and </a> must not be translated
-#: lib/virtualtouchpad/html/js/app.js:53
+#: lib/virtualtouchpad/html/js/app.js:54
+msgid ""
+"Failed to connect. If you have turned <em>Require QR code scan for "
+"connections</em> on, please click <em>Connect mobile device...</em> in the "
+"main menu and scan the QR code to connect."
+msgstr ""
+"Misslyckades med att ansluta. Om du har slagit på <em>Kräv åtkomstkod för att "
+"ansluta</em>, klicka på <em>Anslut mobil enhet...</em>  i huvudmenyn och "
+"skanna QR-koden för att ansluta."
+
+#. <a href=...> and </a> must not be translated
+#: lib/virtualtouchpad/html/js/app.js:63
 msgid ""
 "Connection closed. Please click <a href='javascript:location."
 "reload();'>here</a> to reconnect."
@@ -33,26 +44,26 @@ msgstr ""
 "a> för att ansluta igen."
 
 #. Do not translate ${tokens}
-#: lib/virtualtouchpad/html/js/app.js:65
+#: lib/virtualtouchpad/html/js/app.js:76
 msgid "Failed to connect. Please verify that ${host} is running."
 msgstr "Anslutningen misslyckades. Kontrollera att ${host} kör."
 
 #. Do not translate ${tokens}
-#: lib/virtualtouchpad/html/js/app.js:97
+#: lib/virtualtouchpad/html/js/app.js:109
 msgid "Failed to send command: <code>${message}</code>."
 msgstr "Misslyckades att skicka kommando: <code>${message}</code>"
 
 #. Do not translate ${tokens}
-#: lib/virtualtouchpad/html/js/app.js:105
+#: lib/virtualtouchpad/html/js/app.js:117
 msgid "An error occurred on ${host}: <code>${message}</code>."
 msgstr "Ett fel uppstod på ${host}: <code>${message}</code>"
 
 #. Do not translate ${tokens}
-#: lib/virtualtouchpad/html/js/app.js:114
+#: lib/virtualtouchpad/html/js/app.js:126
 msgid "An unknown error occurred: <code>${message}</code>."
 msgstr "Ett okänt fel uppstod: <code>${message}</code>"
 
-#: lib/virtualtouchpad/html/js/app.js:139
+#: lib/virtualtouchpad/html/js/app.js:151
 msgid "Stack trace"
 msgstr "Stackspårning"
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-30 05:19+0100\n"
+"POT-Creation-Date: 2017-01-16 21:52+0100\n"
 "PO-Revision-Date: 2014-04-14 22:43+0100\n"
 "Last-Translator: Moses Palmér <moses.palmer@gmail.com>\n"
 "Language-Team: Swedish\n"
@@ -13,10 +13,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/virtualtouchpad/trayicon.py:52
+#: lib/virtualtouchpad/trayicon.py:58
 msgid "Connect mobile device..."
 msgstr "Anslut mobil enhet..."
 
-#: lib/virtualtouchpad/trayicon.py:55
+#: lib/virtualtouchpad/trayicon.py:61
+msgid "Require access code to connect"
+msgstr "Kräv åtkomstkod för att ansluta"
+
+#: lib/virtualtouchpad/trayicon.py:66
 msgid "Exit"
 msgstr "Avsluta"

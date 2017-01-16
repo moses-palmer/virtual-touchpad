@@ -15,10 +15,20 @@ msgstr ""
 
 #. Title
 #: lib/virtualtouchpad/html/qr/index.xhtml:17
-msgid "Virtual Touchpad ${application.version}"
-msgstr "Virtual Touchpad ${application.version}"
+#, fuzzy
+msgid "Virtual Touchpad ${application.version} QR code"
+msgstr "Virtual Touchpad ${application.version} QR-kod"
 
 #. Hint to scan
-#: lib/virtualtouchpad/html/qr/index.xhtml:40
+#: lib/virtualtouchpad/html/qr/index.xhtml:46
 msgid "To connect your mobile device, scan this QR code:"
 msgstr "För att ansluta din mobila enhet, skanna denna QR-kod:"
+
+#. Fallback when no QR scanner is available
+#: lib/virtualtouchpad/html/qr/index.xhtml:51
+msgid ""
+"If you do not have a QR code scanner, open this location in your mobile "
+"device web browser instead:"
+msgstr ""
+"Om du inte har en QR-skanner, öppna denna plats i din mobila enhets "
+"webbläsare istället:"

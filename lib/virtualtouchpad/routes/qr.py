@@ -30,7 +30,7 @@ async def qr(app, request):
     # Generate a QR code SVG and save it to a stream
     with io.BytesIO() as stream:
         pyqrcode.create(
-            app['server'].configuration.SERVER_URL(),
+            app['server'].configuration.SERVER_URL,
             version=4).svg(
                 stream,
                 background='white',

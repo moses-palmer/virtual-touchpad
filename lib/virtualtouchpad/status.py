@@ -18,65 +18,27 @@ import enum
 
 import virtualtouchpad._info as info
 
-from .notifier import Notifier as _Notifier
-from .store import Store as _Store
-from .value import Value as _Value
+from .configuration.notifier import Notifier
+from .configuration import Store, Value
 
 
-class Configuration(enum.Enum):
-    APPLICATION_VERSION = (
+class Configuration(Store):
+    APPLICATION_VERSION = Value(
         'application.version',
         'The version of this application',
-        True,
-        lambda v: '.'.join(str(v) for v in info.__version__))
-    SERVER_HOST = (
+        default=lambda v: '.'.join(str(v) for v in info.__version__))
+    SERVER_HOST = Value(
         'server.host',
         'The server hostname')
-    SERVER_PORT = (
+    SERVER_PORT = Value(
         'server.port',
         'The port of the server')
-    SERVER_URL = (
+    SERVER_URL = Value(
         'server.url',
         'The URL of the server',
-        True,
-        lambda v: 'http://{}:{}/'.format(
-            v.store.get(Configuration.SERVER_HOST.value[0]),
-            v.store.get(Configuration.SERVER_PORT.value[0])))
+        default=lambda configuration: 'http://{}:{}/'.format(
+            configuration.SERVER_HOST,
+            configuration.SERVER_PORT))
 
-
-class Status:
-    def __init__(self, configuration, **kwargs):
-        """Creates a new status instance.
-
-        A ``Status`` instance holds a store, a notifier and a list of
-        configuration values. Every configuration value is available as an
-        instance of :class:`~virtualtouchpad.value.Value` under the name
-        specified in the configuration.
-
-        :param configuration: The configuration to use. This must be an
-            :class:`~enum.Enum` instance with values compatible with the
-            constructor arguments for :class:`~virtualtouchpad.value.Value`.
-
-        :param kwargs: Any values to set on the status object before returning.
-        """
-        self._notifier = _Notifier()
-        self._store = _Store(self._notifier)
-        self._store.update(kwargs)
-
-        class Value(_Value):
-            _notifier = self._notifier
-            _store = self._store
-
-        self._values = []
-        for v in configuration:
-            self._values.append(Value(*v.value))
-            setattr(self, v.name, self._values[-1])
-
-    def __iter__(self):
-        return iter(self._values)
-
-    @property
-    def store(self):
-        """The backing store.
-        """
-        return self._store
+    def __init__(self, **kwargs):
+        super().__init__(Notifier(), **kwargs)

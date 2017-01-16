@@ -132,6 +132,21 @@ def websocket(path):
     return inner
 
 
+def is_local_request(request):
+    """Determines whether a request originates from the local host.
+
+    :param request: The request.
+
+    :return: whether the request originates from the local host
+    """
+    peername = request.transport.get_extra_info('peername')
+    if peername is not None:
+        host, _ = peername
+        return host == app['server'].configuration.SERVER_HOST
+    else:
+        return False
+
+
 def localhost(f):
     """A decorator to restrict access to a route to ``localhost``.
 
@@ -139,13 +154,10 @@ def localhost(f):
     """
     @functools.wraps(f)
     def inner(app, request, *args):
-        peername = request.transport.get_extra_info('peername')
-        if peername is not None:
-            host, _ = peername
-            if host == app['server'].configuration.SERVER_HOST():
-                return f(app, request, *args)
-
-        raise aiohttp.web.HTTPForbidden()
+        if is_local_request(request):
+            return f(app, request, *args)
+        else:
+            raise aiohttp.web.HTTPForbidden()
 
     return inner
 

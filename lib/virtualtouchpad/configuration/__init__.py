@@ -9,7 +9,8 @@
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
@@ -17,16 +18,93 @@
 import json
 
 
+class Value:
+    def __init__(self, name, description, readonly=True, private=False,
+                 default=lambda store: None):
+        """A configuration value.
+
+        :param str name: The name of the value on the form
+            ``'section.sub.value'``.
+
+        :param str description: A short description.
+
+        :param bool readonly: Whether the value is read-only.
+
+        :param bool private: Whether The value is private. Private values are
+            passed only to clients originating from the local host.
+
+        :param callable default: A getter for the value if not specified. This
+            will be called if the store returns ``None``, and will be passed the
+            value as its only parameter.
+
+        :return: a value
+        """
+        self._name = name
+        self.__doc__ = description
+        self._readonly = readonly
+        self._private = private
+        self._getter = default
+
+    @property
+    def name(self):
+        """The name of the store property.
+        """
+        return self._name
+
+    @property
+    def readonly(self):
+        """Whether this value is read-only.
+        """
+        return self._readonly
+
+    @property
+    def private(self):
+        """Whether this value is private to the local host.
+        """
+        return self._private
+
+    def value(self, store):
+        """Returns the actual value of this object in the context of a
+        :class:`Store`.
+
+        :param Store store: The backing store.
+
+        :return: a value
+        """
+        result = store.get(self.name)
+        if result is None:
+            return self._getter(store)
+        else:
+            return result
+
+    def __get__(self, obj, obj_type=None):
+        if obj is not None:
+            return self.value(obj)
+        else:
+            return self
+
+    def __set__(self, obj, value):
+        if self.readonly:
+            raise AttributeError()
+        else:
+            obj.set(self.name, value)
+
+
 class Store(object):
-    def __init__(self, notifier):
+    def __init__(self, notifier, **kwargs):
         """A class to manage a key-value store.
 
         :param callable notifier: A callback to call whenever a value is changed
             by this class. It will be called with the arguments
             ``(name, new_value)``.
+
+        :param kwargs: Any values to set.
         """
         self._notifier = notifier
         self._data = {}
+
+        for key, value in kwargs.items():
+            self._set(self._data, key, self._canonical(value))
 
     def _canonical(self, value):
         """Retrieves a canonical representation for a value.
@@ -114,6 +192,18 @@ class Store(object):
         """The notifier.
         """
         return self._notifier
+
+    @property
+    def values(self):
+        """All values, as a sequence of the tuple ``(instance, value)``, where
+        ``instance`` is an instace of :class:`Value` and ``value`` its value.
+        """
+        return (
+            (
+                getattr(self.__class__, name),
+                getattr(self, name))
+            for name in dir(self)
+            if isinstance(getattr(self.__class__, name, None), Value))
 
     def clear(self):
         """Clears the entire cache.

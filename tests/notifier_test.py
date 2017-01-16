@@ -16,7 +16,7 @@
 
 import unittest
 
-from virtualtouchpad import notifier
+from virtualtouchpad.configuration import notifier
 
 
 class NotifierTest(unittest.TestCase):

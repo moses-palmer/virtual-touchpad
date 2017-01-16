@@ -39,6 +39,11 @@ class Configuration(Store):
         default=lambda configuration: 'http://{}:{}/'.format(
             configuration.SERVER_HOST,
             configuration.SERVER_PORT))
+    ACCESS_TOKEN = Value(
+        'access.token',
+        'The use once access token',
+        readonly=False,
+        private=True)
 
     def __init__(self, **kwargs):
         super().__init__(Notifier(), **kwargs)

@@ -95,7 +95,7 @@ def report_error(ws, reason, exception=None, tb=None):
             traceback.extract_tb(tb)] if tb else None)))
 
 
-def websocket(path):
+def websocket(path, access_control=lambda app, request: None):
     """A decorator to mark a function as handling incoming *WebSocket* commands.
 
     This is not a generic *WebSocket* handler; it will only handle incoming
@@ -105,11 +105,18 @@ def websocket(path):
     followed by any data received.
 
     :param str path: The path this function handles.
+
+    :param callable access_control: A callable providing access control. It will
+        be called before the request is upgraded, and is passed the parameters
+        ``(app, request)``, where ``app`` is the current application, and
+        ``request`` is the request to upgrade to a *WebSocket*.
     """
     log = logging.getLogger('%s.%s' % (__name__, path))
 
     def inner(handler):
         async def wrapper(request):
+            access_control(app, request)
+
             ws = aiohttp.web.WebSocketResponse()
             await ws.prepare(request)
 

@@ -20,6 +20,7 @@ import functools
 import logging
 import mimetypes
 import os
+import random
 import sys
 import time
 
@@ -55,6 +56,20 @@ def strip_special(path, special_extensions):
         else previous,
         special_extensions,
         path)
+
+
+def generate_access_token():
+    """Generates an access token.
+
+    The returned value will have a reasonable length, and consist of URL safe
+    characters that are easily distinguishable.
+
+    :return: a random token
+    """
+    gen = random.SystemRandom()
+    return ''.join(
+        random.choice('ABCEFGHJKLMNPQRTWXY346789')
+        for _ in range(8))
 
 
 def read(root, filepath, index_files, special_extensions):

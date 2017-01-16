@@ -24,14 +24,28 @@ import aiohttp
 from virtualtouchpad.dispatchers import Dispatcher, keyboard, mouse
 
 from . import report_error, websocket
+from ._util import generate_access_token
 
 
-@websocket('/controller')
+def access_control(app, request):
+    """Provides access control for the controller by verifying that the
+    ``access_token`` parameter is correct.
+    """
+    access_token = request.url.query.get('access_token')
+    if access_token != app['server'].configuration.ACCESS_TOKEN:
+        raise aiohttp.web.HTTPForbidden()
+
+
+@websocket('/controller', access_control)
 async def controller(app, request, ws):
     log = logging.getLogger(__name__)
     dispatch = Dispatcher(
         key=keyboard.Handler(),
         mouse=mouse.Handler())
+
+    # Invalidate the access token
+    if app['server'].configuration.ACCESS_TOKEN:
+        app['server'].configuration.ACCESS_TOKEN = generate_access_token()
 
     async for message in ws:
         if message.type == aiohttp.WSMsgType.TEXT:

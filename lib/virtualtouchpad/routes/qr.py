@@ -24,14 +24,29 @@ import pyqrcode
 from aiohttp.web import Response
 
 
+def url(configuration):
+    """Generates the URL to use for connecting.
+
+    :param configuration: The server configuration.
+
+    :return: a URL
+    """
+    access_token = configuration.ACCESS_TOKEN
+    if access_token is None:
+        return configuration.SERVER_URL
+    else:
+        return '%s#%s' % (configuration.SERVER_URL, access_token)
+
+
 @get('/img/qr.svg')
 @localhost
 async def qr(app, request):
-    # Generate a QR code SVG and save it to a stream
+    # Generate a QR code SVG and save it to a stream; we need at least version 8
+    # for the QR code
     with io.BytesIO() as stream:
         pyqrcode.create(
-            app['server'].configuration.SERVER_URL,
-            version=4).svg(
+            url(app['server'].configuration),
+            version=8).svg(
                 stream,
                 background='white',
                 omithw=True)

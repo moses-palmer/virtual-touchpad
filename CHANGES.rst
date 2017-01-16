@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+v0.19 - Access control
+----------------------
+*  Added possibility to restrict access to anyone in front of the screen.
+*  Updated visual styling of documents.
+*  Corrected display of stack trace for internal server errors.
+
+
 v0.18 - QR code
 ---------------
 *  Added QR code view to provide the mobile device URL. Just click *Connect

@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.19.1 - Include QR view
+-------------------------
+*  Make sure to actually include QR view in built package.
+
+
 v0.19 - Access control
 ----------------------
 *  Added possibility to restrict access to anyone in front of the screen.

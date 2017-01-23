@@ -147,7 +147,8 @@ def _join_elements(e):
     # Move next sibling's child nodes to this node while next sibling is
     # same type
     while e.nextSibling and e.nextSibling.nodeType == Node.ELEMENT_NODE \
-            and e.tagName == e.nextSibling.tagName:
+            and e.tagName == e.nextSibling.tagName \
+            and e.nextSibling.getAttribute('x-no-inline') != 'true':
         for child in e.nextSibling.childNodes:
             e.firstChild.appendData(child.wholeText)
         e.parentNode.removeChild(e.nextSibling)

@@ -85,3 +85,19 @@ msgid ""
 msgstr ""
 "På IOS försvinner adressfältet dessutom om du installerar Virtual Touchpad "
 "på hemskärmen."
+
+#
+# File: lib/virtualtouchpad/html/help.xhtml, line: 36
+#. Header
+#: lib/virtualtouchpad/html/help/index.xhtml:73
+msgid "How do I connect my device?"
+msgstr "Hur ansluter jag min enhet?"
+
+#. Answer to 'How do I connect my device?'
+#: lib/virtualtouchpad/html/help/index.xhtml:74
+msgid ""
+"If you have a QR code reader app installed, click <em>Connect mobile "
+"device...</em> in the main menu, or click <a href=\"/qr\">here</a>."
+msgstr ""
+"Om du har en QR-kodläsare installerad, klicka på <em>Anslut mobil "
+"enhet...</em> i huvudmenyn, eller klicka  <a href=\"/qr\">här</a>."

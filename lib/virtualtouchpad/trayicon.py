@@ -63,5 +63,9 @@ def create(configuration):
                 checked=lambda i: bool(configuration.ACCESS_TOKEN)),
             menu.SEPARATOR,
             item(
+                _('Help'),
+                href('help')),
+            menu.SEPARATOR,
+            item(
                 _('Exit'),
                 lambda icon: icon.server.stop())))

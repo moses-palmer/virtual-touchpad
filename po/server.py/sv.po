@@ -22,5 +22,9 @@ msgid "Require access code to connect"
 msgstr "Kräv åtkomstkod för att ansluta"
 
 #: lib/virtualtouchpad/trayicon.py:66
+msgid "Help"
+msgstr "Hjälp"
+
+#: lib/virtualtouchpad/trayicon.py:70
 msgid "Exit"
 msgstr "Avsluta"

@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 
 from xml.dom import Node
@@ -6,7 +7,11 @@ from xml.dom.minidom import parse
 from xml.sax import make_parser
 
 from . import ROOT, HTML_ROOT
-from .xmltransform import _recurse
+from .xmltransform import _recurse, SPACE_RE
+
+
+#: Strips the outer tags of an XML string
+INNER_XML_RE = re.compile(r'(?ms)^<[^>]+>(.*?)</[^>]+>$')
 
 
 def _add_entry(pofile, entry):
@@ -35,16 +40,13 @@ def _extract_x_tr(e, pofile, path):
     if e.nodeType != Node.ELEMENT_NODE or not e.hasAttribute('x-tr'):
         return
 
-    # Make sure that the elements has exactly one child node, and that it is a
-    # text node
-    if e.childNodes.length != 1 or e.firstChild.nodeType != Node.TEXT_NODE:
-        raise RuntimeError('Invalid use of x-tr attribute: %s', e.toxml())
-
     _add_entry(
         pofile,
         polib.POEntry(
             comment=e.getAttribute('x-tr'),
-            msgid=' '.join(e.firstChild.nodeValue.split()),
+            msgid=SPACE_RE.sub(
+                ' ',
+                INNER_XML_RE.match(e.toxml()).group(1).strip()),
             occurrences=[(
                 os.path.relpath(path, ROOT),
                 e.parse_position[0])]))

@@ -1,4 +1,5 @@
 import os
+import re
 
 from xml.dom import Node
 from xml.dom.minidom import CDATASection
@@ -9,6 +10,9 @@ from . import LICENSE, update_file_time, HTML_ROOT
 _VOID_ELEMENTS = [
     'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen',
     'link', 'meta', 'param', 'source', 'track', 'wbr']
+
+#: A regular expression to match whitespace
+SPACE_RE = re.compile(r'(?ms)\s+')
 
 
 def _src_to_path(source_dir, value):
@@ -38,7 +42,10 @@ def _recurse(e, callback, **kwargs):
 def _trim(e):
     """Trims extra whitespace of text nodes; CDATA nodes are not modified"""
     if e.nodeType == Node.TEXT_NODE:
-        e.nodeValue = ' '.join(e.nodeValue.split())
+        if e.nodeValue.strip():
+            e.nodeValue = SPACE_RE.sub(' ', e.nodeValue)
+        else:
+            e.nodeValue = ''
 
 
 def _remove_comments(e):
@@ -147,7 +154,8 @@ def _join_elements(e):
     # Move next sibling's child nodes to this node while next sibling is
     # same type
     while e.nextSibling and e.nextSibling.nodeType == Node.ELEMENT_NODE \
-            and e.tagName == e.nextSibling.tagName:
+            and e.tagName == e.nextSibling.tagName \
+            and e.nextSibling.getAttribute('x-no-inline') != 'true':
         for child in e.nextSibling.childNodes:
             e.firstChild.appendData(child.wholeText)
         e.parentNode.removeChild(e.nextSibling)
